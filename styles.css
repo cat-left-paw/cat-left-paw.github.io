@@ -1,0 +1,348 @@
+/* cat-left-paw.github.io — shared styles */
+
+:root {
+  --color-bg: #faf9f7;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #5c5c5c;
+  --color-border: #e4e2de;
+  --color-accent: #3d5a4c;
+  --color-accent-hover: #2d4439;
+  --color-link: #2f5d4a;
+  --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+  --max-width: 42rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --radius: 6px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Layout */
+
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.site-header__inner {
+  max-width: calc(var(--max-width) + 2rem);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.site-title a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-title a:hover {
+  color: var(--color-accent);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-md);
+  font-size: 0.9rem;
+}
+
+.site-nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+main {
+  max-width: calc(var(--max-width) + 2rem);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-xl);
+}
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Typography */
+
+.page-hero {
+  margin-bottom: var(--space-xl);
+}
+
+.page-hero h1 {
+  margin: 0 0 var(--space-sm);
+  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.page-hero .en {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.lead {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+h2 {
+  margin: var(--space-xl) 0 var(--space-md);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+h3 {
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+p {
+  margin: 0 0 var(--space-md);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.1em 0.35em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+}
+
+ul {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.25rem;
+}
+
+li + li {
+  margin-top: var(--space-xs);
+}
+
+.note {
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.note strong {
+  color: var(--color-text);
+}
+
+/* Link cards */
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+  list-style: none;
+  padding: 0;
+}
+
+.link-grid li {
+  margin: 0;
+}
+
+.link-card {
+  display: block;
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.link-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  color: var(--color-accent);
+}
+
+.link-card.is-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  cursor: default;
+}
+
+.link-card__label {
+  display: block;
+  font-weight: 600;
+}
+
+.link-card__hint {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Project cards (top page) */
+
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-lg) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.project-card {
+  display: block;
+  padding: var(--space-lg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+
+.project-card:hover {
+  border-color: var(--color-accent);
+}
+
+.project-card h2 {
+  margin: 0 0 var(--space-xs);
+  font-size: 1.1rem;
+}
+
+.project-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.project-card .en {
+  display: block;
+  margin-top: var(--space-xs);
+  font-size: 0.8rem;
+}
+
+.project-card .status {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+/* Screenshots */
+
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+}
+
+.screenshot-item {
+  margin: 0;
+}
+
+.screenshot-item img {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.screenshot-item figcaption {
+  margin-top: var(--space-xs);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Feature list — easy to edit on project pages */
+
+.feature-list {
+  padding-left: 1.25rem;
+}
+
+.feature-list li {
+  margin-bottom: var(--space-xs);
+}
+
+/* Responsive */
+
+@media (max-width: 30rem) {
+  .site-header__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .link-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

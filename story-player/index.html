@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>（仮）Story Player — 猫乃 左手 / Cat Left Paw</title>
+  <meta name="description" content="（仮）Story Player は Obsidian 向けの分岐ストーリー再生プラグインです。未公開・近日公開予定。">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <p class="site-title"><a href="/">猫乃 左手 / Cat Left Paw</a></p>
+      <nav class="site-nav" aria-label="メインメニュー">
+        <a href="/nyoze/">Nyoze</a>
+        <a href="/tategaki/">Tategaki</a>
+        <a href="/story-player/" aria-current="page">（仮）Story Player</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- UPDATE: hero — 公開時に説明文・名称を差し替え -->
+    <header class="page-hero">
+      <h1>（仮）Story Player
+        <span class="en">Obsidian plugin for branching narratives — working title</span>
+      </h1>
+      <p class="lead">Obsidian の Markdown ノートを、選択式 ADV・ゲームブック風に再生するプラグインです。専用記法を最初から覚えるのではなく、Wiki リンクと frontmatter で分岐ストーリーを書くことを重視しています。</p>
+    </header>
+
+    <p class="note"><strong>未公開（近日公開予定）</strong> — 名称は仮です。Obsidian Community Plugin としての公開に向けて開発・検証を進めています。公開リポジトリと配布ページは、公開のタイミングで整備します。</p>
+
+    <section aria-labelledby="links-heading">
+      <h2 id="links-heading">リンク</h2>
+      <ul class="link-grid">
+        <li>
+          <!-- UPDATE: github — 公開リポジトリの URL -->
+          <span class="link-card is-disabled" aria-disabled="true">
+            <span class="link-card__label">GitHub</span>
+            <span class="link-card__hint">近日公開予定</span>
+          </span>
+        </li>
+        <li>
+          <!-- UPDATE: store — Obsidian Community Plugins の URL -->
+          <span class="link-card is-disabled" aria-disabled="true">
+            <span class="link-card__label">Store</span>
+            <span class="link-card__hint">Community Plugins（近日公開予定）</span>
+          </span>
+        </li>
+        <li>
+          <!-- UPDATE: docs — 公開ドキュメントの URL -->
+          <span class="link-card is-disabled" aria-disabled="true">
+            <span class="link-card__label">Docs</span>
+            <span class="link-card__hint">近日公開予定</span>
+          </span>
+        </li>
+        <li>
+          <a class="link-card" href="#screenshots">
+            <span class="link-card__label">Screenshots</span>
+            <span class="link-card__hint">このページ内</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="audience-heading">
+      <h2 id="audience-heading">こんな方に向いています</h2>
+      <ul class="feature-list">
+        <li>Obsidian で分岐物語やゲームブックを書きたい</li>
+        <li>Twine や Ink のような専用記法より、Markdown のまま書きたい</li>
+        <li>フラグや変数を使った条件分岐を試したい</li>
+        <li>制作中に Story Map で構造を確認したい</li>
+      </ul>
+    </section>
+
+    <!-- UPDATE: features -->
+    <section aria-labelledby="features-heading">
+      <h2 id="features-heading">主な機能（開発中）</h2>
+      <p>公開版に含める予定の機能です。リリース前に変更される場合があります。</p>
+
+      <h3>ストーリー再生</h3>
+      <ul class="feature-list">
+        <li>Project Root ごとに作品を分け、Markdown ファイルを 1 シーンとして再生</li>
+        <li>単独行 Wiki リンク（例: <code>[[次へ]]</code>）を選択肢ボタンとして表示</li>
+        <li>flags / vars の更新と、本文への <code>{{vars.hp}}</code> などの埋め込み表示</li>
+        <li>条件付き選択肢・本文の条件表示、frontmatter <code>gate</code>、乱数分岐</li>
+        <li><code>gamebook</code> / <code>adv</code> の 2 種類の表示テンプレート</li>
+        <li>背景画像、キャラクター表示、fade / typewriter 演出</li>
+        <li>段階表示（<code>display_mode</code>: all / append / replace）</li>
+      </ul>
+
+      <h3>制作支援</h3>
+      <ul class="feature-list">
+        <li>Story Map — シーン構造の可視化、リンク編集、Play from here</li>
+        <li>Route View — ルートの確認・編集（Story Map と連動）</li>
+        <li>構文チェック、補完、Syntax Help、Debug Overlay</li>
+        <li>プレビュー表示設定を「作品標準スタイル」として保存</li>
+      </ul>
+
+      <p>シーンは <code>&lt;projectRoot&gt;/scenes/</code> 配下に置く運用を想定しています。</p>
+    </section>
+
+    <section aria-labelledby="limitations-heading">
+      <h2 id="limitations-heading">公開前の注意点</h2>
+      <ul class="feature-list">
+        <li>名称は仮で、公開時に変更される可能性があります</li>
+        <li>Back ボタン、<code>scene_id</code> 指定での直接遷移など、一部機能は公開後も順次対応予定</li>
+        <li>Community Plugin としての公開前レビュー・実機検証を進めています</li>
+      </ul>
+    </section>
+
+    <section id="screenshots" aria-labelledby="screenshots-heading">
+      <h2 id="screenshots-heading">スクリーンショット</h2>
+      <p>スクリーンショットは現在準備中です。</p>
+      <div class="screenshot-grid">
+        <figure class="screenshot-item">
+          <img src="/assets/placeholder.svg" alt="（仮）Story Player のスクリーンショット（準備中）" width="800" height="500">
+          <figcaption>準備中</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="/">トップに戻る</a> · &copy; Cat Left Paw / 猫乃 左手</p>
+  </footer>
+</body>
+</html>
