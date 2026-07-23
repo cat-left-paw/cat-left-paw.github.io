@@ -3,170 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nyoze — 猫乃 左手 / Cat Left Paw</title>
-  <meta name="description" content="Nyoze は縦書きでそのまま文章を書ける Markdown エディタです。小説やエッセイの執筆向け。次回リリースで書庫・作品管理を予定。">
-  <link rel="stylesheet" href="/styles.css">
+  <title>Nyoze — 縦書きで書き、作品として整える</title>
+  <meta name="description" content="Nyoze は、文芸執筆のための縦書き Markdown デスクトップエディタです。執筆、作品管理、閲覧、Web公開と外部書き出しを一つの環境で支えます。">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="nyoze.css">
+  <script src="nyoze.js" defer></script>
 </head>
-<body>
-  <header class="site-header">
-    <div class="site-header__inner">
-      <p class="site-title"><a href="/">猫乃 左手 / Cat Left Paw</a></p>
-      <nav class="site-nav" aria-label="メインメニュー">
-        <a href="/nyoze/" aria-current="page">Nyoze</a>
-        <a href="/tategaki/">Tategaki</a>
-        <a href="/story-player/">（仮）Story Player</a>
+<body class="nyoze-page" id="top">
+  <header class="nyoze-header">
+    <div class="nyoze-header__inner">
+      <a class="nyoze-wordmark" href="#top" aria-label="Nyoze トップへ">
+        <img src="../assets/nyoze-logo.png" alt="" width="1024" height="1024" decoding="async">
+        <span>Nyoze</span>
+      </a>
+      <nav class="nyoze-nav" aria-label="ページ内メニュー">
+        <a href="#features">特徴</a>
+        <a href="#workflow">使い方</a>
+        <a href="#download">ダウンロード</a>
+        <a href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">GitHub</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- UPDATE: hero -->
-    <header class="page-hero">
-      <h1>Nyoze
-        <span class="en">Vertical-writing Markdown editor</span>
-      </h1>
-      <p class="lead">縦書きでそのまま文章を書けるデスクトップエディタです。小説やエッセイを、見た目に近い画面で執筆し、テキストファイルとして保存できます。</p>
-    </header>
-
-    <!-- UPDATE: status -->
-    <p class="note"><strong>beta 公開中</strong> — 執筆体験と原稿の保全を優先して開発しています。次回リリースでは、<strong>書庫</strong>と<strong>作品管理</strong>を中心とした仕様変更・機能追加を予定しています。公開済みの機能と開発中の機能は、下記で分けて記載しています。</p>
-
-    <section aria-labelledby="links-heading">
-      <h2 id="links-heading">リンク</h2>
-      <ul class="link-grid">
-        <li>
-          <a class="link-card" href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">
-            <span class="link-card__label">GitHub</span>
-            <span class="link-card__hint">ソース・README</span>
-          </a>
-        </li>
-        <li>
-          <a class="link-card" href="https://apps.microsoft.com/detail/9N52TD18DBCR" rel="noopener noreferrer">
-            <span class="link-card__label">Store</span>
-            <span class="link-card__hint">Microsoft Store</span>
-          </a>
-        </li>
-        <li>
-          <a class="link-card" href="https://github.com/cat-left-paw/nyoze/blob/main/MANUAL.md" rel="noopener noreferrer">
-            <span class="link-card__label">Docs</span>
-            <span class="link-card__hint">操作マニュアル</span>
-          </a>
-        </li>
-        <li>
-          <a class="link-card" href="#screenshots">
-            <span class="link-card__label">Screenshots</span>
-            <span class="link-card__hint">このページ内</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <section aria-labelledby="audience-heading">
-      <h2 id="audience-heading">こんな方に向いています</h2>
-      <ul class="feature-list">
-        <li>小説や文章を縦書きで書きたい</li>
-        <li>Markdown を使いたいが、難しい操作は避けたい</li>
-        <li>テキストファイルで原稿を管理したい</li>
-        <li>ルビや縦中横を使いながら日本語を書きたい</li>
-      </ul>
-    </section>
-
-    <!-- UPDATE: features-current — 現在公開中 -->
-    <section aria-labelledby="features-current-heading">
-      <h2 id="features-current-heading">現在公開中の機能</h2>
-      <p>以下は、現在 GitHub / Microsoft Store などで配布している beta 版に含まれる主な機能です。</p>
-
-      <h3>執筆・編集</h3>
-      <ul class="feature-list">
-        <li>縦書き・横書きの切り替え、WYSIWYG 編集</li>
-        <li>ルビ・縦中横（青空文庫形式など）、傍点</li>
-        <li>Typewriter scroll、編集ブロックハイライト、現在行ハイライトなどの執筆補助</li>
-        <li>文書タイプ（Novel / Article）による改行ポリシーの切り替え</li>
-        <li>段落単位（Paragraph Plain）・全文（Source Mode）の Markdown ソース編集</li>
-        <li>検索 / 置換、見出しの折りたたみ、アウトラインパネル</li>
-        <li>リストのアウトライナー的な操作</li>
-        <li>`.md` / `.txt` の読み書き（UTF-8）</li>
-      </ul>
-
-      <h3>テーマ・表示</h3>
-      <ul class="feature-list">
-        <li>豊富な内蔵テーマの切り替え（縦書き・横書きそれぞれに対応）</li>
-        <li>GUI からのカスタムテーマ作成・編集（Theme Studio）</li>
-        <li>文書テーマと UI テーマの管理、テーマ選択メニューでの色プレビュー表示</li>
-        <li>表示設定（フォント、行間、執筆補助表示など）の調整</li>
-      </ul>
-
-      <h3>ファイル・表示</h3>
-      <ul class="feature-list">
-        <li>複数タブでの文書表示と編集</li>
-        <li>File Explorer からのファイル作成・名前変更・複製・移動・削除</li>
-        <li>frontmatter の読み取り、Document Settings からの限定編集</li>
-        <li>ローカル画像参照付き Markdown の表示</li>
-      </ul>
-
-      <p>詳細は <a href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">GitHub の README</a> と MANUAL を参照してください。</p>
-    </section>
-
-    <!-- UPDATE: features-dev — 開発中・次回リリース -->
-    <section aria-labelledby="features-dev-heading">
-      <h2 id="features-dev-heading">開発中の機能（次回リリース以降）</h2>
-      <p>開発版では実装が進んでいますが、<strong>まだ公開配布には含まれていません</strong>。内容・仕様はリリース前に変更される場合があります。</p>
-
-      <h3>書庫・作品管理（次回リリースの中心）</h3>
-      <p>次回リリースでは、これまでの「単独ファイル中心」の運用から、<strong>書庫</strong>と<strong>作品</strong>を軸にした管理へ拡張する予定です。</p>
-      <ul class="feature-list">
-        <li><strong>書庫</strong> — 複数の原稿フォルダを登録・切り替え（Vault に近い運用）</li>
-        <li><strong>作品</strong> — `.nyoze/project.json` を持つフォルダ単位での管理</li>
-        <li><strong>Book / Materials</strong> — 本編・外伝・資料などの登録と並び替え（`.nyoze/books.json`）</li>
-        <li>作品内付箋（本文位置へ紐づくメモ、タグ、解決済み管理）</li>
-        <li>Book 全体のアウトライン、前章 / 次章ナビゲーション</li>
-        <li>右ペインでの文書メタデータ（frontmatter）編集</li>
-      </ul>
-
-      <h3>ブロック装飾（次回リリースの大型追加）</h3>
-      <p>段落やブロック単位のレイアウトを、Markdown 本文に残したまま編集・表示する機能です。ツールバーや右クリックメニューの<strong>ブロック装飾</strong>から操作できるようになる予定です。</p>
-      <ul class="feature-list">
-        <li><strong>align</strong> — 中央寄せ（<code>:::align-center</code>）、行末寄せ（<code>:::align-end</code>）</li>
-        <li><strong>indent</strong> — 段階的な字下げ（<code>:::indent-1</code> 〜 <code>:::indent-6</code>）</li>
-        <li><strong>page-break</strong> — 改ページ（<code>:::page-break</code>）、意図的な空白ページ（<code>:::blank-page</code>）</li>
-        <li><strong>style</strong> — 手紙風・控えめ・見出し風などの semantic style（<code>:::style-&lt;id&gt;</code>）</li>
-      </ul>
-      <p>外部書き出し（HTML、LeME、でんでん、青空文庫風など）への反映も開発版で進めています。</p>
-
-      <h3>Page Viewer（実装間近）</h3>
-      <p>改ページやページ区切りを踏まえて、本文をページ単位で閲覧する<strong>軽量ページビューア</strong>です。ブロック装飾とあわせて、執筆した見た目に近い形で原稿を読み返すための機能として追加する予定です。厳密にはまだ公開配布に含まれていませんが、実装を仕上げて次回リリースに間に合わせる見込みです。</p>
-
-      <h3>その他の開発中機能</h3>
-      <ul class="feature-list">
-        <li>擬似キャレット（表示設定から調整可能）</li>
-        <li>単独文書・Book 全体の HTML 書き出し</li>
-        <li>LeME 互換 Markdown、でんでん向け Markdown、青空文庫風テキストへの書き出し</li>
-        <li>改ページ・目次・作品情報などの書き出しオプション</li>
-      </ul>
-    </section>
-
-    <section aria-labelledby="platform-heading">
-      <h2 id="platform-heading">対応環境（公開 beta）</h2>
-      <ul class="feature-list">
-        <li>macOS（Apple Silicon / Intel）</li>
-        <li>Windows（Microsoft Store、GitHub Releases の zip）</li>
-      </ul>
-    </section>
-
-    <section id="screenshots" aria-labelledby="screenshots-heading">
-      <h2 id="screenshots-heading">スクリーンショット</h2>
-      <p>スクリーンショットは現在準備中です。</p>
-      <div class="screenshot-grid">
-        <figure class="screenshot-item">
-          <img src="/assets/placeholder.svg" alt="Nyoze のスクリーンショット（準備中）" width="800" height="500">
-          <figcaption>準備中</figcaption>
-        </figure>
+    <section class="nyoze-hero" aria-labelledby="hero-title">
+      <div class="nyoze-hero__top">
+        <div class="nyoze-hero__brand" aria-label="Nyoze">
+          <p class="nyoze-hero__brand-name" aria-hidden="true"><span>N</span><span>y</span><span>o</span><span>z</span><span>e</span></p>
+        </div>
+        <div class="nyoze-hero__copy">
+          <div class="nyoze-hero__statement">
+            <p class="nyoze-eyebrow">Vertical writing desktop editor</p>
+            <h1 id="hero-title">縦書きで書き、<br>作品として整える。</h1>
+          </div>
+          <div class="nyoze-hero__details">
+            <p class="nyoze-hero__lead">Nyoze は、小説やエッセイのための縦書き Markdown エディタです。見た目に近い画面で書きながら、原稿・資料・章を一つの作品として整理し、読む人へ届けるところまで支えます。</p>
+            <div class="nyoze-actions" aria-label="Nyoze のリンク">
+              <a class="nyoze-button nyoze-button--primary" href="https://github.com/cat-left-paw/nyoze/releases/tag/v0.3.0-beta.1" rel="noopener noreferrer">最新プレリリースをダウンロード</a>
+              <a class="nyoze-button nyoze-button--quiet" href="#workflow">使い方を見る</a>
+              <a class="nyoze-text-link" href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">GitHubを見る <span aria-hidden="true">→</span></a>
+            </div>
+            <p class="nyoze-platform-note"><strong>beta</strong><span aria-hidden="true">·</span> macOS（Apple Silicon / Intel）・Windows x64 <span aria-hidden="true">·</span> 最新機能は GitHub プレリリース版で利用できます</p>
+          </div>
+        </div>
       </div>
+
+      <!-- Screenshot: ../assets/nyoze-editor-vertical.png -->
+      <figure class="nyoze-shot nyoze-shot--hero" data-reveal>
+        <img class="nyoze-shot__image" src="../assets/nyoze-editor-vertical.png" alt="Nyozeの縦書き編集画面" width="3920" height="2332" fetchpriority="high" decoding="async">
+        <figcaption>縦書き編集画面</figcaption>
+      </figure>
+    </section>
+
+    <section class="nyoze-intro" id="features" aria-labelledby="features-title" data-reveal>
+      <p class="nyoze-eyebrow">A quiet workspace for writing</p>
+      <h2 id="features-title">書くことから、届けることまで。</h2>
+      <p>Markdown を知らなくても、まずはふだんの文書ソフトのように書き始められます。Nyoze は原稿をローカルのテキストファイルとして扱いながら、作品づくりに必要な管理と閲覧の道具を、静かにまとめます。</p>
+    </section>
+
+    <section class="nyoze-workflow" id="workflow" aria-labelledby="workflow-title">
+      <div class="nyoze-section-heading" data-reveal>
+        <p class="nyoze-eyebrow">Workflow</p>
+        <h2 id="workflow-title">書く、整理する、読む、届ける。</h2>
+      </div>
+
+      <article class="nyoze-flow-step nyoze-flow-step--write" data-reveal>
+        <div class="nyoze-flow-step__number" aria-hidden="true">01</div>
+        <div class="nyoze-flow-step__copy">
+          <p class="nyoze-flow-step__label">書く</p>
+          <h3>原稿の流れを、止めない。</h3>
+          <p>縦書き・横書きを切り替えながら、見た目に近いまま編集できます。ルビや縦中横、傍点も扱え、Typewriter scroll と Visual Focus が、いま書いている一行に意識を戻します。</p>
+          <p class="nyoze-detail">必要なときだけ、全文の Source Mode や段落ごとの Paragraph Plain で Markdown を確かめられます。</p>
+        </div>
+        <!-- Screenshot: ../assets/nyoze-editor-vertical02.png -->
+        <figure class="nyoze-shot nyoze-shot--writing">
+          <img class="nyoze-shot__image" src="../assets/nyoze-editor-vertical02.png" alt="暗色テーマの縦書き編集画面" width="4034" height="2332" loading="lazy" decoding="async">
+          <figcaption>縦書き編集画面</figcaption>
+        </figure>
+      </article>
+
+      <article class="nyoze-flow-step nyoze-flow-step--organize" data-reveal>
+        <div class="nyoze-flow-step__number" aria-hidden="true">02</div>
+        <div class="nyoze-flow-step__copy">
+          <p class="nyoze-flow-step__label">整理する</p>
+          <h3>複数の原稿と資料を、ひとつの作品として。</h3>
+          <p>書庫の中で作品を管理し、Book に章を並べ、Materials に資料を添えられます。Book 全体のアウトラインや前後の章への移動で、長い原稿でも全体のかたちを見失いません。</p>
+          <p class="nyoze-detail">本文の位置に紐づく付箋には、メモ、色、タグ、解決済みの状態を残せます。</p>
+        </div>
+        <!-- Screenshot: ../assets/nyoze-book-management03.png -->
+        <figure class="nyoze-shot nyoze-shot--management">
+          <img class="nyoze-shot__image" src="../assets/nyoze-book-management03.png" alt="作品内のBookと資料を管理する画面" width="3574" height="2438" loading="lazy" decoding="async">
+          <figcaption>作品・Book・Materials管理</figcaption>
+        </figure>
+      </article>
+
+      <article class="nyoze-flow-step nyoze-flow-step--read" data-reveal>
+        <div class="nyoze-flow-step__number" aria-hidden="true">03</div>
+        <div class="nyoze-flow-step__copy">
+          <p class="nyoze-flow-step__label">読む</p>
+          <h3>書いた原稿を、読者に近い形で読み返す。</h3>
+          <p>Page Viewer では、現在の文書や Book 全体をページ単位で閲覧できます。縦書き・横書きの読み心地を確かめながら、目次とアウトラインで章や見出しを行き来できます。</p>
+          <p class="nyoze-detail">改ページや空白ページ、余白、簡易表紙にも対応し、原稿のまとまりを落ち着いて見直せます。</p>
+        </div>
+        <!-- Screenshot: ../assets/nyoze-page-viewer02.png -->
+        <figure class="nyoze-shot nyoze-shot--viewer">
+          <img class="nyoze-shot__image" src="../assets/nyoze-page-viewer02.png" alt="縦書きでページ単位の閲覧ができるPage Viewer" width="1794" height="2362" loading="lazy" decoding="async">
+          <figcaption>Page Viewer</figcaption>
+        </figure>
+      </article>
+
+      <article class="nyoze-flow-step nyoze-flow-step--deliver" data-reveal>
+        <div class="nyoze-flow-step__number" aria-hidden="true">04</div>
+        <div class="nyoze-flow-step__copy">
+          <p class="nyoze-flow-step__label">届ける</p>
+          <h3>原稿を、Nyoze の中だけに閉じ込めない。</h3>
+          <p>Web Book では、現在の文書や Book 全体を、読書用の画面を備えた単一 HTML または Web 公開用パッケージとして出力できます。Chrome や Edge からの印刷・PDF 保存にも対応します。</p>
+          <p class="nyoze-detail">LeME向け Markdown、でんでんコンバーター向け Markdown、青空文庫風テキストにも書き出せます。</p>
+          <nav class="nyoze-sample-links" aria-label="Web Book サンプル">
+            <span class="nyoze-sample-links__label">Web Book を試し読み</span>
+            <a href="../assets/夢十夜-web-book.html" target="_blank" rel="noopener noreferrer">『夢十夜』 <span aria-hidden="true">↗</span></a>
+            <a href="../assets/こころ-web-book.html" target="_blank" rel="noopener noreferrer">『こころ』 <span aria-hidden="true">↗</span></a>
+          </nav>
+        </div>
+        <div class="nyoze-shot-stack">
+          <!-- Screenshot: ../assets/nyoze-web-book02.png -->
+          <figure class="nyoze-shot nyoze-shot--web-book">
+            <img class="nyoze-shot__image" src="../assets/nyoze-web-book02.png" alt="縦書きで読めるWeb Bookの画面" width="2080" height="2512" loading="lazy" decoding="async">
+            <figcaption>Web Book</figcaption>
+          </figure>
+          <!-- Screenshot: ../assets/nyoze-export-dialog.png -->
+          <figure class="nyoze-shot nyoze-shot--export">
+            <img class="nyoze-shot__image" src="../assets/nyoze-export-dialog.png" alt="Book全体を書き出すための設定ダイアログ" width="3586" height="2422" loading="lazy" decoding="async">
+            <figcaption>書き出しダイアログ</figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <aside class="nyoze-literary" aria-labelledby="literary-title" data-reveal>
+      <div>
+        <p class="nyoze-eyebrow">For Japanese literary writing</p>
+        <h2 id="literary-title">日本語の組版に、自然に寄り添う。</h2>
+      </div>
+      <p>ルビ、縦中横、傍点を編集画面で扱えます。縦書きでルビ直後の約物が不自然に次の列へ落ちにくくなる表示補正も備え、文芸の原稿に必要な細部を支えます。</p>
+    </aside>
+
+    <section class="nyoze-download" id="download" aria-labelledby="download-title">
+      <div class="nyoze-section-heading" data-reveal>
+        <p class="nyoze-eyebrow">Download</p>
+        <h2 id="download-title">どの版を使うか。</h2>
+        <p>どちらも beta 版です。新しい制作フローを試す場合は GitHub プレリリース版を、Microsoft Store 経由で導入したい場合は Store 版を選べます。</p>
+      </div>
+      <div class="nyoze-download-options">
+        <article class="nyoze-download-option nyoze-download-option--recommended" data-reveal>
+          <p class="nyoze-option-kicker">最新機能</p>
+          <h3>GitHub プレリリース</h3>
+          <p class="nyoze-version">0.3.0-beta.1</p>
+          <p>書庫、作品・Book・Materials、付箋、Page Viewer、Web Book、各種書き出しを利用できます。Windows x64 と macOS（Apple Silicon / Intel）向けの配布物を用意しています。</p>
+          <p class="nyoze-caution">プレリリース版のため、小さな不具合が残る可能性があります。大切な原稿や作品フォルダは、初回起動前にバックアップしてください。</p>
+          <a class="nyoze-button nyoze-button--primary" href="https://github.com/cat-left-paw/nyoze/releases/tag/v0.3.0-beta.1" rel="noopener noreferrer">GitHub Releases を開く</a>
+        </article>
+        <article class="nyoze-download-option" data-reveal data-reveal-delay="1">
+          <p class="nyoze-option-kicker">Store 経由</p>
+          <h3>Microsoft Store</h3>
+          <p class="nyoze-version">0.2.1-beta.1</p>
+          <p>Microsoft Store から導入したい Windows 利用者向けの、公開中の旧 beta 版です。今回の 0.3.0-beta.1 の新機能はまだ含まれていません。</p>
+          <a class="nyoze-button nyoze-button--quiet" href="https://apps.microsoft.com/detail/9N52TD18DBCR" rel="noopener noreferrer">Microsoft Store を開く</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="nyoze-support" aria-labelledby="support-title" data-reveal>
+      <div>
+        <p class="nyoze-eyebrow">Support &amp; documentation</p>
+        <h2 id="support-title">使い始めたあとも。</h2>
+        <p>導入方法、既知の制限、操作の詳細はドキュメントで確認できます。気づいたことは、バグ報告やフィードバックからお知らせください。</p>
+      </div>
+      <ul class="nyoze-support-links">
+        <li><a href="https://github.com/cat-left-paw/nyoze/blob/main/MANUAL.md" rel="noopener noreferrer">マニュアル <span aria-hidden="true">→</span></a></li>
+        <li><a href="https://github.com/cat-left-paw/nyoze/blob/main/RELEASE_NOTES.md" rel="noopener noreferrer">リリースノート <span aria-hidden="true">→</span></a></li>
+        <li><a href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">GitHub リポジトリ <span aria-hidden="true">→</span></a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScKH53jmuErA91Z19iO67AU5iet448XbqpRdaKb7Dj2mQW3jg/viewform?usp=dialog" rel="noopener noreferrer">フィードバックを送る <span aria-hidden="true">→</span></a></li>
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScBnYx3xCLDvjyApXNyWuzJmIk9N74r4s-zOz0xTmE3IGX2Ww/viewform?usp=publish-editor" rel="noopener noreferrer">バグを報告する <span aria-hidden="true">→</span></a></li>
+      </ul>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p><a href="/">トップに戻る</a> · &copy; Cat Left Paw / 猫乃 左手</p>
+  <footer class="nyoze-footer">
+    <div class="nyoze-footer__inner">
+      <p><strong>Nyoze</strong><span>by Cat Left Paw / Left Paw Studio</span></p>
+      <nav aria-label="フッターリンク">
+        <a href="/">Cat Left Paw</a>
+        <a href="https://github.com/cat-left-paw/nyoze/blob/main/LICENSE" rel="noopener noreferrer">ライセンス</a>
+        <a href="https://github.com/cat-left-paw/nyoze" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/cat-left-paw/nyoze/blob/main/PRIVACY.md" rel="noopener noreferrer">プライバシー</a>
+      </nav>
+    </div>
   </footer>
 </body>
 </html>

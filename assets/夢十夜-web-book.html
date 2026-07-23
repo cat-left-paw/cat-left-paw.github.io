@@ -1,0 +1,2983 @@
+<!doctype html>
+<html lang="ja" class="nyoze-web-book" data-nyoze-web-book="" data-writing-mode="vertical-rl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>夢十夜</title>
+<style>
+/* Web Book reader CSS — reader furniture / overlay chrome / screen columns; print is neutral. */
+:root {
+  /* 旧 16px 基準の 110% を、新しい reader の 100% 基準にする。 */
+  --wb-base-font-size: 17.6px;
+  --wb-font-scale: 1;
+  --wb-font-family-mincho: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Noto Serif CJK JP", "Noto Serif JP", serif;
+  --wb-font-family-gothic: "Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", "Noto Sans JP", sans-serif;
+  --wb-font-family: var(--wb-font-family-mincho);
+  --wb-bg: #ffffff;
+  --wb-fg: #1a1a1a;
+  --wb-heading: #1a1a1a;
+  --wb-muted: #555555;
+  --wb-canvas: #f2f0ea;
+  --wb-chrome-bg: #fafafa;
+  --wb-chrome-border: #dddddd;
+  --wb-chrome-fg: #1a1a1a;
+  --wb-outline-bg: #ffffff;
+  --wb-outline-shadow: rgba(0, 0, 0, 0.28);
+  --wb-accent: #2a5db0;
+  --wb-frame-width: 0px;
+  --wb-frame-height: 0px;
+  --wb-page-pitch: 0px;
+  --wb-column-width: 0px;
+  --wb-column-gap: 0px;
+  --wb-inline-padding: 0px;
+  --wb-page-inset-top: 32px;
+  --wb-page-inset-bottom: 16px;
+  --wb-page-inset-inline: 16px;
+  --wb-effective-page-inset-top: 48px;
+  --wb-effective-page-inset-bottom: 32px;
+  --wb-effective-page-inset-inline: 16px;
+  --wb-page-offset: 0px;
+}
+
+/* Classic = WB-R3B までの固定 Author / Original palette。 */
+body.nyoze-web-book-root[data-wb-theme="classic"],
+body.nyoze-web-book-root:not([data-wb-theme]) {
+  --wb-bg: #fffef8;
+  --wb-fg: #1a1a1a;
+  --wb-heading: #1a1a1a;
+  --wb-muted: #5a5a5a;
+  --wb-canvas: #efe9dc;
+  --wb-chrome-bg: #f7f4ec;
+  --wb-chrome-border: #d8d0c0;
+  --wb-chrome-fg: #1a1a1a;
+  --wb-outline-bg: #fffef8;
+  --wb-accent: #6b4f2a;
+}
+body.nyoze-web-book-root[data-wb-theme="light"] {
+  --wb-bg: #ffffff;
+  --wb-fg: #1a1a1a;
+  --wb-heading: #1a1a1a;
+  --wb-muted: #555555;
+  --wb-canvas: #ececee;
+  --wb-chrome-bg: #fafafa;
+  --wb-chrome-border: #dddddd;
+  --wb-chrome-fg: #1a1a1a;
+  --wb-outline-bg: #ffffff;
+  --wb-accent: #2a5db0;
+}
+body.nyoze-web-book-root[data-wb-theme="dark"] {
+  --wb-bg: #1b1b1f;
+  --wb-fg: #ececf1;
+  --wb-heading: #ececf1;
+  --wb-muted: #b0b0bc;
+  --wb-canvas: #121216;
+  --wb-chrome-bg: #25252c;
+  --wb-chrome-border: #3a3a44;
+  --wb-chrome-fg: #ececf1;
+  --wb-outline-bg: #222228;
+  --wb-outline-shadow: rgba(0, 0, 0, 0.55);
+  --wb-accent: #8ab4ff;
+}
+body.nyoze-web-book-root[data-wb-theme="paper"] {
+  --wb-bg: #f3e7d3;
+  --wb-fg: #2c2418;
+  --wb-heading: #2c2418;
+  --wb-muted: #6a5a44;
+  --wb-canvas: #e3d4b8;
+  --wb-chrome-bg: #ecdfc8;
+  --wb-chrome-border: #cbb99a;
+  --wb-chrome-fg: #2c2418;
+  --wb-outline-bg: #f7ecda;
+  --wb-accent: #8a5a2b;
+}
+
+html, body { margin: 0; }
+body.nyoze-web-book-root {
+  box-sizing: border-box;
+  writing-mode: horizontal-tb;
+  background: var(--wb-bg);
+  color: var(--wb-fg);
+  font-family: var(--wb-font-family);
+  font-size: calc(var(--wb-base-font-size) * var(--wb-font-scale));
+  line-height: 1.9;
+}
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-viewport,
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow {
+  writing-mode: vertical-rl;
+}
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-viewport,
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow {
+  writing-mode: horizontal-tb;
+}
+
+/* ============================================================
+   Compact overlay chrome — fixed / no layout reservation.
+   Auto-hide is opacity + visibility + pointer-events only, so a
+   hidden chrome never blocks the reading surface underneath.
+   ============================================================ */
+.nyoze-web-book-chrome {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  /* fixed + left:50% の shrink-to-fit は viewport 半分に縮むため max-content を明示する。 */
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  box-sizing: border-box;
+  padding: 3px 6px;
+  writing-mode: horizontal-tb;
+  direction: ltr;
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  font-size: 12.5px;
+  color: var(--wb-chrome-fg);
+  background: var(--wb-chrome-bg);
+  background: color-mix(in srgb, var(--wb-chrome-bg) 84%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--wb-chrome-border) 80%, transparent);
+  border-radius: 999px;
+  box-shadow: 0 2px 10px color-mix(in srgb, var(--wb-outline-shadow) 30%, transparent);
+  transition: opacity 0.25s ease, visibility 0s linear 0s;
+}
+.nyoze-web-book-chrome__nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.nyoze-web-book-chrome__status {
+  min-width: 3.2em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--wb-muted);
+}
+.nyoze-web-book-chrome__divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 5px 5px;
+  background: color-mix(in srgb, var(--wb-chrome-border) 90%, transparent);
+}
+.nyoze-web-book-chrome button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--wb-chrome-fg);
+  border-radius: 999px;
+  padding: 0.32rem 0.72rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+.nyoze-web-book-chrome button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--wb-fg) 8%, transparent);
+}
+.nyoze-web-book-chrome button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--wb-fg) 14%, transparent);
+}
+.nyoze-web-book-chrome button:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
+.nyoze-web-book-chrome button[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--wb-accent) 16%, transparent);
+}
+.nyoze-web-book-chrome button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+body.nyoze-web-book-chrome-hidden .nyoze-web-book-chrome {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+
+/* ============================================================
+   Reader Settings popover — session-only controls.
+   Fixed overlay: opening never reflows the pagination viewport.
+   ============================================================ */
+.nyoze-web-book-settings {
+  position: fixed;
+  top: 54px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  box-sizing: border-box;
+  width: min(19.5rem, calc(100vw - 24px));
+  max-height: calc(100dvh - 66px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.55rem 0.8rem 0.7rem;
+  writing-mode: horizontal-tb;
+  direction: ltr;
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  font-size: 12.5px;
+  color: var(--wb-chrome-fg);
+  background: var(--wb-chrome-bg);
+  border: 1px solid var(--wb-chrome-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 34px color-mix(in srgb, var(--wb-outline-shadow) 70%, transparent);
+  animation: wb-pop-in 0.14s ease-out;
+}
+.nyoze-web-book-settings[hidden] { display: none !important; }
+.nyoze-web-book-settings:focus { outline: none; }
+.nyoze-web-book-settings__section {
+  min-width: 0;
+  margin: 0;
+  padding: 0.2rem 0 0.35rem;
+  border: 0;
+}
+.nyoze-web-book-settings__section + .nyoze-web-book-settings__section {
+  border-top: 1px solid color-mix(in srgb, var(--wb-chrome-border) 55%, transparent);
+}
+.nyoze-web-book-settings__section legend {
+  padding: 0;
+  color: var(--wb-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.nyoze-web-book-settings__hint {
+  display: block;
+  margin: 0.05rem 0 0.2rem;
+  color: var(--wb-muted);
+  font-size: 0.72rem;
+}
+.nyoze-web-book-settings__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.1rem;
+  padding: 0.15rem 0;
+}
+.nyoze-web-book-settings__label {
+  color: var(--wb-muted);
+  flex: 0 0 auto;
+}
+.nyoze-web-book-settings__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.nyoze-web-book-settings__value {
+  min-width: 3.2em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.nyoze-web-book-settings__segmented {
+  display: inline-flex;
+  border: 1px solid var(--wb-chrome-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.nyoze-web-book-settings__segmented button {
+  border: none;
+  border-radius: 0;
+}
+.nyoze-web-book-settings__segmented button + button {
+  border-left: 1px solid color-mix(in srgb, var(--wb-chrome-border) 70%, transparent);
+}
+.nyoze-web-book-settings button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--wb-chrome-border);
+  background: transparent;
+  color: var(--wb-chrome-fg);
+  border-radius: 7px;
+  padding: 0.3rem 0.65rem;
+  line-height: 1.3;
+  transition: background-color 0.15s ease;
+}
+.nyoze-web-book-settings button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--wb-fg) 7%, transparent);
+}
+.nyoze-web-book-settings button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--wb-fg) 13%, transparent);
+}
+.nyoze-web-book-settings button:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
+.nyoze-web-book-settings button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.nyoze-web-book-settings button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--wb-accent) 15%, transparent);
+  color: var(--wb-chrome-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wb-accent) 55%, transparent);
+}
+.nyoze-web-book-settings select {
+  font: inherit;
+  color: var(--wb-chrome-fg);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-chrome-border);
+  border-radius: 7px;
+  padding: 0.28rem 0.4rem;
+  max-width: 11rem;
+}
+.nyoze-web-book-settings select:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
+.nyoze-web-book-settings input[type="range"] {
+  width: 7rem;
+  accent-color: var(--wb-accent);
+}
+.nyoze-web-book-settings input[type="range"]:disabled {
+  opacity: 0.38;
+}
+.nyoze-web-book-settings input[type="range"]:focus-visible {
+  outline: 2px solid var(--wb-accent);
+  outline-offset: 1px;
+}
+.nyoze-web-book-settings__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid color-mix(in srgb, var(--wb-chrome-border) 55%, transparent);
+}
+
+/* Shared backdrop for the Outline drawer. */
+.nyoze-web-book-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 38;
+  background: color-mix(in srgb, #000000 30%, transparent);
+  animation: wb-fade-in 0.16s ease-out;
+}
+.nyoze-web-book-backdrop[hidden] { display: none !important; }
+
+@keyframes wb-pop-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes wb-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes wb-drawer-in {
+  from { opacity: 0.5; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.nyoze-web-book-root,
+  .nyoze-web-book-chrome,
+  .nyoze-web-book-chrome button,
+  .nyoze-web-book-settings,
+  .nyoze-web-book-settings button,
+  .nyoze-web-book-backdrop,
+  .nyoze-web-book-outline {
+    transition: none !important;
+    animation: none !important;
+  }
+  /* WB-R5: reduced motion では方式にかかわらず実効遷移 none（script 側の
+     matchMedia gate が正、この宣言は CSS 側の安全網）。 */
+  .nyoze-web-book-viewport.is-wb-transition-fade-out,
+  .nyoze-web-book-viewport.is-wb-transition-fade-in,
+  .nyoze-web-book-viewport.is-wb-transition-zoom,
+  .nyoze-web-book-transition-mask.is-wb-transition-slide,
+  .nyoze-web-book-transition-overlay.is-wb-transition-slide {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   Outline — physical right drawer over a backdrop.
+   Overlay only: never shrinks the pagination viewport.
+   ============================================================ */
+.nyoze-web-book-outline {
+  writing-mode: horizontal-tb;
+  direction: ltr;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  width: min(19rem, 86vw);
+  z-index: 40;
+  box-sizing: border-box;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 0.85rem 1.25rem;
+  background: var(--wb-outline-bg);
+  background: color-mix(in srgb, var(--wb-outline-bg) 94%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--wb-fg);
+  border-left: 1px solid var(--wb-chrome-border);
+  box-shadow: -6px 0 26px var(--wb-outline-shadow);
+  font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  font-size: 13.5px;
+  line-height: 1.45;
+  animation: wb-drawer-in 0.18s ease-out;
+}
+.nyoze-web-book-outline[hidden] {
+  display: none !important;
+}
+.nyoze-web-book-outline:focus { outline: none; }
+.nyoze-web-book-outline__title {
+  margin: 0 0 0.65rem;
+  padding: 0 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--wb-muted);
+}
+.nyoze-web-book-outline__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nyoze-web-book-outline__chapter {
+  margin: 0.75rem 0 0.25rem;
+  padding: 0;
+  font-weight: 600;
+  color: var(--wb-muted);
+}
+.nyoze-web-book-outline__chapter button {
+  display: block;
+  width: 100%;
+  text-align: start;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.45rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.nyoze-web-book-outline__chapter button:hover,
+.nyoze-web-book-outline__chapter button:focus-visible {
+  background: color-mix(in srgb, var(--wb-accent) 14%, transparent);
+  outline: none;
+}
+.nyoze-web-book-outline__chapter button:active {
+  background: color-mix(in srgb, var(--wb-accent) 22%, transparent);
+}
+.nyoze-web-book-outline__item {
+  margin: 0;
+}
+.nyoze-web-book-outline__item button {
+  display: block;
+  width: 100%;
+  text-align: start;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.45rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.nyoze-web-book-outline__item button:hover,
+.nyoze-web-book-outline__item button:focus-visible {
+  background: color-mix(in srgb, var(--wb-accent) 14%, transparent);
+  outline: none;
+}
+.nyoze-web-book-outline__item button:active {
+  background: color-mix(in srgb, var(--wb-accent) 22%, transparent);
+}
+.nyoze-web-book-outline__level-1 { padding-inline-start: 0; }
+.nyoze-web-book-outline__level-2 { padding-inline-start: 0.75rem; }
+.nyoze-web-book-outline__level-3 { padding-inline-start: 1.5rem; }
+.nyoze-web-book-outline__level-4 { padding-inline-start: 2.25rem; }
+.nyoze-web-book-outline__level-5 { padding-inline-start: 3rem; }
+.nyoze-web-book-outline__level-6 { padding-inline-start: 3.75rem; }
+
+.nyoze-web-book-flow {
+  direction: ltr;
+  box-sizing: border-box;
+  font-family: var(--wb-font-family);
+  color: var(--wb-fg);
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hanging-punctuation: first allow-end;
+  text-wrap: pretty;
+}
+.nyoze-web-book-flow p { margin: 0; }
+/* Chromium inline 境界折り返し補正（HTML export / Editor / Page Viewer と同意図）。
+   段落末が全角閉じ括弧で、手前に ruby / strong / link / TCY 等の inline 境界があるとき、
+   Chromium は行末で境界まで折り返し位置を巻き戻すことがある
+   （docs/vertical-inline-boundary-line-break-investigation.md）。
+   CSS generated content の U+200B のみで回避し、semantic HTML / textContent /
+   Markdown / reader script には混入させない。空 alternative text で SR 非露出。
+   対象は通常 paragraph のみ（見出し / TOC / chrome / code は対象外）。
+   静的 HTML のため writing-mode を問わず適用し、screen / print で共有する。 */
+.nyoze-web-book-flow p::after {
+  content: "\200B" / "";
+}
+/* 空段落（<br> のみ）は閉じ括弧問題が起きないため補正対象外。 */
+.nyoze-web-book-flow p:has(> br:only-child)::after {
+  content: none;
+}
+/* WB-R8: 本文見出し appearance（Display Settings snapshot）。
+   文書タイトル / 章タイトル / TOC 見出しは対象外。色は既存 --wb-heading。 */
+.nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+.nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+.nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+.nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+.nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+.nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  margin: 1.25em 0 0;
+  margin-block-end: var(--wb-heading-margin-after, 0.45em);
+  line-height: 1.4;
+  font-family: var(--wb-font-family);
+  color: var(--wb-heading);
+  border-block-end-style: solid;
+  border-block-end-width: 0;
+  border-block-end-color: color-mix(in srgb, var(--wb-heading) 34%, var(--wb-bg) 66%);
+}
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  text-align: var(--wb-heading-align-h, start);
+}
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  text-align: var(--wb-heading-align-v, start);
+}
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  font-family: var(--wb-font-family-mincho);
+}
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  font-family: var(--wb-font-family-gothic);
+}
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title),
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  font-family: var(--wb-font-family);
+}
+.nyoze-web-book-flow h1:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h1, 0) * 1px);
+}
+.nyoze-web-book-flow h2:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h2, 0) * 1px);
+}
+.nyoze-web-book-flow h3:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h3, 0) * 1px);
+}
+.nyoze-web-book-flow h4:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h4, 0) * 1px);
+}
+.nyoze-web-book-flow h5:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h5, 0) * 1px);
+}
+.nyoze-web-book-flow h6:not(.nyoze-document-title):not(.nyoze-chapter-title):not(.nyoze-toc-title) {
+  border-block-end-width: calc(var(--wb-heading-divider-h6, 0) * 1px);
+}
+/* WB-R8: synthetic タイトルは本文見出し appearance の対象外。色だけ theme に合わせる。 */
+.nyoze-web-book-flow .nyoze-document-title,
+.nyoze-web-book-flow .nyoze-chapter-title {
+  margin: 0 0 0.25em;
+  line-height: 1.4;
+  font-family: inherit;
+  color: var(--wb-heading);
+  text-align: start;
+  border-block-end: none;
+}
+/* WB-R15: 章ファイル情報タイトルは H1 相当（2em / bold）。本文見出し appearance は非適用。 */
+.nyoze-web-book-flow .nyoze-chapter-title {
+  margin-block-end: 0.2em;
+  font-size: 2em;
+  font-weight: bold;
+}
+/* WB-R15: 章先頭ナビ専用 root。geometry / pageCount を変えない。 */
+.nyoze-web-book-flow .nyoze-chapter-root {
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  font-size: 0;
+  line-height: 0;
+}
+/* リンクはブラウザ既定色ではなく theme の accent（Dark で判読できるように）。 */
+.nyoze-web-book-flow a {
+  color: var(--wb-accent);
+  text-underline-offset: 3px;
+}
+.nyoze-web-book-flow ruby { ruby-position: over; }
+.nyoze-web-book-flow rt { font-size: 0.55em; }
+.nyoze-web-book-flow code, .nyoze-web-book-flow pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-align: start;
+}
+.nyoze-web-book-flow .nyoze-align-center { text-align: center; }
+.nyoze-web-book-flow .nyoze-align-end { text-align: end; }
+/* WB-R10: :::indent-N — エディタと同じ logical padding-inline-start、step 1.4em。
+   既存の inline --nyoze-indent-level を使う。縦書きでは上側、横書きでは左側。 */
+.nyoze-web-book-flow .nyoze-indent {
+  padding-inline-start: calc(1.4em * var(--nyoze-indent-level, 1));
+}
+/* WB-R10: 組み込み :::style-*（letter / muted / heading）。theme token で Classic〜Paper
+   + Author と print 中立 palette に追従。未知 style 用ルールは追加しない（本文相当）。
+   .nyoze-style-heading は本文見出しの WB-R8 snapshot / Reader 見出し書体の対象外。 */
+.nyoze-web-book-flow .nyoze-style-letter {
+  padding-block: 0.3em;
+  padding-inline: 0.6em;
+  color: var(--wb-muted);
+  line-height: 1.9;
+}
+.nyoze-web-book-flow .nyoze-style-muted {
+  color: var(--wb-muted);
+  font-size: 0.92em;
+}
+.nyoze-web-book-flow .nyoze-style-heading {
+  color: var(--wb-heading);
+  font-size: 1.15em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+/* WB-R10: task list — native marker を消し、checkbox と先頭段落を同じ line box へ
+   （先頭 p を inline 化）。物理 margin の片側合わせではなく logical な inline flow。
+   2 段落目以降 / nested list は従来どおり block。text-align: start は下記の
+   justify 除外セレクタと共有。 */
+.nyoze-web-book-flow li.nyoze-task-item {
+  list-style: none;
+}
+.nyoze-web-book-flow li.nyoze-task-item > input[type="checkbox"] {
+  margin-inline-end: 0.35em;
+}
+.nyoze-web-book-flow li.nyoze-task-item > input[type="checkbox"] + p {
+  display: inline;
+}
+.nyoze-web-book-flow .nyoze-toc,
+.nyoze-web-book-flow .nyoze-document-info,
+.nyoze-web-book-flow .nyoze-chapter-info,
+.nyoze-web-book-flow li.nyoze-task-item { text-align: start; }
+/* WB-R7: 著者/訳者行は地付き（logical end）。info 全体の start と flow justify より
+   class 2つの specificity で勝つ。 */
+.nyoze-web-book-flow .nyoze-document-credit,
+.nyoze-web-book-flow .nyoze-chapter-credit { text-align: end; }
+/* WB-R7: 文書情報 / 章ファイル情報の後余白（約3行。line-height 1.9 × 3）。
+   直後が TOC でも同じ 3 行。独立ページ化（nyoze-break-after-page）時は 0。 */
+.nyoze-web-book-flow .nyoze-document-info,
+.nyoze-web-book-flow .nyoze-chapter-info { margin-block-end: 5.7em; }
+.nyoze-web-book-flow .nyoze-document-info.nyoze-break-after-page,
+.nyoze-web-book-flow .nyoze-chapter-info.nyoze-break-after-page { margin-block-end: 0; }
+/* WB-R9: 簡易表紙（title page）。Tategaki 書籍モードの frontmatter 独立ページに
+   揃えた normal / center の 2 レイアウト。section は 1 ページ相当の slot、内側の
+   .nyoze-document-info-group がレイアウト container 兼 書字方向 override の対象で、
+   その中に「タイトル群」「著者・訳者群」を別 group として持つ（空 group は出力されない）。
+   group の書字方向 override は group 自身にだけ効き、本文 / TOC / chrome は変えない。
+   chapterInfo にはこの variant を出さない（semantic serializer 側の契約）。 */
+.nyoze-web-book-flow .nyoze-document-info--title-page {
+  box-sizing: border-box;
+  margin: 0;
+}
+.nyoze-web-book-flow .nyoze-document-info-group {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 0;
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-writing-mode="vertical-rl"] .nyoze-document-info-group { writing-mode: vertical-rl; }
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-writing-mode="horizontal-tb"] .nyoze-document-info-group { writing-mode: horizontal-tb; }
+/* title / credit の各 group は page slot 内に収める。長いタイトルは通常の日本語改行に
+   加え overflow-wrap: anywhere で連続文字列も折り返す（overflow: hidden の切り捨ては
+   使わない）。 */
+.nyoze-web-book-flow .nyoze-document-info-title-group,
+.nyoze-web-book-flow .nyoze-document-info-credit-group {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 0;
+  max-inline-size: 100%;
+  max-block-size: 100%;
+  overflow-wrap: anywhere;
+}
+/* normal レイアウト（Tategaki 通常）: タイトル群は開始側（上付き）、著者・訳者群は
+   地付き（text-align: end。縦書きでは下、横書きでは終了側）。 */
+.nyoze-web-book-flow .nyoze-document-info-title-group { margin-block-end: 1em; }
+.nyoze-web-book-flow .nyoze-document-info-credit-group { text-align: end; }
+/* center レイアウト（Tategaki 中央）: 実効書字方向（group 自身の書字方向）で判定する。
+   実効 horizontal: 単一の中央グループ（flex column + 両軸 center + text-align center）。 */
+body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"][data-nyoze-title-page-writing-mode="inherit"] .nyoze-document-info-group,
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"][data-nyoze-title-page-writing-mode="horizontal-tb"] .nyoze-document-info-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* 実効 vertical: Tategaki と同じく flex-direction: row + justify-content: space-between
+   （主軸 = inline = 上→下: タイトル上付き / 著者・訳者下付き）+ 交差軸 center
+   （physical horizontal center）。 */
+body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"][data-nyoze-title-page-writing-mode="inherit"] .nyoze-document-info-group,
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"][data-nyoze-title-page-writing-mode="vertical-rl"] .nyoze-document-info-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+/* center: title / credit の text-align も center。normal の start / end を上書きする。 */
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-info-title-group,
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-info-credit-group {
+  text-align: center;
+  margin-block-end: 0;
+}
+/* center: 長いタイトルで credit 群が flex-shrink に潰されて page 外へあふれないよう、
+   縮むのはタイトル群側にする（縦書きではタイトルの inline-size 縮小が自然な再折返しになる）。 */
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-info-credit-group {
+  flex-shrink: 0;
+}
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-title,
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-credit {
+  text-align: center;
+}
+/* center: タイトルのみ / credit のみの場合は、単独 group を自然に中央へ
+   （space-between の主軸開始寄せを auto margin が吸収する）。 */
+.nyoze-web-book-flow .nyoze-document-info--title-page[data-nyoze-title-page-layout="center"] .nyoze-document-info-group > div:only-child {
+  margin: auto;
+}
+/* 表紙タイトル typography: Tategaki と同じ 2em 基準 + bold。ただし本文 h1（2em）より
+   明確に大きくするため 2.4em。色は theme の見出し色ではなく必ず本文色（--wb-fg）。
+   本文見出しの alignment / divider / margin-after は .nyoze-document-title 除外で
+   引き続き漏れない。 */
+.nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-title {
+  font-size: 2.4em;
+  font-weight: bold;
+  margin: 0;
+  color: var(--wb-fg);
+}
+.nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-credit {
+  color: var(--wb-fg);
+}
+/* 表紙 title / credit は Reader の見出し書体切替（見出し書体意味論）へ追従する。 */
+body.nyoze-web-book-root[data-wb-heading-font="mincho"] .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group { font-family: var(--wb-font-family-mincho); }
+body.nyoze-web-book-root[data-wb-heading-font="gothic"] .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group { font-family: var(--wb-font-family-gothic); }
+body.nyoze-web-book-root[data-wb-heading-font="same-as-body"] .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group { font-family: var(--wb-font-family); }
+/* WB-R7 / WB-R8: 目次は通し番号なし + H1〜H6 の階層字下げ（flat list + level class）。
+   nested ol は作らない。論理 padding-inline-start のみ。
+   「目次」見出しは専用 class `.nyoze-toc-title` で固定見た目（本文見出し appearance 非適用）。
+   2文字分字下げ + 直後に約1行分の空行（margin-block-end: 1.9em）。 */
+.nyoze-web-book-flow .nyoze-toc-title {
+  margin: 0;
+  margin-block-end: 1.9em;
+  padding-inline-start: 2em;
+  font-size: 1.17em;
+  line-height: 1.9;
+  font-weight: bold;
+  font-family: inherit;
+  color: var(--wb-heading);
+  text-align: start;
+  border-block-end: none;
+}
+.nyoze-web-book-flow .nyoze-toc ol {
+  margin: 0;
+  padding-inline-start: 1em;
+  list-style: none;
+}
+.nyoze-web-book-flow .nyoze-toc-level-1 { padding-inline-start: 0; }
+.nyoze-web-book-flow .nyoze-toc-level-2 { padding-inline-start: 1em; }
+.nyoze-web-book-flow .nyoze-toc-level-3 { padding-inline-start: 2em; }
+.nyoze-web-book-flow .nyoze-toc-level-4 { padding-inline-start: 3em; }
+.nyoze-web-book-flow .nyoze-toc-level-5 { padding-inline-start: 4em; }
+.nyoze-web-book-flow .nyoze-toc-level-6 { padding-inline-start: 5em; }
+.nyoze-tcy { text-combine-upright: all; -webkit-text-combine: horizontal; }
+body[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-auto-tcy {
+  text-combine-upright: all;
+  -webkit-text-combine: horizontal;
+}
+@media screen {
+  html, body { height: 100%; }
+  body.nyoze-web-book-root {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.2s ease;
+  }
+  .nyoze-web-book-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .nyoze-web-book-paper-frame {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  /* 用紙枠 ON: 紙面の外側に画面の地色を見せる（左右余白は16px以上を保つ）。 */
+  body.nyoze-web-book-root[data-wb-paper-frame="on"] {
+    background: var(--wb-canvas);
+  }
+  body.nyoze-web-book-root[data-wb-paper-frame="on"] .nyoze-web-book-paper-frame {
+    margin: 16px 24px 20px;
+    background: var(--wb-bg);
+    border: 1px solid var(--wb-chrome-border);
+    border-radius: 3px;
+    box-shadow: 0 4px 18px color-mix(in srgb, var(--wb-outline-shadow) 38%, transparent);
+  }
+  body.nyoze-web-book-root[data-wb-paper-frame="off"] .nyoze-web-book-paper-frame {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .nyoze-web-book-viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    background: var(--wb-bg);
+    color: var(--wb-fg);
+    /* WB-R13: let the browser keep vertical pan / pinch zoom native; only
+       horizontal gesture handling is ours (reader script calls
+       preventDefault() on a committed horizontal swipe, not globally).
+       pan-y alone drops pinch-zoom — pinch-zoom must be listed explicitly. */
+    touch-action: pan-y pinch-zoom;
+  }
+  /* screen reader furniture は physical inset 内だけに置く absolute overlay。
+     表示状態や内容を変えても viewport / pagination geometry を変えない。 */
+  .nyoze-web-book-reader-header,
+  .nyoze-web-book-reader-footer {
+    display: none;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+    writing-mode: horizontal-tb;
+    direction: ltr;
+    font-family: -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    font-size: 11px;
+    line-height: 14px;
+    color: var(--wb-muted);
+  }
+  body.nyoze-web-book-root[data-wb-header-enabled="on"] .nyoze-web-book-reader-header {
+    display: flex;
+    top: 1px;
+    padding: 0 16px;
+  }
+  body.nyoze-web-book-root[data-wb-footer-enabled="on"] .nyoze-web-book-reader-footer {
+    display: flex;
+    bottom: 1px;
+    padding: 0 16px;
+    font-variant-numeric: tabular-nums;
+  }
+  body.nyoze-web-book-root[data-wb-header-align="left"] .nyoze-web-book-reader-header,
+  body.nyoze-web-book-root[data-wb-footer-align="left"] .nyoze-web-book-reader-footer { justify-content: flex-start; }
+  body.nyoze-web-book-root[data-wb-header-align="center"] .nyoze-web-book-reader-header,
+  body.nyoze-web-book-root[data-wb-footer-align="center"] .nyoze-web-book-reader-footer { justify-content: center; }
+  body.nyoze-web-book-root[data-wb-header-align="right"] .nyoze-web-book-reader-header,
+  body.nyoze-web-book-root[data-wb-footer-align="right"] .nyoze-web-book-reader-footer { justify-content: flex-end; }
+  .nyoze-web-book-reader-header__content {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .nyoze-web-book-reader-header__title,
+  .nyoze-web-book-reader-header__author,
+  .nyoze-web-book-reader-header__separator { display: none; }
+  body.nyoze-web-book-root[data-wb-header-show-title="on"] .nyoze-web-book-reader-header__title,
+  body.nyoze-web-book-root[data-wb-header-show-author="on"] .nyoze-web-book-reader-header__author { display: inline; }
+  body.nyoze-web-book-root[data-wb-header-show-title="on"][data-wb-header-show-author="on"] .nyoze-web-book-reader-header[data-wb-has-title="true"][data-wb-has-author="true"] .nyoze-web-book-reader-header__separator { display: inline; margin: 0 0.45em; }
+  .nyoze-web-book-flow {
+    column-fill: auto;
+    column-gap: var(--wb-column-gap);
+    column-width: var(--wb-column-width);
+    width: var(--wb-frame-width);
+    height: var(--wb-frame-height);
+    max-width: var(--wb-frame-width);
+    max-height: var(--wb-frame-height);
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow {
+    padding-top: var(--wb-effective-page-inset-top);
+    padding-bottom: var(--wb-effective-page-inset-bottom);
+    padding-left: var(--wb-effective-page-inset-inline);
+    padding-right: var(--wb-effective-page-inset-inline);
+    transform: translateY(var(--wb-page-offset));
+    text-align: justify;
+    text-align-last: auto;
+    text-justify: inter-character;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow {
+    padding-top: var(--wb-effective-page-inset-top);
+    padding-bottom: var(--wb-effective-page-inset-bottom);
+    padding-left: var(--wb-effective-page-inset-inline);
+    padding-right: var(--wb-effective-page-inset-inline);
+    transform: translateX(var(--wb-page-offset));
+  }
+  /* WB-R11: screen の画像は logical axis へ読み替えず、既存 frame と実効 physical inset から
+     導く本文矩形へ内接させる。intrinsic size を基準に auto のまま縮小だけを許可するため、
+     小さい画像を拡大せず、縦横比も歪めない。 */
+  .nyoze-web-book-flow img {
+    width: auto;
+    height: auto;
+    max-width: calc(var(--wb-frame-width) - var(--wb-effective-page-inset-inline) - var(--wb-effective-page-inset-inline));
+    max-height: calc(var(--wb-frame-height) - var(--wb-effective-page-inset-top) - var(--wb-effective-page-inset-bottom));
+    object-fit: contain;
+  }
+  /* 画像だけの段落は一つの column（logical page）に残す。inline image は paragraph の
+     意味論と inline layout を維持し、この selector の対象にしない。 */
+  .nyoze-web-book-flow p:has(> img:only-child) {
+    break-inside: avoid-column;
+  }
+  .nyoze-web-book-flow p:has(> img:only-child)::after {
+    content: none;
+  }
+  .nyoze-break-before-page { break-before: column; }
+  /* WB-R7: TOC 直後・文書情報独立ページは次の reader column へ。 */
+  .nyoze-web-book-flow .nyoze-toc,
+  .nyoze-web-book-flow .nyoze-break-after-page { break-after: column; }
+  /* WB-R9: title page は blank-page slot と同じく 1 column = 1 logical page を
+     ちょうど満たす（sizing は screen 専用 custom property だけを読む）。
+     layout container の group は slot を物理サイズで満たし、直交 flow でも
+     auto inline-size に依存しない。 */
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow .nyoze-document-info--title-page {
+    height: var(--wb-column-width);
+    width: 100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow .nyoze-document-info--title-page {
+    width: var(--wb-column-width);
+    height: 100%;
+  }
+  .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group {
+    width: 100%;
+    height: 100%;
+  }
+  .nyoze-web-book-flow .nyoze-blank-page[data-nyoze-web-book-blank-page] {
+    break-before: column;
+    break-after: column;
+    box-sizing: border-box;
+    margin: 0;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow .nyoze-blank-page[data-nyoze-web-book-blank-page] {
+    height: var(--wb-column-width);
+    width: 100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow .nyoze-blank-page[data-nyoze-web-book-blank-page] {
+    width: var(--wb-column-width);
+    height: 100%;
+  }
+
+  /* ============================================================
+     WB-R5 page transition — ornament only. Never changes pageIndex,
+     cached metrics, or the canonical flow transform. Duration is
+     snapshotted per run into inline --wb-transition-duration, so a
+     speed change never restarts a running animation.
+     ============================================================ */
+  .nyoze-web-book-transition-mask,
+  .nyoze-web-book-transition-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    writing-mode: horizontal-tb;
+    direction: ltr;
+  }
+  /* opaque paper-color mask: covers the whole reading viewport. */
+  .nyoze-web-book-transition-mask { background: var(--wb-bg); }
+  @keyframes wb-transition-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes wb-transition-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes wb-transition-zoom {
+    from { opacity: 0.35; transform: scale(0.985); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes wb-transition-slide-layer {
+    from { transform: translateX(0%); }
+    to { transform: translateX(var(--wb-transition-slide-exit-x, 0%)); }
+  }
+  /* forwards は fade-out 完了後の opacity 0 handoff（ちらつき防止）用。
+     class の除去は script の fade-in 開始 / cancel / cleanup 側の責務。 */
+  .nyoze-web-book-viewport.is-wb-transition-fade-out {
+    animation: wb-transition-fade-out var(--wb-transition-duration, 225ms) ease-in forwards;
+  }
+  .nyoze-web-book-viewport.is-wb-transition-fade-in {
+    animation: wb-transition-fade-in var(--wb-transition-duration, 275ms) ease-out;
+  }
+  .nyoze-web-book-viewport.is-wb-transition-zoom {
+    transform-origin: 50% 50%;
+    animation: wb-transition-zoom var(--wb-transition-duration, 500ms) ease-out;
+  }
+  .nyoze-web-book-transition-mask.is-wb-transition-slide {
+    opacity: 1;
+    animation: wb-transition-slide-layer var(--wb-transition-duration, 500ms) ease-out forwards;
+  }
+  .nyoze-web-book-transition-overlay.is-wb-transition-slide {
+    opacity: 1;
+    background: linear-gradient(to right, transparent, color-mix(in srgb, var(--wb-fg) 16%, transparent) 45%, transparent 85%);
+    animation: wb-transition-slide-layer var(--wb-transition-duration, 500ms) ease-out forwards;
+  }
+  /* slide 方向表（物理 x 軸のみ）:
+     | 書字方向 | next | previous |
+     | vertical-rl | 左 → 右 | 右 → 左 |
+     | horizontal-tb | 右 → 左 | 左 → 右 | */
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .is-wb-transition-slide[data-wb-transition-direction="next"] {
+    --wb-transition-slide-exit-x: 100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .is-wb-transition-slide[data-wb-transition-direction="previous"] {
+    --wb-transition-slide-exit-x: -100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .is-wb-transition-slide[data-wb-transition-direction="next"] {
+    --wb-transition-slide-exit-x: -100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .is-wb-transition-slide[data-wb-transition-direction="previous"] {
+    --wb-transition-slide-exit-x: 100%;
+  }
+}
+
+@media print {
+  @page { margin: 15mm; }
+  html, body { height: auto; }
+  body.nyoze-web-book-root {
+    display: block;
+    min-height: 0;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    --wb-bg: #ffffff !important;
+    --wb-fg: #1a1a1a !important;
+    --wb-heading: #1a1a1a !important;
+    --wb-muted: #444444 !important;
+    --wb-canvas: #ffffff !important;
+    --wb-chrome-bg: #ffffff !important;
+    --wb-chrome-border: #1a1a1a !important;
+    --wb-chrome-fg: #1a1a1a !important;
+    --wb-outline-bg: #ffffff !important;
+    --wb-accent: #1a1a1a !important;
+  }
+  .nyoze-web-book-flow h1, .nyoze-web-book-flow h2, .nyoze-web-book-flow h3,
+  .nyoze-web-book-flow h4, .nyoze-web-book-flow h5, .nyoze-web-book-flow h6 {
+    color: #1a1a1a !important;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] { writing-mode: vertical-rl; direction: ltr; }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] { writing-mode: horizontal-tb; direction: ltr; }
+  .nyoze-web-book-chrome,
+  .nyoze-web-book-settings,
+  .nyoze-web-book-backdrop,
+  .nyoze-web-book-outline,
+  .nyoze-web-book-reader-header,
+  .nyoze-web-book-reader-footer,
+  .nyoze-web-book-transition-mask,
+  .nyoze-web-book-transition-overlay,
+  #nyoze-web-book-chapter-titles {
+    display: none !important;
+  }
+  /* WB-R5: print の実効遷移は常に none（script が print 開始時に cleanup
+     する。ここは印刷 rasterize 中の CSS 側の安全網）。 */
+  .nyoze-web-book-viewport {
+    animation: none !important;
+  }
+  .nyoze-web-book-main {
+    display: block;
+    min-height: 0;
+  }
+  .nyoze-web-book-paper-frame {
+    display: block;
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .nyoze-web-book-viewport {
+    overflow: visible !important;
+    height: auto !important;
+    width: auto !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+  .nyoze-web-book-flow {
+    columns: unset !important;
+    column-width: auto !important;
+    column-gap: normal !important;
+    column-fill: auto !important;
+    height: auto !important;
+    width: auto !important;
+    max-height: none !important;
+    max-width: none !important;
+    padding: 0 !important;
+    transform: none !important;
+    color: #1a1a1a !important;
+  }
+  /* print は黒系本文に固定するため、link も accent を持ち込まない。 */
+  .nyoze-web-book-flow a { color: inherit !important; }
+  /* WB-R11: print は screen の frame-height を引き継がない。横幅だけを用紙本文幅に
+     収め、intrinsic aspect ratio は維持する。厳密な印刷画像組版は別スライス。 */
+  .nyoze-web-book-flow img {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    object-fit: contain;
+  }
+  .nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow { inline-size: 235mm !important; block-size: auto !important; }
+  /* WB-R3: print でも縦書きの通常本文 / 通常 list は justify。見出し・directive・TOC・
+     metadata・code・task row は上の常設 text-align ルールが継承を遮断する。 */
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow {
+    text-align: justify;
+    text-align-last: auto;
+    text-justify: inter-character;
+  }
+  .nyoze-break-before-page {
+    break-before: page;
+    page-break-before: always;
+  }
+  /* WB-R7: print では TOC 後・文書情報後から次の印刷ページ。 */
+  .nyoze-web-book-flow .nyoze-toc,
+  .nyoze-web-book-flow .nyoze-break-after-page {
+    break-after: page;
+    page-break-after: always;
+  }
+  /* WB-R9: print の title page。screen pagination state は流用せず、縦書きは flow の
+     有限 inline size (235mm) 全長を group が満たして layout を成立させ、横書きは
+     1 ページに収まる保守的な min-height を group に与える best effort（末尾空白
+     ページを作らないことを優先）。 */
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow .nyoze-document-info--title-page {
+    inline-size: 100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="vertical-rl"] .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group {
+    height: 100%;
+  }
+  body.nyoze-web-book-root[data-wb-writing-mode="horizontal-tb"] .nyoze-web-book-flow .nyoze-document-info--title-page .nyoze-document-info-group {
+    min-height: calc(100vh - 45mm);
+  }
+  .nyoze-web-book-flow .nyoze-blank-page[data-nyoze-web-book-blank-page] {
+    break-before: page;
+    break-after: page;
+    page-break-before: always;
+    page-break-after: always;
+    height: auto !important;
+    width: auto !important;
+    min-height: 0;
+  }
+}
+
+/* Author / Original palette snapshot: export 開始時点の document colors。 */
+body.nyoze-web-book-root[data-wb-theme="author"][data-wb-author-palette="true"] {
+  --wb-bg: #25292d;
+  --wb-fg: #ece8e1;
+  --wb-heading: #ece8e1;
+  --wb-muted: #989895;
+  --wb-canvas: #35383b;
+  --wb-chrome-bg: #2e3235;
+  --wb-chrome-border: #4d4f51;
+  --wb-chrome-fg: #ece8e1;
+  --wb-outline-bg: #2a2e32;
+  --wb-outline-shadow: rgba(0, 0, 0, 0.55);
+  --wb-accent: #ece8e1;
+}
+</style>
+</head>
+<body class="nyoze-web-book-root nyoze-web-book--screen nyoze-writing-mode-vertical-rl" data-wb-theme="author" data-wb-author-palette="true" data-wb-author-page-color="#25292d" data-wb-author-text-color="#ece8e1" data-wb-author-heading-color="#ece8e1" data-wb-font="mincho" data-wb-heading-font="same-as-body" data-wb-heading-font-initial="same-as-body" data-wb-writing-mode="vertical-rl" data-wb-page-inset-top="32" data-wb-page-inset-bottom="16" data-wb-page-inset-inline="16" data-wb-paper-frame="on" data-wb-header-enabled="on" data-wb-header-align="left" data-wb-header-show-title="on" data-wb-header-show-author="off" data-wb-footer-enabled="on" data-wb-footer-align="right" data-wb-transition="fade" data-wb-transition-speed="500" data-wb-page-index="0" data-wb-page-count="1" style="--wb-heading-margin-after: 1.5em; --wb-heading-align-h: start; --wb-heading-align-v: center; --wb-heading-divider-h1: 1; --wb-heading-divider-h2: 1; --wb-heading-divider-h3: 0; --wb-heading-divider-h4: 0; --wb-heading-divider-h5: 0; --wb-heading-divider-h6: 0">
+<header class="nyoze-web-book-chrome" data-wb-chrome=""><div class="nyoze-web-book-chrome__nav" role="group" aria-label="ページ移動"><button type="button" data-wb-prev aria-label="前のページ" title="前のページ">◀</button><span class="nyoze-web-book-chrome__status" data-wb-status aria-live="polite">0%</span><button type="button" data-wb-next aria-label="次のページ" title="次のページ">▶</button></div><span class="nyoze-web-book-chrome__divider" aria-hidden="true"></span><button type="button" data-wb-outline-toggle aria-haspopup="dialog" aria-expanded="false" aria-controls="nyoze-web-book-outline">目次</button><button type="button" data-wb-settings-toggle aria-haspopup="dialog" aria-expanded="false" aria-controls="nyoze-web-book-settings">設定</button></header>
+<div id="nyoze-web-book-settings" class="nyoze-web-book-settings" data-wb-chrome="" role="dialog" aria-label="表示設定" tabindex="-1" hidden><fieldset class="nyoze-web-book-settings__section"><legend>本文</legend><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">文字サイズ</span><span class="nyoze-web-book-settings__group" role="group" aria-label="文字サイズ"><button type="button" data-wb-scale-decrease aria-label="文字を小さく">A−</button><span class="nyoze-web-book-settings__value" data-wb-scale-status aria-live="polite">100%</span><button type="button" data-wb-scale-increase aria-label="文字を大きく">A+</button></span></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">書体</span><span class="nyoze-web-book-settings__segmented" role="group" aria-label="書体"><button type="button" data-wb-font="mincho" aria-pressed="true">明朝</button><button type="button" data-wb-font="gothic" aria-pressed="false">ゴシック</button></span></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">見出し書体</span><span class="nyoze-web-book-settings__segmented" role="group" aria-label="見出し書体"><button type="button" data-wb-heading-font="same-as-body" aria-pressed="true">本文と同じ</button><button type="button" data-wb-heading-font="mincho" aria-pressed="false">明朝</button><button type="button" data-wb-heading-font="gothic" aria-pressed="false">ゴシック</button></span></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">書字方向</span><span class="nyoze-web-book-settings__segmented" role="group" aria-label="書字方向"><button type="button" data-wb-writing-mode="vertical-rl" aria-pressed="true">縦書き</button><button type="button" data-wb-writing-mode="horizontal-tb" aria-pressed="false">横書き</button></span></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-theme-select">テーマ</label><select id="nyoze-web-book-theme-select" data-wb-theme-select aria-label="Reader theme"><option value="author" selected>Author / Original</option><option value="classic">Classic</option><option value="light">Light</option><option value="dark">Dark</option><option value="paper">Paper</option></select></div></fieldset><fieldset class="nyoze-web-book-settings__section"><legend>ページ</legend><span class="nyoze-web-book-settings__hint">上・下余白は最低16pxに選択値を加算します。</span><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-inset-top">上余白</label><select id="nyoze-web-book-inset-top" data-wb-page-inset-top aria-label="上余白"><option value="0">0px</option><option value="8">8px</option><option value="16">16px</option><option value="24">24px</option><option value="32" selected>32px</option><option value="40">40px</option><option value="48">48px</option><option value="56">56px</option><option value="64">64px</option><option value="72">72px</option><option value="80">80px</option></select></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-inset-bottom">下余白</label><select id="nyoze-web-book-inset-bottom" data-wb-page-inset-bottom aria-label="下余白"><option value="0">0px</option><option value="8">8px</option><option value="16" selected>16px</option><option value="24">24px</option><option value="32">32px</option><option value="40">40px</option><option value="48">48px</option><option value="56">56px</option><option value="64">64px</option><option value="72">72px</option><option value="80">80px</option></select></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-inset-inline">左右余白</label><select id="nyoze-web-book-inset-inline" data-wb-page-inset-inline aria-label="左右余白"><option value="0">0px</option><option value="8">8px</option><option value="16" selected>16px</option><option value="24">24px</option><option value="32">32px</option><option value="40">40px</option><option value="48">48px</option><option value="56">56px</option><option value="64">64px</option><option value="72">72px</option><option value="80">80px</option></select></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">用紙枠</span><button type="button" data-wb-paper-frame aria-pressed="true">表示する</button></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-transition-select">ページ遷移</label><select id="nyoze-web-book-transition-select" data-wb-transition-select aria-label="ページ遷移"><option value="none">なし</option><option value="fade" selected>フェード</option><option value="slide">スライド</option><option value="zoom">ズーム</option></select></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-transition-speed">遷移速度</label><span class="nyoze-web-book-settings__group"><input type="range" id="nyoze-web-book-transition-speed" data-wb-transition-speed-range min="200" max="1000" step="50" value="500" aria-label="遷移速度"><span class="nyoze-web-book-settings__value" data-wb-transition-speed-status aria-live="polite">500ms</span></span></div></fieldset><fieldset class="nyoze-web-book-settings__section"><legend>ヘッダー</legend><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">ヘッダー</span><button type="button" data-wb-header-enabled aria-pressed="true" aria-label="ヘッダーを表示">表示する</button></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-header-align">ヘッダー位置</label><select id="nyoze-web-book-header-align" data-wb-header-align aria-label="ヘッダー位置"><option value="left" selected>左</option><option value="center">中央</option><option value="right">右</option></select></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">タイトル</span><button type="button" data-wb-header-show-title aria-pressed="true" aria-label="ヘッダーにタイトルを表示">表示する</button></div><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">著者</span><button type="button" data-wb-header-show-author aria-pressed="false" aria-label="ヘッダーに著者を表示">表示する</button></div></fieldset><fieldset class="nyoze-web-book-settings__section"><legend>フッター</legend><div class="nyoze-web-book-settings__row"><span class="nyoze-web-book-settings__label">フッター</span><button type="button" data-wb-footer-enabled aria-pressed="true" aria-label="フッターを表示">表示する</button></div><div class="nyoze-web-book-settings__row"><label class="nyoze-web-book-settings__label" for="nyoze-web-book-footer-align">フッター位置</label><select id="nyoze-web-book-footer-align" data-wb-footer-align aria-label="フッター位置"><option value="left">左</option><option value="center">中央</option><option value="right" selected>右</option></select></div></fieldset><div class="nyoze-web-book-settings__footer"><button type="button" data-wb-reset>初期設定に戻す</button></div></div>
+<div class="nyoze-web-book-backdrop" data-wb-backdrop aria-hidden="true" hidden></div>
+<aside id="nyoze-web-book-outline" class="nyoze-web-book-outline" role="dialog" aria-modal="true" aria-label="目次" tabindex="-1" hidden></aside>
+<main class="nyoze-web-book-main">
+<div class="nyoze-web-book-paper-frame">
+<header class="nyoze-web-book-reader-header" data-wb-reader-header data-wb-has-title="true" data-wb-has-author="true">
+<span class="nyoze-web-book-reader-header__content">
+<span class="nyoze-web-book-reader-header__title">夢十夜</span>
+<span class="nyoze-web-book-reader-header__separator" aria-hidden="true">·</span>
+<span class="nyoze-web-book-reader-header__author">夏目漱石</span>
+</span>
+</header>
+<div class="nyoze-web-book-viewport" data-wb-page-index="0" data-wb-page-count="1" tabindex="0">
+<div class="nyoze-web-book-flow"><section class="nyoze-document-info nyoze-document-info--title-page nyoze-break-after-page" data-nyoze-title-page-writing-mode="vertical-rl" data-nyoze-title-page-layout="center"><div class="nyoze-document-info-group"><div class="nyoze-document-info-title-group"><h1 class="nyoze-document-title">夢十夜</h1></div><div class="nyoze-document-info-credit-group"><p class="nyoze-document-credit">夏目漱石</p></div></div></section><div id="wb-c1-chapter-root" class="nyoze-chapter-root" aria-hidden="true"></div><h2 id="wb-c1-heading-第一夜">第一夜</h2><p><br></p><p>　こんな夢を見た。</p><p>　腕組をして枕元に<ruby>坐<rt>すわ</rt></ruby>っていると、<ruby>仰向<rt>あおむき</rt></ruby>に寝た女が、静かな声でもう死にますと云う。女は長い髪を枕に敷いて、<ruby>輪郭<rt>りんかく</rt></ruby>の<ruby>柔<rt>やわ</rt></ruby>らかな<ruby>瓜実<rt>うりざね</rt></ruby><ruby>顔<rt>がお</rt></ruby>をその中に横たえている。真白な頬の底に温かい血の色がほどよく差して、<ruby>唇<rt>くちびる</rt></ruby>の色は無論赤い。とうてい死にそうには見えない。しかし女は静かな声で、もう死にますと<ruby>判然<rt>はっきり</rt></ruby>云った。自分も<ruby>確<rt>たしか</rt></ruby>にこれは死ぬなと思った。そこで、そうかね、もう死ぬのかね、と上から<ruby>覗<rt>のぞ</rt></ruby>き込むようにして聞いて見た。死にますとも、と云いながら、女はぱっちりと眼を<ruby>開<rt>あ</rt></ruby>けた。大きな<ruby>潤<rt>うるおい</rt></ruby>のある眼で、長い<ruby>睫<rt>まつげ</rt></ruby>に包まれた中は、ただ一面に真黒であった。その真黒な<ruby>眸<rt>ひとみ</rt></ruby>の奥に、自分の姿が<ruby>鮮<rt>あざやか</rt></ruby>に浮かんでいる。</p><p>　自分は<ruby>透<rt>す</rt></ruby>き<ruby>徹<rt>とお</rt></ruby>るほど深く見えるこの黒眼の<ruby>色沢<rt>つや</rt></ruby>を眺めて、これでも死ぬのかと思った。それで、ねんごろに枕の<ruby>傍<rt>そば</rt></ruby>へ口を付けて、死ぬんじゃなかろうね、大丈夫だろうね、とまた聞き返した。すると女は黒い眼を眠そうに<ruby>睜<rt>みはっ</rt></ruby>たまま、やっぱり静かな声で、でも、死ぬんですもの、仕方がないわと云った。</p><p>　じゃ、<ruby>私<rt>わたし</rt></ruby>の顔が見えるかいと<ruby>一心<rt>いっしん</rt></ruby>に聞くと、見えるかいって、そら、そこに、写ってるじゃありませんかと、にこりと笑って見せた。自分は黙って、顔を枕から離した。腕組をしながら、どうしても死ぬのかなと思った。</p><p>　しばらくして、女がまたこう云った。</p><p>「死んだら、<ruby>埋<rt>う</rt></ruby>めて下さい。大きな真珠貝で穴を掘って。そうして天から落ちて来る星の<ruby>破片<rt>かけ</rt></ruby>を<ruby>墓標<rt>はかじるし</rt></ruby>に置いて下さい。そうして墓の傍に待っていて下さい。また<ruby>逢<rt>あ</rt></ruby>いに来ますから」</p><p>　自分は、いつ逢いに来るかねと聞いた。</p><p>「日が出るでしょう。それから日が沈むでしょう。それからまた出るでしょう、そうしてまた沈むでしょう。――赤い日が東から西へ、東から西へと落ちて行くうちに、――あなた、待っていられますか」</p><p>　自分は黙って<ruby>首肯<rt>うなず</rt></ruby>いた。女は静かな調子を一段張り上げて、</p><p>「百年待っていて下さい」と思い切った声で云った。</p><p>「百年、私の墓の<ruby>傍<rt>そば</rt></ruby>に坐って待っていて下さい。きっと逢いに来ますから」</p><p>　自分はただ待っていると答えた。すると、黒い<ruby>眸<rt>ひとみ</rt></ruby>のなかに<ruby>鮮<rt>あざやか</rt></ruby>に見えた自分の姿が、ぼうっと<ruby>崩<rt>くず</rt></ruby>れて来た。静かな水が動いて写る影を乱したように、流れ出したと思ったら、女の眼がぱちりと閉じた。長い<ruby>睫<rt>まつげ</rt></ruby>の間から涙が頬へ垂れた。――もう死んでいた。</p><p>　自分はそれから庭へ下りて、真珠貝で穴を掘った。真珠貝は大きな<ruby>滑<rt>なめら</rt></ruby>かな<ruby>縁<rt>ふち</rt></ruby>の<ruby>鋭<rt>する</rt></ruby>どい貝であった。土をすくうたびに、貝の裏に月の光が差してきらきらした。<ruby>湿<rt>しめ</rt></ruby>った土の<ruby>匂<rt>におい</rt></ruby>もした。穴はしばらくして掘れた。女をその中に入れた。そうして柔らかい土を、上からそっと掛けた。掛けるたびに真珠貝の裏に月の光が差した。</p><p>　それから星の<ruby>破片<rt>かけ</rt></ruby>の落ちたのを拾って来て、かろく土の上へ乗せた。星の破片は丸かった。長い間大空を落ちている<ruby>間<rt>ま</rt></ruby>に、<ruby>角<rt>かど</rt></ruby>が取れて<ruby>滑<rt>なめら</rt></ruby>かになったんだろうと思った。<ruby>抱<rt>だ</rt></ruby>き<ruby>上<rt>あ</rt></ruby>げて土の上へ置くうちに、自分の胸と手が少し暖くなった。</p><p>　自分は<ruby>苔<rt>こけ</rt></ruby>の上に坐った。これから百年の間こうして待っているんだなと考えながら、腕組をして、丸い<ruby>墓石<rt>はかいし</rt></ruby>を眺めていた。そのうちに、女の云った通り日が東から出た。大きな赤い日であった。それがまた女の云った通り、やがて西へ落ちた。赤いまんまでのっと落ちて行った。一つと自分は<ruby>勘定<rt>かんじょう</rt></ruby>した。</p><p>　しばらくするとまた<ruby>唐紅<rt>からくれない</rt></ruby>の<ruby>天道<rt>てんとう</rt></ruby>がのそりと<ruby>上<rt>のぼ</rt></ruby>って来た。そうして黙って沈んでしまった。二つとまた勘定した。</p><p>　自分はこう云う風に一つ二つと勘定して行くうちに、赤い日をいくつ見たか分らない。勘定しても、勘定しても、しつくせないほど赤い日が頭の上を通り越して行った。それでも百年がまだ来ない。しまいには、<ruby>苔<rt>こけ</rt></ruby>の<ruby>生<rt>は</rt></ruby>えた丸い石を眺めて、自分は女に<ruby>欺<rt>だま</rt></ruby>されたのではなかろうかと思い出した。</p><p>　すると石の下から<ruby>斜<rt>はす</rt></ruby>に自分の方へ向いて青い<ruby>茎<rt>くき</rt></ruby>が伸びて来た。見る間に長くなってちょうど自分の胸のあたりまで来て留まった。と思うと、すらりと<ruby>揺<rt>ゆら</rt></ruby>ぐ<ruby>茎<rt>くき</rt></ruby>の<ruby>頂<rt>いただき</rt></ruby>に、心持首を<ruby>傾<rt>かたぶ</rt></ruby>けていた細長い一輪の<ruby>蕾<rt>つぼみ</rt></ruby>が、ふっくらと<ruby>弁<rt>はなびら</rt></ruby>を開いた。真白な<ruby>百合<rt>ゆり</rt></ruby>が鼻の先で骨に<ruby>徹<rt>こた</rt></ruby>えるほど匂った。そこへ<ruby>遥<rt>はるか</rt></ruby>の上から、ぽたりと<ruby>露<rt>つゆ</rt></ruby>が落ちたので、花は自分の重みでふらふらと動いた。自分は首を前へ出して冷たい露の<ruby>滴<rt>したた</rt></ruby>る、白い<ruby>花弁<rt>はなびら</rt></ruby>に<ruby>接吻<rt>せっぷん</rt></ruby>した。自分が百合から顔を離す<ruby>拍子<rt>ひょうし</rt></ruby>に思わず、遠い空を見たら、<ruby>暁<rt>あかつき</rt></ruby>の星がたった一つ<ruby>瞬<rt>またた</rt></ruby>いていた。</p><p>「百年はもう来ていたんだな」とこの時始めて気がついた。</p><div id="wb-c2-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c2-heading-第二夜">第二夜</h2><p><br></p><p>　こんな夢を見た。</p><p>　<ruby>和尚<rt>おしょう</rt></ruby>の室を<ruby>退<rt>さ</rt></ruby>がって、<ruby>廊下<rt>ろうか</rt></ruby><ruby>伝<rt>づた</rt></ruby>いに自分の部屋へ帰ると<ruby>行灯<rt>あんどう</rt></ruby>がぼんやり<ruby>点<rt>とも</rt></ruby>っている。<ruby>片膝<rt>かたひざ</rt></ruby>を<ruby>座蒲団<rt>ざぶとん</rt></ruby>の上に突いて、灯心を<ruby>掻<rt>か</rt></ruby>き立てたとき、花のような<ruby>丁子<rt>ちょうじ</rt></ruby>がぱたりと朱塗の台に落ちた。同時に部屋がぱっと明かるくなった。</p><p>　<ruby>襖<rt>ふすま</rt></ruby>の<ruby>画<rt>え</rt></ruby>は<ruby>蕪村<rt>ぶそん</rt></ruby>の筆である。黒い柳を濃く薄く、<ruby>遠近<rt>おちこち</rt></ruby>とかいて、<ruby>寒<rt>さ</rt></ruby>むそうな漁夫が<ruby>笠<rt>かさ</rt></ruby>を<ruby>傾<rt>かたぶ</rt></ruby>けて土手の上を通る。<ruby>床<rt>とこ</rt></ruby>には<ruby>海中文殊<rt>かいちゅうもんじゅ</rt></ruby>の<ruby>軸<rt>じく</rt></ruby>が<ruby>懸<rt>かか</rt></ruby>っている。<ruby>焚<rt>た</rt></ruby>き残した線香が暗い方でいまだに<ruby>臭<rt>にお</rt></ruby>っている。広い寺だから<ruby>森閑<rt>しんかん</rt></ruby>として、<ruby>人気<rt>ひとけ</rt></ruby>がない。黒い<ruby>天井<rt>てんじょう</rt></ruby>に差す<ruby>丸行灯<rt>まるあんどう</rt></ruby>の丸い影が、<ruby>仰向<rt>あおむ</rt></ruby>く<ruby>途端<rt>とたん</rt></ruby>に生きてるように見えた。</p><p>　<ruby>立膝<rt>たてひざ</rt></ruby>をしたまま、左の手で<ruby>座蒲団<rt>ざぶとん</rt></ruby>を<ruby>捲<rt>めく</rt></ruby>って、右を差し込んで見ると、思った所に、ちゃんとあった。あれば安心だから、蒲団をもとのごとく<ruby>直<rt>なお</rt></ruby>して、その上にどっかり<ruby>坐<rt>すわ</rt></ruby>った。</p><p>　お前は<ruby>侍<rt>さむらい</rt></ruby>である。侍なら悟れぬはずはなかろうと<ruby>和尚<rt>おしょう</rt></ruby>が云った。そういつまでも悟れぬところをもって見ると、御前は侍ではあるまいと言った。人間の<ruby>屑<rt>くず</rt></ruby>じゃと言った。ははあ怒ったなと云って笑った。<ruby>口惜<rt>くや</rt></ruby>しければ悟った証拠を持って来いと云ってぷいと<ruby>向<rt>むこう</rt></ruby>をむいた。<ruby>怪<rt>け</rt></ruby>しからん。</p><p>　隣の広間の床に<ruby>据<rt>す</rt></ruby>えてある置時計が次の<ruby>刻<rt>とき</rt></ruby>を打つまでには、きっと悟って見せる。悟った上で、今夜また<ruby>入室<rt>にゅうしつ</rt></ruby>する。そうして和尚の首と悟りと<ruby>引替<rt>ひきかえ</rt></ruby>にしてやる。悟らなければ、和尚の命が取れない。どうしても悟らなければならない。自分は侍である。</p><p>　もし悟れなければ<ruby>自刃<rt>じじん</rt></ruby>する。侍が<ruby>辱<rt>はずか</rt></ruby>しめられて、生きている訳には行かない。<ruby>綺麗<rt>きれい</rt></ruby>に死んでしまう。</p><p>　こう考えた時、自分の手はまた思わず<ruby>布団<rt>ふとん</rt></ruby>の下へ<ruby>這入<rt>はい</rt></ruby>った。そうして<ruby>朱鞘<rt>しゅざや</rt></ruby>の短刀を<ruby>引<rt>ひ</rt></ruby>き<ruby>摺<rt>ず</rt></ruby>り出した。ぐっと<ruby>束<rt>つか</rt></ruby>を握って、赤い鞘を向へ払ったら、冷たい<ruby>刃<rt>は</rt></ruby>が一度に暗い部屋で光った。<ruby>凄<rt>すご</rt></ruby>いものが手元から、すうすうと逃げて行くように思われる。そうして、ことごとく<ruby>切先<rt>きっさき</rt></ruby>へ集まって、<ruby>殺気<rt>さっき</rt></ruby>を一点に<ruby>籠<rt>こ</rt></ruby>めている。自分はこの鋭い刃が、無念にも針の頭のように<ruby>縮<rt>ちぢ</rt></ruby>められて、<ruby>九寸<rt>くすん</rt></ruby><ruby>五分<rt>ごぶ</rt></ruby>の先へ来てやむをえず<ruby>尖<rt>とが</rt></ruby>ってるのを見て、たちまちぐさりとやりたくなった。<ruby>身体<rt>からだ</rt></ruby>の血が右の手首の方へ流れて来て、握っている束がにちゃにちゃする。<ruby>唇<rt>くちびる</rt></ruby>が<ruby>顫<rt>ふる</rt></ruby>えた。</p><p>　短刀を鞘へ収めて右脇へ引きつけておいて、それから<ruby>全伽<rt>ぜんが</rt></ruby>を組んだ。――<ruby>趙州<rt>じょうしゅう</rt></ruby>曰く<ruby>無<rt>む</rt></ruby>と。無とは何だ。<ruby>糞坊主<rt>くそぼうず</rt></ruby>めとはがみをした。</p><p>　奥歯を強く<ruby>咬<rt>か</rt></ruby>み<ruby>締<rt>し</rt></ruby>めたので、鼻から熱い息が荒く出る。こめかみが釣って痛い。眼は普通の倍も大きく開けてやった。</p><p>　<ruby>懸物<rt>かけもの</rt></ruby>が見える。行灯が見える。<ruby>畳<rt>たたみ</rt></ruby>が見える。和尚の<ruby>薬缶頭<rt>やかんあたま</rt></ruby>がありありと見える。<ruby>鰐口<rt>わにぐち</rt></ruby>を<ruby>開<rt>あ</rt></ruby>いて<ruby>嘲笑<rt>あざわら</rt></ruby>った声まで聞える。<ruby>怪<rt>け</rt></ruby>しからん坊主だ。どうしてもあの薬缶を首にしなくてはならん。悟ってやる。無だ、無だと舌の根で念じた。無だと云うのにやっぱり線香の<ruby>香<rt>におい</rt></ruby>がした。何だ線香のくせに。</p><p>　自分はいきなり<ruby>拳骨<rt>げんこつ</rt></ruby>を固めて自分の頭をいやと云うほど<ruby>擲<rt>なぐ</rt></ruby>った。そうして奥歯をぎりぎりと<ruby>噛<rt>か</rt></ruby>んだ。<ruby>両腋<rt>りょうわき</rt></ruby>から汗が出る。背中が棒のようになった。<ruby>膝<rt>ひざ</rt></ruby>の<ruby>接目<rt>つぎめ</rt></ruby>が急に痛くなった。膝が折れたってどうあるものかと思った。けれども痛い。苦しい。<ruby>無<rt>む</rt></ruby>はなかなか出て来ない。出て来ると思うとすぐ痛くなる。腹が立つ。無念になる。非常に<ruby>口惜<rt>くや</rt></ruby>しくなる。涙がほろほろ出る。ひと<ruby>思<rt>おもい</rt></ruby>に身を<ruby>巨巌<rt>おおいわ</rt></ruby>の上にぶつけて、骨も肉もめちゃめちゃに<ruby>砕<rt>くだ</rt></ruby>いてしまいたくなる。</p><p>　それでも我慢してじっと坐っていた。<ruby>堪<rt>た</rt></ruby>えがたいほど切ないものを胸に<ruby>盛<rt>い</rt></ruby>れて忍んでいた。その切ないものが<ruby>身体<rt>からだ</rt></ruby>中の筋肉を下から持上げて、毛穴から外へ吹き出よう吹き出ようと<ruby>焦<rt>あせ</rt></ruby>るけれども、どこも一面に<ruby>塞<rt>ふさ</rt></ruby>がって、まるで出口がないような残刻極まる状態であった。</p><p>　そのうちに頭が変になった。<ruby>行灯<rt>あんどう</rt></ruby>も<ruby>蕪村<rt>ぶそん</rt></ruby>の<ruby>画<rt>え</rt></ruby>も、畳も、<ruby>違棚<rt>ちがいだな</rt></ruby>も有って無いような、無くって有るように見えた。と云って<ruby>無<rt>む</rt></ruby>はちっとも<ruby>現前<rt>げんぜん</rt></ruby>しない。ただ<ruby>好加減<rt>いいかげん</rt></ruby>に坐っていたようである。ところへ<ruby>忽然<rt>こつぜん</rt></ruby>隣座敷の時計がチーンと鳴り始めた。</p><p>　はっと思った。右の手をすぐ短刀にかけた。時計が二つ目をチーンと打った。</p><div id="wb-c3-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c3-heading-第三夜">第三夜</h2><p><br></p><p>　こんな夢を見た。</p><p>　六つになる子供を<ruby>負<rt>おぶ</rt></ruby>ってる。たしかに自分の子である。ただ不思議な事にはいつの間にか眼が<ruby>潰<rt>つぶ</rt></ruby>れて、<ruby>青坊主<rt>あおぼうず</rt></ruby>になっている。自分が御前の眼はいつ潰れたのかいと聞くと、なに昔からさと答えた。声は子供の声に相違ないが、言葉つきはまるで<ruby>大人<rt>おとな</rt></ruby>である。しかも<ruby>対等<rt>たいとう</rt></ruby>だ。</p><p>　左右は<ruby>青田<rt>あおた</rt></ruby>である。<ruby>路<rt>みち</rt></ruby>は細い。<ruby>鷺<rt>さぎ</rt></ruby>の影が時々<ruby>闇<rt>やみ</rt></ruby>に差す。</p><p>「<ruby>田圃<rt>たんぼ</rt></ruby>へかかったね」と背中で云った。</p><p>「どうして解る」と顔を<ruby>後<rt>うし</rt></ruby>ろへ振り向けるようにして聞いたら、</p><p>「だって<ruby>鷺<rt>さぎ</rt></ruby>が鳴くじゃないか」と答えた。</p><p>　すると鷺がはたして二声ほど鳴いた。</p><p>　自分は我子ながら少し<ruby>怖<rt>こわ</rt></ruby>くなった。こんなものを<ruby>背負<rt>しょ</rt></ruby>っていては、この先どうなるか分らない。どこか<ruby>打遣<rt>うっち</rt></ruby>ゃる所はなかろうかと向うを見ると闇の中に大きな森が見えた。あすこならばと考え出す<ruby>途端<rt>とたん</rt></ruby>に、背中で、</p><p>「ふふん」と云う声がした。</p><p>「何を笑うんだ」</p><p>　子供は返事をしなかった。ただ</p><p>「<ruby>御父<rt>おとっ</rt></ruby>さん、重いかい」と聞いた。</p><p>「重かあない」と答えると</p><p>「今に重くなるよ」と云った。</p><p>　自分は黙って森を<ruby>目標<rt>めじるし</rt></ruby>にあるいて行った。田の中の路が不規則にうねってなかなか思うように出られない。しばらくすると<ruby>二股<rt>ふたまた</rt></ruby>になった。自分は<ruby>股<rt>また</rt></ruby>の根に立って、ちょっと休んだ。</p><p>「石が立ってるはずだがな」と小僧が云った。</p><p>　なるほど八寸角の石が腰ほどの高さに立っている。表には左り<ruby>日<rt>ひ</rt></ruby>ヶ<ruby>窪<rt>くぼ</rt></ruby>、右<ruby>堀田原<rt>ほったはら</rt></ruby>とある。<ruby>闇<rt>やみ</rt></ruby>だのに赤い字が<ruby>明<rt>あきら</rt></ruby>かに見えた。赤い字は<ruby>井守<rt>いもり</rt></ruby>の腹のような色であった。</p><p>「左が好いだろう」と小僧が命令した。左を見るとさっきの森が闇の影を、高い空から自分らの頭の上へ<ruby>抛<rt>な</rt></ruby>げかけていた。自分はちょっと<ruby>躊躇<rt>ちゅうちょ</rt></ruby>した。</p><p>「遠慮しないでもいい」と小僧がまた云った。自分は仕方なしに森の方へ歩き出した。腹の中では、よく<ruby>盲目<rt>めくら</rt></ruby>のくせに何でも知ってるなと考えながら一筋道を森へ近づいてくると、背中で、「どうも盲目は不自由でいけないね」と云った。</p><p>「だから<ruby>負<rt>おぶ</rt></ruby>ってやるからいいじゃないか」</p><p>「負ぶって<ruby>貰<rt>もら</rt></ruby>ってすまないが、どうも人に馬鹿にされていけない。親にまで馬鹿にされるからいけない」</p><p>　何だか<ruby>厭<rt>いや</rt></ruby>になった。早く森へ行って捨ててしまおうと思って急いだ。</p><p>「もう少し行くと解る。――ちょうどこんな晩だったな」と背中で<ruby>独言<rt>ひとりごと</rt></ruby>のように云っている。</p><p>「何が」と<ruby>際<rt>きわ</rt></ruby>どい声を出して聞いた。</p><p>「何がって、知ってるじゃないか」と子供は<ruby>嘲<rt>あざ</rt></ruby>けるように答えた。すると何だか知ってるような気がし出した。けれども<ruby>判然<rt>はっきり</rt></ruby>とは分らない。ただこんな晩であったように思える。そうしてもう少し行けば分るように思える。分っては大変だから、分らないうちに早く捨ててしまって、安心しなくってはならないように思える。自分はますます足を早めた。</p><p>　雨はさっきから降っている。路はだんだん暗くなる。ほとんど夢中である。ただ背中に小さい小僧がくっついていて、その小僧が自分の過去、現在、未来をことごとく照して、寸分の事実も<ruby>洩<rt>も</rt></ruby>らさない鏡のように光っている。しかもそれが自分の子である。そうして盲目である。自分はたまらなくなった。</p><p>「ここだ、ここだ。ちょうどその杉の根の処だ」</p><p>　雨の中で小僧の声は判然聞えた。自分は覚えず留った。いつしか森の中へ<ruby>這入<rt>はい</rt></ruby>っていた。<ruby>一間<rt>いっけん</rt></ruby>ばかり先にある黒いものはたしかに小僧の云う通り杉の木と見えた。</p><p>「<ruby>御父<rt>おとっ</rt></ruby>さん、その杉の根の処だったね」</p><p>「うん、そうだ」と思わず答えてしまった。</p><p>「文化五年<ruby>辰年<rt>たつどし</rt></ruby>だろう」</p><p>　なるほど文化五年辰年らしく思われた。</p><p>「御前がおれを殺したのは今からちょうど百年前だね」</p><p>　自分はこの言葉を聞くや否や、今から百年前文化五年の辰年のこんな闇の晩に、この杉の根で、一人の盲目を殺したと云う自覚が、<ruby>忽然<rt>こつぜん</rt></ruby>として頭の中に起った。おれは<ruby>人殺<rt>ひとごろし</rt></ruby>であったんだなと始めて気がついた<ruby>途端<rt>とたん</rt></ruby>に、背中の子が急に石地蔵のように重くなった。</p><div id="wb-c4-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c4-heading-第四夜">第四夜</h2><p><br></p><p>　広い土間の真中に涼み台のようなものを<ruby>据<rt>す</rt></ruby>えて、その<ruby>周囲<rt>まわり</rt></ruby>に小さい<ruby>床几<rt>しょうぎ</rt></ruby>が並べてある。台は黒光りに光っている。<ruby>片隅<rt>かたすみ</rt></ruby>には四角な<ruby>膳<rt>ぜん</rt></ruby>を前に置いて<ruby>爺<rt>じい</rt></ruby>さんが一人で酒を飲んでいる。<ruby>肴<rt>さかな</rt></ruby>は煮しめらしい。</p><p>　爺さんは酒の加減でなかなか赤くなっている。その上顔中つやつやして<ruby>皺<rt>しわ</rt></ruby>と云うほどのものはどこにも見当らない。ただ白い<ruby>髯<rt>ひげ</rt></ruby>をありたけ<ruby>生<rt>は</rt></ruby>やしているから<ruby>年寄<rt>としより</rt></ruby>と云う事だけはわかる。自分は子供ながら、この爺さんの年はいくつなんだろうと思った。ところへ裏の<ruby>筧<rt>かけひ</rt></ruby>から<ruby>手桶<rt>ておけ</rt></ruby>に水を<ruby>汲<rt>く</rt></ruby>んで来た<ruby>神<rt>かみ</rt></ruby>さんが、<ruby>前垂<rt>まえだれ</rt></ruby>で手を<ruby>拭<rt>ふ</rt></ruby>きながら、</p><p>「御爺さんはいくつかね」と聞いた。爺さんは<ruby>頬張<rt>ほおば</rt></ruby>った<ruby>煮〆<rt>にしめ</rt></ruby>を<ruby>呑<rt>の</rt></ruby>み込んで、</p><p>「いくつか忘れたよ」と澄ましていた。神さんは拭いた手を、細い帯の間に<ruby>挟<rt>はさ</rt></ruby>んで横から爺さんの顔を見て立っていた。爺さんは<ruby>茶碗<rt>ちゃわん</rt></ruby>のような大きなもので酒をぐいと飲んで、そうして、ふうと長い息を白い髯の間から吹き出した。すると神さんが、</p><p>「御爺さんの<ruby>家<rt>うち</rt></ruby>はどこかね」と聞いた。爺さんは長い息を途中で切って、</p><p>「<ruby>臍<rt>へそ</rt></ruby>の奥だよ」と云った。神さんは手を細い帯の間に<ruby>突込<rt>つっこ</rt></ruby>んだまま、</p><p>「どこへ行くかね」とまた聞いた。すると爺さんが、また茶碗のような大きなもので熱い酒をぐいと飲んで前のような息をふうと吹いて、</p><p>「あっちへ行くよ」と云った。</p><p>「<ruby>真直<rt>まっすぐ</rt></ruby>かい」と神さんが聞いた時、ふうと吹いた息が、<ruby>障子<rt>しょうじ</rt></ruby>を通り越して柳の下を抜けて、<ruby>河原<rt>かわら</rt></ruby>の方へ<ruby>真直<rt>まっすぐ</rt></ruby>に行った。</p><p>　爺さんが表へ出た。自分も<ruby>後<rt>あと</rt></ruby>から出た。爺さんの腰に小さい<ruby>瓢箪<rt>ひょうたん</rt></ruby>がぶら下がっている。肩から四角な箱を<ruby>腋<rt>わき</rt></ruby>の下へ釣るしている。<ruby>浅黄<rt>あさぎ</rt></ruby>の<ruby>股引<rt>ももひき</rt></ruby>を<ruby>穿<rt>は</rt></ruby>いて、浅黄の<ruby>袖無<rt>そでな</rt></ruby>しを着ている。<ruby>足袋<rt>たび</rt></ruby>だけが黄色い。何だか皮で作った足袋のように見えた。</p><p>　爺さんが真直に柳の下まで来た。柳の下に子供が三四人いた。爺さんは笑いながら腰から浅黄の<ruby>手拭<rt>てぬぐい</rt></ruby>を出した。それを<ruby>肝心綯<rt>かんじんより</rt></ruby>のように細長く<ruby>綯<rt>よ</rt></ruby>った。そうして<ruby>地面<rt>じびた</rt></ruby>の真中に置いた。それから手拭の<ruby>周囲<rt>まわり</rt></ruby>に、大きな丸い輪を<ruby>描<rt>か</rt></ruby>いた。しまいに肩にかけた箱の中から<ruby>真鍮<rt>しんちゅう</rt></ruby>で<ruby>製<rt>こし</rt></ruby>らえた<ruby>飴屋<rt>あめや</rt></ruby>の<ruby>笛<rt>ふえ</rt></ruby>を出した。</p><p>「今にその手拭が<ruby>蛇<rt>へび</rt></ruby>になるから、見ておろう。見ておろう」と<ruby>繰返<rt>くりかえ</rt></ruby>して云った。</p><p>　子供は一生懸命に手拭を見ていた。自分も見ていた。</p><p>「見ておろう、見ておろう、好いか」と云いながら爺さんが笛を吹いて、輪の上をぐるぐる廻り出した。自分は手拭ばかり見ていた。けれども手拭はいっこう動かなかった。</p><p>　爺さんは笛をぴいぴい吹いた。そうして輪の上を何遍も廻った。<ruby>草鞋<rt>わらじ</rt></ruby>を<ruby>爪立<rt>つまだ</rt></ruby>てるように、抜足をするように、手拭に遠慮をするように、廻った。<ruby>怖<rt>こわ</rt></ruby>そうにも見えた。面白そうにもあった。</p><p>　やがて爺さんは笛をぴたりとやめた。そうして、肩に掛けた箱の口を開けて、手拭の首を、ちょいと<ruby>撮<rt>つま</rt></ruby>んで、ぽっと<ruby>放<rt>ほう</rt></ruby>り<ruby>込<rt>こ</rt></ruby>んだ。</p><p>「こうしておくと、箱の中で<ruby>蛇<rt>へび</rt></ruby>になる。今に見せてやる。今に見せてやる」と云いながら、爺さんが真直に歩き出した。柳の下を抜けて、細い路を真直に下りて行った。自分は蛇が見たいから、細い道をどこまでも<ruby>追<rt>つ</rt></ruby>いて行った。爺さんは時々「今になる」と云ったり、「蛇になる」と云ったりして歩いて行く。しまいには、</p><p>　「今になる、蛇になる、</p><p>　　きっとなる、笛が鳴る、」</p><p>と<ruby>唄<rt>うた</rt></ruby>いながら、とうとう河の岸へ出た。橋も舟もないから、ここで休んで箱の中の蛇を見せるだろうと思っていると、爺さんはざぶざぶ河の中へ<ruby>這入<rt>はい</rt></ruby>り出した。始めは<ruby>膝<rt>ひざ</rt></ruby>くらいの深さであったが、だんだん腰から、胸の方まで水に<ruby>浸<rt>つか</rt></ruby>って見えなくなる。それでも爺さんは</p><p>　「深くなる、夜になる、</p><p>　　真直になる」</p><p>と唄いながら、どこまでも真直に歩いて行った。そうして<ruby>髯<rt>ひげ</rt></ruby>も顔も頭も<ruby>頭巾<rt>ずきん</rt></ruby>もまるで見えなくなってしまった。</p><p>　自分は爺さんが<ruby>向岸<rt>むこうぎし</rt></ruby>へ上がった時に、蛇を見せるだろうと思って、<ruby>蘆<rt>あし</rt></ruby>の鳴る所に立って、たった一人いつまでも待っていた。けれども爺さんは、とうとう上がって来なかった。</p><div id="wb-c5-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c5-heading-第五夜">第五夜</h2><p><br></p><p>　こんな夢を見た。</p><p>　何でもよほど古い事で、<ruby>神代<rt>かみよ</rt></ruby>に近い昔と思われるが、自分が<ruby>軍<rt>いくさ</rt></ruby>をして運悪く<ruby>敗北<rt>まけ</rt></ruby>たために、<ruby>生擒<rt>いけどり</rt></ruby>になって、敵の大将の前に引き<ruby>据<rt>す</rt></ruby>えられた。</p><p>　その頃の人はみんな背が高かった。そうして、みんな長い髯を<ruby>生<rt>は</rt></ruby>やしていた。革の帯を<ruby>締<rt>し</rt></ruby>めて、それへ棒のような<ruby>剣<rt>つるぎ</rt></ruby>を釣るしていた。弓は<ruby>藤蔓<rt>ふじづる</rt></ruby>の太いのをそのまま用いたように見えた。<ruby>漆<rt>うるし</rt></ruby>も塗ってなければ<ruby>磨<rt>みが</rt></ruby>きもかけてない。<ruby>極<rt>きわ</rt></ruby>めて<ruby>素樸<rt>そぼく</rt></ruby>なものであった。</p><p>　敵の大将は、弓の真中を右の手で握って、その弓を草の上へ突いて、<ruby>酒甕<rt>さかがめ</rt></ruby>を伏せたようなものの上に腰をかけていた。その顔を見ると、鼻の上で、左右の<ruby>眉<rt>まゆ</rt></ruby>が太く<ruby>接続<rt>つなが</rt></ruby>っている。その頃<ruby>髪剃<rt>かみそり</rt></ruby>と云うものは無論なかった。</p><p>　自分は<ruby>虜<rt>とりこ</rt></ruby>だから、腰をかける訳に行かない。草の上に<ruby>胡坐<rt>あぐら</rt></ruby>をかいていた。足には大きな<ruby>藁沓<rt>わらぐつ</rt></ruby>を<ruby>穿<rt>は</rt></ruby>いていた。この時代の藁沓は深いものであった。立つと<ruby>膝頭<rt>ひざがしら</rt></ruby>まで来た。その<ruby>端<rt>はし</rt></ruby>の所は<ruby>藁<rt>わら</rt></ruby>を少し<ruby>編残<rt>あみのこ</rt></ruby>して、房のように下げて、歩くとばらばら動くようにして、飾りとしていた。</p><p>　大将は<ruby>篝火<rt>かがりび</rt></ruby>で自分の顔を見て、死ぬか生きるかと聞いた。これはその頃の習慣で、<ruby>捕虜<rt>とりこ</rt></ruby>にはだれでも一応はこう聞いたものである。生きると答えると降参した意味で、死ぬと云うと<ruby>屈服<rt>くっぷく</rt></ruby>しないと云う事になる。自分は<ruby>一言<rt>ひとこと</rt></ruby>死ぬと答えた。大将は草の上に突いていた弓を向うへ<ruby>抛<rt>な</rt></ruby>げて、腰に釣るした棒のような<ruby>剣<rt>けん</rt></ruby>をするりと抜きかけた。それへ風に<ruby>靡<rt>なび</rt></ruby>いた<ruby>篝火<rt>かがりび</rt></ruby>が横から吹きつけた。自分は右の手を<ruby>楓<rt>かえで</rt></ruby>のように開いて、<ruby>掌<rt>たなごころ</rt></ruby>を大将の方へ向けて、眼の上へ差し上げた。待てと云う相図である。大将は太い剣をかちゃりと<ruby>鞘<rt>さや</rt></ruby>に収めた。</p><p>　その頃でも恋はあった。自分は死ぬ前に一目思う女に<ruby>逢<rt>あ</rt></ruby>いたいと云った。大将は夜が開けて<ruby>鶏<rt>とり</rt></ruby>が鳴くまでなら待つと云った。鶏が鳴くまでに女をここへ呼ばなければならない。鶏が鳴いても女が来なければ、自分は逢わずに殺されてしまう。</p><p>　大将は腰をかけたまま、篝火を眺めている。自分は大きな<ruby>藁沓<rt>わらぐつ</rt></ruby>を組み合わしたまま、草の上で女を待っている。夜はだんだん<ruby>更<rt>ふ</rt></ruby>ける。</p><p>　時々篝火が<ruby>崩<rt>くず</rt></ruby>れる音がする。崩れるたびに<ruby>狼狽<rt>うろた</rt></ruby>えたように<ruby>焔<rt>ほのお</rt></ruby>が大将になだれかかる。真黒な<ruby>眉<rt>まゆ</rt></ruby>の下で、大将の眼がぴかぴかと光っている。すると誰やら来て、新しい枝をたくさん火の中へ<ruby>抛<rt>な</rt></ruby>げ<ruby>込<rt>こ</rt></ruby>んで行く。しばらくすると、火がぱちぱちと鳴る。<ruby>暗闇<rt>くらやみ</rt></ruby>を<ruby>弾<rt>はじ</rt></ruby>き<ruby>返<rt>かえ</rt></ruby>すような勇ましい音であった。</p><p>　この時女は、裏の<ruby>楢<rt>なら</rt></ruby>の木に<ruby>繋<rt>つな</rt></ruby>いである、白い馬を引き出した。<ruby>鬣<rt>たてがみ</rt></ruby>を三度<ruby>撫<rt>な</rt></ruby>でて高い背にひらりと飛び乗った。<ruby>鞍<rt>くら</rt></ruby>もない<ruby>鐙<rt>あぶみ</rt></ruby>もない<ruby>裸馬<rt>はだかうま</rt></ruby>であった。長く白い足で、<ruby>太腹<rt>ふとばら</rt></ruby>を<ruby>蹴<rt>け</rt></ruby>ると、馬はいっさんに<ruby>駆<rt>か</rt></ruby>け出した。誰かが篝りを<ruby>継<rt>つ</rt></ruby>ぎ<ruby>足<rt>た</rt></ruby>したので、遠くの空が薄明るく見える。馬はこの明るいものを<ruby>目懸<rt>めが</rt></ruby>けて闇の中を飛んで来る。鼻から火の柱のような息を二本出して飛んで来る。それでも女は細い足でしきりなしに馬の腹を<ruby>蹴<rt>け</rt></ruby>っている。馬は<ruby>蹄<rt>ひづめ</rt></ruby>の音が宙で鳴るほど早く飛んで来る。女の髪は吹流しのように<ruby>闇<rt>やみ</rt></ruby>の中に尾を<ruby>曳<rt>ひ</rt></ruby>いた。それでもまだ<ruby>篝<rt>かがり</rt></ruby>のある所まで来られない。</p><p>　すると<ruby>真闇<rt>まっくら</rt></ruby>な道の<ruby>傍<rt>はた</rt></ruby>で、たちまちこけこっこうという鶏の声がした。女は身を<ruby>空様<rt>そらざま</rt></ruby>に、両手に握った<ruby>手綱<rt>たづな</rt></ruby>をうんと<ruby>控<rt>ひか</rt></ruby>えた。馬は前足の<ruby>蹄<rt>ひづめ</rt></ruby>を堅い岩の上に<ruby>発矢<rt>はっし</rt></ruby>と<ruby>刻<rt>きざ</rt></ruby>み込んだ。</p><p>　こけこっこうと<ruby>鶏<rt>にわとり</rt></ruby>がまた<ruby>一声<rt>ひとこえ</rt></ruby>鳴いた。</p><p>　女はあっと云って、<ruby>緊<rt>し</rt></ruby>めた手綱を一度に<ruby>緩<rt>ゆる</rt></ruby>めた。馬は<ruby>諸膝<rt>もろひざ</rt></ruby>を折る。乗った人と共に<ruby>真向<rt>まとも</rt></ruby>へ前へのめった。岩の下は深い<ruby>淵<rt>ふち</rt></ruby>であった。</p><p>　蹄の<ruby>跡<rt>あと</rt></ruby>はいまだに岩の上に残っている。鶏の鳴く<ruby>真似<rt>まね</rt></ruby>をしたものは<ruby>天探女<rt>あまのじゃく</rt></ruby>である。この蹄の<ruby>痕<rt>あと</rt></ruby>の岩に刻みつけられている間、天探女は自分の<ruby>敵<rt>かたき</rt></ruby>である。</p><div id="wb-c6-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c6-heading-第六夜">第六夜</h2><p><br></p><p>　<ruby>運慶<rt>うんけい</rt></ruby>が<ruby>護国寺<rt>ごこくじ</rt></ruby>の山門で<ruby>仁王<rt>におう</rt></ruby>を刻んでいると云う評判だから、散歩ながら行って見ると、自分より先にもう大勢集まって、しきりに<ruby>下馬評<rt>げばひょう</rt></ruby>をやっていた。</p><p>　山門の前五六間の所には、大きな赤松があって、その幹が<ruby>斜<rt>なな</rt></ruby>めに山門の<ruby>甍<rt>いらか</rt></ruby>を隠して、遠い青空まで<ruby>伸<rt>の</rt></ruby>びている。松の緑と<ruby>朱塗<rt>しゅぬり</rt></ruby>の門が互いに<ruby>照<rt>うつ</rt></ruby>り合ってみごとに見える。その上松の位地が好い。門の左の端を<ruby>眼障<rt>めざわり</rt></ruby>にならないように、<ruby>斜<rt>はす</rt></ruby>に切って行って、上になるほど幅を広く屋根まで<ruby>突出<rt>つきだ</rt></ruby>しているのが何となく古風である。鎌倉時代とも思われる。</p><p>　ところが見ているものは、みんな自分と同じく、明治の人間である。その<ruby>中<rt>うち</rt></ruby>でも車夫が一番多い。<ruby>辻待<rt>つじまち</rt></ruby>をして退屈だから立っているに相違ない。</p><p>「大きなもんだなあ」と云っている。</p><p>「人間を<ruby>拵<rt>こしら</rt></ruby>えるよりもよっぽど骨が折れるだろう」とも云っている。</p><p>　そうかと思うと、「へえ仁王だね。今でも仁王を<ruby>彫<rt>ほ</rt></ruby>るのかね。へえそうかね。<ruby>私<rt>わっし</rt></ruby>ゃまた仁王はみんな古いのばかりかと思ってた」と云った男がある。</p><p>「どうも強そうですね。なんだってえますぜ。昔から誰が強いって、仁王ほど強い人あ無いって云いますぜ。何でも<ruby>日本武尊<rt>やまとだけのみこと</rt></ruby>よりも強いんだってえからね」と話しかけた男もある。この男は尻を<ruby>端折<rt>はしょ</rt></ruby>って、帽子を<ruby>被<rt>かぶ</rt></ruby>らずにいた。よほど無教育な男と見える。</p><p>　運慶は見物人の評判には委細<ruby>頓着<rt>とんじゃく</rt></ruby>なく<ruby>鑿<rt>のみ</rt></ruby>と<ruby>槌<rt>つち</rt></ruby>を動かしている。いっこう振り向きもしない。高い所に乗って、仁王の顔の<ruby>辺<rt>あたり</rt></ruby>をしきりに<ruby>彫<rt>ほ</rt></ruby>り<ruby>抜<rt>ぬ</rt></ruby>いて行く。</p><p>　運慶は頭に小さい<ruby>烏帽子<rt>えぼし</rt></ruby>のようなものを乗せて、<ruby>素袍<rt>すおう</rt></ruby>だか何だかわからない大きな<ruby>袖<rt>そで</rt></ruby>を<ruby>背中<rt>せなか</rt></ruby>で<ruby>括<rt>くく</rt></ruby>っている。その様子がいかにも古くさい。わいわい云ってる見物人とはまるで釣り合が取れないようである。自分はどうして今時分まで運慶が生きているのかなと思った。どうも不思議な事があるものだと考えながら、やはり立って見ていた。</p><p>　しかし運慶の方では不思議とも奇体ともとんと感じ得ない様子で一生懸命に彫っている。<ruby>仰向<rt>あおむ</rt></ruby>いてこの態度を眺めていた一人の若い男が、自分の方を振り向いて、</p><p>「さすがは運慶だな。眼中に我々なしだ。天下の英雄はただ仁王と<ruby>我<rt>わ</rt></ruby>れとあるのみと云う態度だ。<ruby>天晴<rt>あっぱ</rt></ruby>れだ」と云って<ruby>賞<rt>ほ</rt></ruby>め出した。</p><p>　自分はこの言葉を面白いと思った。それでちょっと若い男の方を見ると、若い男は、すかさず、</p><p>「あの鑿と槌の使い方を見たまえ。<ruby>大自在<rt>だいじざい</rt></ruby>の妙境に達している」と云った。</p><p>　運慶は今太い<ruby>眉<rt>まゆ</rt></ruby>を<ruby>一寸<rt>いっすん</rt></ruby>の高さに横へ彫り抜いて、鑿の歯を<ruby>竪<rt>たて</rt></ruby>に返すや否や<ruby>斜<rt>は</rt></ruby>すに、上から槌を<ruby>打<rt>う</rt></ruby>ち<ruby>下<rt>おろ</rt></ruby>した。堅い木を<ruby>一<rt>ひ</rt></ruby>と<ruby>刻<rt>きざ</rt></ruby>みに<ruby>削<rt>けず</rt></ruby>って、厚い<ruby>木屑<rt>きくず</rt></ruby>が槌の声に応じて飛んだと思ったら、小鼻のおっ<ruby>開<rt>ぴら</rt></ruby>いた怒り鼻の側面がたちまち浮き上がって来た。その<ruby>刀<rt>とう</rt></ruby>の入れ方がいかにも無遠慮であった。そうして少しも疑念を<ruby>挾<rt>さしはさ</rt></ruby>んでおらんように見えた。</p><p>「よくああ<ruby>無造作<rt>むぞうさ</rt></ruby>に鑿を使って、思うような<ruby>眉<rt>まみえ</rt></ruby>や鼻ができるものだな」と自分はあんまり感心したから<ruby>独言<rt>ひとりごと</rt></ruby>のように言った。するとさっきの若い男が、</p><p>「なに、あれは眉や鼻を鑿で作るんじゃない。あの通りの眉や鼻が木の中に<ruby>埋<rt>うま</rt></ruby>っているのを、<ruby>鑿<rt>のみ</rt></ruby>と<ruby>槌<rt>つち</rt></ruby>の力で掘り出すまでだ。まるで土の中から石を掘り出すようなものだからけっして間違うはずはない」と云った。</p><p>　自分はこの時始めて彫刻とはそんなものかと思い出した。はたしてそうなら誰にでもできる事だと思い出した。それで急に自分も仁王が<ruby>彫<rt>ほ</rt></ruby>ってみたくなったから見物をやめてさっそく<ruby>家<rt>うち</rt></ruby>へ帰った。</p><p>　道具箱から<ruby>鑿<rt>のみ</rt></ruby>と<ruby>金槌<rt>かなづち</rt></ruby>を持ち出して、裏へ出て見ると、せんだっての<ruby>暴風<rt>あらし</rt></ruby>で倒れた<ruby>樫<rt>かし</rt></ruby>を、<ruby>薪<rt>まき</rt></ruby>にするつもりで、<ruby>木挽<rt>こびき</rt></ruby>に<ruby>挽<rt>ひ</rt></ruby>かせた手頃な<ruby>奴<rt>やつ</rt></ruby>が、たくさん積んであった。</p><p>　自分は一番大きいのを選んで、勢いよく<ruby>彫<rt>ほ</rt></ruby>り始めて見たが、不幸にして、仁王は見当らなかった。その次のにも運悪く掘り当てる事ができなかった。三番目のにも仁王はいなかった。自分は積んである薪を<ruby>片<rt>かた</rt></ruby>っ<ruby>端<rt>ぱし</rt></ruby>から彫って見たが、どれもこれも仁王を<ruby>蔵<rt>かく</rt></ruby>しているのはなかった。ついに明治の木にはとうてい仁王は<ruby>埋<rt>うま</rt></ruby>っていないものだと悟った。それで運慶が<ruby>今日<rt>きょう</rt></ruby>まで生きている理由もほぼ解った。</p><div id="wb-c7-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c7-heading-第七夜">第七夜</h2><p><br></p><p>　何でも大きな船に乗っている。</p><p>　この船が毎日毎夜すこしの<ruby>絶間<rt>たえま</rt></ruby>なく黒い<ruby>煙<rt>けぶり</rt></ruby>を吐いて<ruby>浪<rt>なみ</rt></ruby>を切って進んで行く。<ruby>凄<rt>すさま</rt></ruby>じい音である。けれどもどこへ行くんだか分らない。ただ波の底から<ruby>焼火箸<rt>やけひばし</rt></ruby>のような太陽が出る。それが高い帆柱の真上まで来てしばらく<ruby>挂<rt>かか</rt></ruby>っているかと思うと、いつの間にか大きな船を追い越して、先へ行ってしまう。そうして、しまいには<ruby>焼火箸<rt>やけひばし</rt></ruby>のようにじゅっといってまた波の底に沈んで行く。そのたんびに<ruby>蒼<rt>あお</rt></ruby>い波が遠くの向うで、<ruby>蘇枋<rt>すおう</rt></ruby>の色に<ruby>沸<rt>わ</rt></ruby>き返る。すると船は<ruby>凄<rt>すさま</rt></ruby>じい音を立ててその<ruby>跡<rt>あと</rt></ruby>を<ruby>追<rt>おっ</rt></ruby>かけて行く。けれども決して追つかない。</p><p>　ある時自分は、船の男を<ruby>捕<rt>つら</rt></ruby>まえて聞いて見た。</p><p>「この船は西へ行くんですか」</p><p>　船の男は<ruby>怪訝<rt>けげん</rt></ruby>な顔をして、しばらく自分を見ていたが、やがて、</p><p>「なぜ」と問い返した。</p><p>「落ちて行く日を追かけるようだから」</p><p>　船の男はからからと笑った。そうして向うの方へ行ってしまった。</p><p>「西へ行く日の、<ruby>果<rt>はて</rt></ruby>は東か。それは<ruby>本真<rt>ほんま</rt></ruby>か。<ruby>東<rt>ひがし</rt></ruby>出る日の、<ruby>御里<rt>おさと</rt></ruby>は西か。それも本真か。身は波の上。<ruby>戢枕<rt>かじまくら</rt></ruby>。流せ流せ」と<ruby>囃<rt>はや</rt></ruby>している。<ruby>舳<rt>へさき</rt></ruby>へ行って見たら、水夫が大勢寄って、太い<ruby>帆綱<rt>ほづな</rt></ruby>を<ruby>手繰<rt>たぐ</rt></ruby>っていた。</p><p>　自分は大変心細くなった。いつ<ruby>陸<rt>おか</rt></ruby>へ上がれる事か分らない。そうしてどこへ行くのだか知れない。ただ黒い<ruby>煙<rt>けぶり</rt></ruby>を吐いて波を切って行く事だけはたしかである。その波はすこぶる広いものであった。<ruby>際限<rt>さいげん</rt></ruby>もなく<ruby>蒼<rt>あお</rt></ruby>く見える。時には<ruby>紫<rt>むらさき</rt></ruby>にもなった。ただ船の動く<ruby>周囲<rt>まわり</rt></ruby>だけはいつでも真白に<ruby>泡<rt>あわ</rt></ruby>を吹いていた。自分は大変心細かった。こんな船にいるよりいっそ身を投げて死んでしまおうかと思った。</p><p>　<ruby>乗合<rt>のりあい</rt></ruby>はたくさんいた。たいていは異人のようであった。しかしいろいろな顔をしていた。空が曇って船が揺れた時、一人の女が<ruby>欄<rt>てすり</rt></ruby>に<ruby>倚<rt>よ</rt></ruby>りかかって、しきりに泣いていた。眼を拭く<ruby>手巾<rt>ハンケチ</rt></ruby>の色が白く見えた。しかし<ruby>身体<rt>からだ</rt></ruby>には<ruby>更紗<rt>さらさ</rt></ruby>のような洋服を着ていた。この女を見た時に、悲しいのは自分ばかりではないのだと気がついた。</p><p>　ある晩<ruby>甲板<rt>かんぱん</rt></ruby>の上に出て、一人で星を眺めていたら、一人の異人が来て、天文学を知ってるかと尋ねた。自分はつまらないから死のうとさえ思っている。天文学などを知る必要がない。黙っていた。するとその異人が<ruby>金牛宮<rt>きんぎゅうきゅう</rt></ruby>の<ruby>頂<rt>いただき</rt></ruby>にある<ruby>七星<rt>しちせい</rt></ruby>の話をして聞かせた。そうして星も海もみんな神の作ったものだと云った。最後に自分に神を信仰するかと尋ねた。自分は空を見て黙っていた。</p><p>　或時サローンに<ruby>這入<rt>はい</rt></ruby>ったら<ruby>派手<rt>はで</rt></ruby>な<ruby>衣裳<rt>いしょう</rt></ruby>を着た若い女が向うむきになって、<ruby>洋琴<rt>ピアノ</rt></ruby>を<ruby>弾<rt>ひ</rt></ruby>いていた。その<ruby>傍<rt>そば</rt></ruby>に背の高い立派な男が立って、唱歌を<ruby>唄<rt>うた</rt></ruby>っている。その口が大変大きく見えた。けれども二人は二人以外の事にはまるで<ruby>頓着<rt>とんじゃく</rt></ruby>していない様子であった。船に乗っている事さえ忘れているようであった。</p><p>　自分はますますつまらなくなった。とうとう死ぬ事に決心した。それである晩、あたりに人のいない時分、思い切って海の中へ飛び込んだ。ところが――自分の足が<ruby>甲板<rt>かんぱん</rt></ruby>を離れて、船と縁が切れたその<ruby>刹那<rt>せつな</rt></ruby>に、急に命が惜しくなった。心の底からよせばよかったと思った。けれども、もう遅い。自分は<ruby>厭<rt>いや</rt></ruby>でも応でも海の中へ這入らなければならない。ただ大変高くできていた船と見えて、身体は船を離れたけれども、足は容易に水に着かない。しかし<ruby>捕<rt>つか</rt></ruby>まえるものがないから、しだいしだいに水に近づいて来る。いくら足を<ruby>縮<rt>ちぢ</rt></ruby>めても近づいて来る。水の色は黒かった。</p><p>　そのうち船は例の通り黒い<ruby>煙<rt>けぶり</rt></ruby>を吐いて、通り過ぎてしまった。自分はどこへ行くんだか判らない船でも、やっぱり乗っている方がよかったと始めて悟りながら、しかもその悟りを利用する事ができずに、無限の後悔と恐怖とを<ruby>抱<rt>いだ</rt></ruby>いて黒い波の方へ静かに落ちて行った。</p><div id="wb-c8-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c8-heading-第八夜">第八夜</h2><p><br></p><p>　床屋の敷居を<ruby>跨<rt>また</rt></ruby>いだら、白い着物を着てかたまっていた三四人が、一度にいらっしゃいと云った。</p><p>　真中に立って見廻すと、四角な部屋である。窓が二方に<ruby>開<rt>あ</rt></ruby>いて、残る二方に鏡が<ruby>懸<rt>かか</rt></ruby>っている。鏡の数を<ruby>勘定<rt>かんじょう</rt></ruby>したら六つあった。</p><p>　自分はその一つの前へ来て腰をおろした。すると<ruby>御尻<rt>おしり</rt></ruby>がぶくりと云った。よほど坐り<ruby>心地<rt>ごこち</rt></ruby>が好くできた椅子である。鏡には自分の顔が立派に映った。顔の<ruby>後<rt>うしろ</rt></ruby>には窓が見えた。それから<ruby>帳場格子<rt>ちょうばごうし</rt></ruby>が<ruby>斜<rt>はす</rt></ruby>に見えた。格子の中には人がいなかった。窓の外を通る<ruby>往来<rt>おうらい</rt></ruby>の人の腰から上がよく見えた。</p><p>　庄太郎が女を連れて通る。庄太郎はいつの間にかパナマの帽子を買って<ruby>被<rt>かぶ</rt></ruby>っている。女もいつの間に<ruby>拵<rt>こし</rt></ruby>らえたものやら。ちょっと解らない。双方とも得意のようであった。よく女の顔を見ようと思ううちに通り過ぎてしまった。</p><p>　<ruby>豆腐屋<rt>とうふや</rt></ruby>が<ruby>喇叭<rt>らっぱ</rt></ruby>を吹いて通った。喇叭を口へあてがっているんで、<ruby>頬<rt>ほっ</rt></ruby>ぺたが<ruby>蜂<rt>はち</rt></ruby>に<ruby>螫<rt>さ</rt></ruby>されたように<ruby>膨<rt>ふく</rt></ruby>れていた。膨れたまんまで通り越したものだから、気がかりでたまらない。<ruby>生涯<rt>しょうがい</rt></ruby>蜂に螫されているように思う。</p><p>　芸者が出た。まだ<ruby>御化粧<rt>おつくり</rt></ruby>をしていない。島田の根が<ruby>緩<rt>ゆる</rt></ruby>んで、何だか頭に<ruby>締<rt>しま</rt></ruby>りがない。顔も寝ぼけている。<ruby>色沢<rt>いろつや</rt></ruby>が気の毒なほど悪い。それで<ruby>御辞儀<rt>おじぎ</rt></ruby>をして、どうも何とかですと云ったが、相手はどうしても鏡の中へ出て来ない。</p><p>　すると白い着物を着た大きな男が、自分の<ruby>後<rt>うし</rt></ruby>ろへ来て、<ruby>鋏<rt>はさみ</rt></ruby>と<ruby>櫛<rt>くし</rt></ruby>を持って自分の頭を眺め出した。自分は薄い<ruby>髭<rt>ひげ</rt></ruby>を<ruby>捩<rt>ひね</rt></ruby>って、どうだろう物になるだろうかと尋ねた。白い男は、<ruby>何<rt>な</rt></ruby>にも云わずに、手に持った<ruby>琥珀色<rt>こはくいろ</rt></ruby>の<ruby>櫛<rt>くし</rt></ruby>で軽く自分の頭を<ruby>叩<rt>たた</rt></ruby>いた。</p><p>「さあ、頭もだが、どうだろう、物になるだろうか」と自分は白い男に聞いた。白い男はやはり何も答えずに、ちゃきちゃきと鋏を鳴らし始めた。</p><p>　鏡に映る影を一つ残らず見るつもりで眼を<ruby>睜<rt>みは</rt></ruby>っていたが、鋏の鳴るたんびに黒い毛が飛んで来るので、恐ろしくなって、やがて眼を閉じた。すると白い男が、こう云った。</p><p>「<ruby>旦那<rt>だんな</rt></ruby>は表の金魚売を御覧なすったか」</p><p>　自分は見ないと云った。白い男はそれぎりで、しきりと鋏を鳴らしていた。すると突然大きな声で<ruby>危険<rt>あぶねえ</rt></ruby>と云ったものがある。はっと眼を開けると、白い男の<ruby>袖<rt>そで</rt></ruby>の下に自転車の輪が見えた。人力の<ruby>梶棒<rt>かじぼう</rt></ruby>が見えた。と思うと、白い男が両手で自分の頭を押えてうんと横へ向けた。自転車と人力車はまるで見えなくなった。鋏の音がちゃきちゃきする。</p><p>　やがて、白い男は自分の横へ廻って、耳の所を<ruby>刈<rt>か</rt></ruby>り始めた。毛が前の方へ飛ばなくなったから、安心して眼を開けた。<ruby>粟餅<rt>あわもち</rt></ruby>や、餅やあ、餅や、と云う声がすぐ、そこでする。小さい<ruby>杵<rt>きね</rt></ruby>をわざと<ruby>臼<rt>うす</rt></ruby>へあてて、<ruby>拍子<rt>ひょうし</rt></ruby>を取って餅を<ruby>搗<rt>つ</rt></ruby>いている。粟餅屋は子供の時に見たばかりだから、ちょっと様子が見たい。けれども粟餅屋はけっして鏡の中に出て来ない。ただ餅を搗く音だけする。</p><p>　自分はあるたけの視力で鏡の<ruby>角<rt>かど</rt></ruby>を<ruby>覗<rt>のぞ</rt></ruby>き込むようにして見た。すると帳場格子のうちに、いつの間にか一人の女が坐っている。色の浅黒い<ruby>眉毛<rt>まみえ</rt></ruby>の濃い<ruby>大柄<rt>おおがら</rt></ruby>な女で、髪を<ruby>銀杏返<rt>いちょうがえ</rt></ruby>しに<ruby>結<rt>ゆ</rt></ruby>って、<ruby>黒繻子<rt>くろじゅす</rt></ruby>の<ruby>半襟<rt>はんえり</rt></ruby>のかかった<ruby>素袷<rt>すあわせ</rt></ruby>で、<ruby>立膝<rt>たてひざ</rt></ruby>のまま、<ruby>札<rt>さつ</rt></ruby>の<ruby>勘定<rt>かんじょう</rt></ruby>をしている。札は十円札らしい。女は長い<ruby>睫<rt>まつげ</rt></ruby>を伏せて薄い<ruby>唇<rt>くちびる</rt></ruby>を結んで一生懸命に、札の数を読んでいるが、その読み方がいかにも早い。しかも札の数はどこまで行っても尽きる様子がない。<ruby>膝<rt>ひざ</rt></ruby>の上に乗っているのはたかだか百枚ぐらいだが、その百枚がいつまで勘定しても百枚である。</p><p>　自分は<ruby>茫然<rt>ぼうぜん</rt></ruby>としてこの女の顔と十円札を見つめていた。すると耳の元で白い男が大きな声で「洗いましょう」と云った。ちょうどうまい折だから、椅子から立ち上がるや否や、<ruby>帳場格子<rt>ちょうばごうし</rt></ruby>の方をふり返って見た。けれども格子のうちには女も札も何にも見えなかった。</p><p>　<ruby>代<rt>だい</rt></ruby>を払って表へ出ると、<ruby>門口<rt>かどぐち</rt></ruby>の左側に、<ruby>小判<rt>こばん</rt></ruby>なりの<ruby>桶<rt>おけ</rt></ruby>が五つばかり並べてあって、その中に赤い金魚や、<ruby>斑入<rt>ふいり</rt></ruby>の金魚や、<ruby>痩<rt>や</rt></ruby>せた金魚や、<ruby>肥<rt>ふと</rt></ruby>った金魚がたくさん入れてあった。そうして金魚売がその<ruby>後<rt>うしろ</rt></ruby>にいた。金魚売は自分の前に並べた金魚を見つめたまま、<ruby>頬杖<rt>ほおづえ</rt></ruby>を突いて、じっとしている。騒がしい<ruby>往来<rt>おうらい</rt></ruby>の活動にはほとんど心を留めていない。自分はしばらく立ってこの金魚売を眺めていた。けれども自分が眺めている間、金魚売はちっとも動かなかった。</p><div id="wb-c9-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c9-heading-第九夜">第九夜</h2><p><br></p><p>　世の中が何となくざわつき始めた。今にも<ruby>戦争<rt>いくさ</rt></ruby>が起りそうに見える。焼け出された<ruby>裸馬<rt>はだかうま</rt></ruby>が、夜昼となく、屋敷の<ruby>周囲<rt>まわり</rt></ruby>を<ruby>暴<rt>あ</rt></ruby>れ<ruby>廻<rt>まわ</rt></ruby>ると、それを夜昼となく<ruby>足軽共<rt>あしがるども</rt></ruby>が<ruby>犇<rt>ひしめ</rt></ruby>きながら<ruby>追<rt>おっ</rt></ruby>かけているような心持がする。それでいて家のうちは<ruby>森<rt>しん</rt></ruby>として静かである。</p><p>　家には若い母と三つになる子供がいる。父はどこかへ行った。父がどこかへ行ったのは、月の出ていない夜中であった。<ruby>床<rt>とこ</rt></ruby>の上で<ruby>草鞋<rt>わらじ</rt></ruby>を<ruby>穿<rt>は</rt></ruby>いて、黒い<ruby>頭巾<rt>ずきん</rt></ruby>を<ruby>被<rt>かぶ</rt></ruby>って、勝手口から出て行った。その時母の持っていた<ruby>雪洞<rt>ぼんぼり</rt></ruby>の<ruby>灯<rt>ひ</rt></ruby>が暗い<ruby>闇<rt>やみ</rt></ruby>に細長く射して、<ruby>生垣<rt>いけがき</rt></ruby>の手前にある古い<ruby>檜<rt>ひのき</rt></ruby>を照らした。</p><p>　父はそれきり帰って来なかった。母は毎日三つになる子供に「御父様は」と聞いている。子供は何とも云わなかった。しばらくしてから「あっち」と答えるようになった。母が「いつ御帰り」と聞いてもやはり「あっち」と答えて笑っていた。その時は母も笑った。そうして「今に御帰り」と云う言葉を何遍となく繰返して教えた。けれども子供は「今に」だけを覚えたのみである。時々は「御父様はどこ」と聞かれて「今に」と答える事もあった。</p><p>　夜になって、<ruby>四隣<rt>あたり</rt></ruby>が静まると、母は帯を<ruby>締<rt>し</rt></ruby>め直して、<ruby>鮫鞘<rt>さめざや</rt></ruby>の短刀を帯の間へ差して、子供を細帯で背中へ<ruby>背負<rt>しょ</rt></ruby>って、そっと<ruby>潜<rt>くぐ</rt></ruby>りから出て行く。母はいつでも<ruby>草履<rt>ぞうり</rt></ruby>を穿いていた。子供はこの草履の音を聞きながら母の背中で寝てしまう事もあった。</p><p>　<ruby>土塀<rt>つちべい</rt></ruby>の続いている屋敷町を西へ<ruby>下<rt>くだ</rt></ruby>って、だらだら坂を<ruby>降<rt>お</rt></ruby>り<ruby>尽<rt>つ</rt></ruby>くすと、大きな<ruby>銀杏<rt>いちょう</rt></ruby>がある。この銀杏を<ruby>目標<rt>めじるし</rt></ruby>に右に切れると、一丁ばかり奥に石の鳥居がある。片側は<ruby>田圃<rt>たんぼ</rt></ruby>で、片側は<ruby>熊笹<rt>くまざさ</rt></ruby>ばかりの中を鳥居まで来て、それを潜り抜けると、暗い杉の<ruby>木立<rt>こだち</rt></ruby>になる。それから二十間ばかり敷石伝いに突き当ると、古い拝殿の階段の下に出る。<ruby>鼠色<rt>ねずみいろ</rt></ruby>に洗い出された<ruby>賽銭箱<rt>さいせんばこ</rt></ruby>の上に、大きな鈴の<ruby>紐<rt>ひも</rt></ruby>がぶら下がって昼間見ると、その鈴の<ruby>傍<rt>そば</rt></ruby>に<ruby>八幡宮<rt>はちまんぐう</rt></ruby>と云う額が<ruby>懸<rt>かか</rt></ruby>っている。八の字が、<ruby>鳩<rt>はと</rt></ruby>が二羽向いあったような書体にできているのが面白い。そのほかにもいろいろの額がある。たいていは<ruby>家中<rt>かちゅう</rt></ruby>のものの射抜いた<ruby>金的<rt>きんてき</rt></ruby>を、射抜いたものの名前に添えたのが多い。たまには<ruby>太刀<rt>たち</rt></ruby>を納めたのもある。</p><p>　鳥居を<ruby>潜<rt>くぐ</rt></ruby>ると杉の<ruby>梢<rt>こずえ</rt></ruby>でいつでも<ruby>梟<rt>ふくろう</rt></ruby>が鳴いている。そうして、<ruby>冷飯草履<rt>ひやめしぞうり</rt></ruby>の音がぴちゃぴちゃする。それが拝殿の前でやむと、母はまず鈴を鳴らしておいて、すぐにしゃがんで<ruby>柏手<rt>かしわで</rt></ruby>を打つ。たいていはこの時梟が急に鳴かなくなる。それから母は一心不乱に夫の無事を祈る。母の考えでは、夫が<ruby>侍<rt>さむらい</rt></ruby>であるから、弓矢の神の<ruby>八幡<rt>はちまん</rt></ruby>へ、こうやって是非ない<ruby>願<rt>がん</rt></ruby>をかけたら、よもや<ruby>聴<rt>き</rt></ruby>かれぬ道理はなかろうと<ruby>一図<rt>いちず</rt></ruby>に思いつめている。</p><p>　子供はよくこの鈴の音で眼を<ruby>覚<rt>さ</rt></ruby>まして、<ruby>四辺<rt>あたり</rt></ruby>を見ると真暗だものだから、急に背中で泣き出す事がある。その時母は口の内で何か祈りながら、背を振ってあやそうとする。すると<ruby>旨<rt>うま</rt></ruby>く<ruby>泣<rt>な</rt></ruby>きやむ事もある。またますます<ruby>烈<rt>はげ</rt></ruby>しく泣き立てる事もある。いずれにしても母は容易に立たない。</p><p>　<ruby>一通<rt>ひととお</rt></ruby>り夫の身の上を祈ってしまうと、今度は細帯を解いて、背中の子を<ruby>摺<rt>ず</rt></ruby>りおろすように、背中から前へ廻して、両手に<ruby>抱<rt>だ</rt></ruby>きながら拝殿を<ruby>上<rt>のぼ</rt></ruby>って行って、「好い子だから、少しの<ruby>間<rt>ま</rt></ruby>、待っておいでよ」ときっと自分の頬を子供の頬へ<ruby>擦<rt>す</rt></ruby>りつける。そうして細帯を長くして、子供を<ruby>縛<rt>しば</rt></ruby>っておいて、その片端を拝殿の<ruby>欄干<rt>らんかん</rt></ruby>に<ruby>括<rt>くく</rt></ruby>りつける。それから段々を下りて来て二十間の敷石を往ったり来たり<ruby>御百度<rt>おひゃくど</rt></ruby>を踏む。</p><p>　拝殿に<ruby>括<rt>くく</rt></ruby>りつけられた子は、<ruby>暗闇<rt>くらやみ</rt></ruby>の中で、細帯の<ruby>丈<rt>たけ</rt></ruby>のゆるす限り、広縁の上を<ruby>這<rt>は</rt></ruby>い廻っている。そう云う時は母にとって、はなはだ<ruby>楽<rt>らく</rt></ruby>な夜である。けれども<ruby>縛<rt>しば</rt></ruby>った子にひいひい泣かれると、母は気が気でない。御百度の足が非常に早くなる。大変息が切れる。仕方のない時は、中途で拝殿へ<ruby>上<rt>あが</rt></ruby>って来て、いろいろすかしておいて、また御百度を踏み直す事もある。</p><p>　こう云う風に、幾晩となく母が気を<ruby>揉<rt>も</rt></ruby>んで、<ruby>夜<rt>よ</rt></ruby>の目も寝ずに心配していた父は、とくの昔に<ruby>浪士<rt>ろうし</rt></ruby>のために殺されていたのである。</p><p>　こんな<ruby>悲<rt>かなし</rt></ruby>い話を、夢の中で母から聞いた。</p><div id="wb-c10-chapter-root" class="nyoze-chapter-root nyoze-break-before-page" aria-hidden="true"></div><h2 id="wb-c10-heading-第十夜">第十夜</h2><p><br></p><p>　庄太郎が女に<ruby>攫<rt>さら</rt></ruby>われてから七日目の晩にふらりと帰って来て、急に熱が出てどっと、床に<ruby>就<rt>つ</rt></ruby>いていると云って<ruby>健<rt>けん</rt></ruby>さんが知らせに来た。</p><p>　庄太郎は町内一の<ruby>好男子<rt>こうだんし</rt></ruby>で、<ruby>至極<rt>しごく</rt></ruby>善良な正直者である。ただ一つの道楽がある。パナマの帽子を<ruby>被<rt>かぶ</rt></ruby>って、夕方になると<ruby>水菓子屋<rt>みずがしや</rt></ruby>の店先へ腰をかけて、<ruby>往来<rt>おうらい</rt></ruby>の女の顔を眺めている。そうしてしきりに感心している。そのほかにはこれと云うほどの特色もない。</p><p>　あまり女が通らない時は、往来を見ないで水菓子を見ている。水菓子にはいろいろある。<ruby>水蜜桃<rt>すいみつとう</rt></ruby>や、<ruby>林檎<rt>りんご</rt></ruby>や、<ruby>枇杷<rt>びわ</rt></ruby>や、バナナを<ruby>綺麗<rt>きれい</rt></ruby>に<ruby>籠<rt>かご</rt></ruby>に盛って、すぐ<ruby>見舞物<rt>みやげもの</rt></ruby>に持って行けるように二列に並べてある。庄太郎はこの籠を見ては<ruby>綺麗<rt>きれい</rt></ruby>だと云っている。商売をするなら水菓子屋に限ると云っている。そのくせ自分はパナマの帽子を被ってぶらぶら遊んでいる。</p><p>　この色がいいと云って、<ruby>夏蜜柑<rt>なつみかん</rt></ruby>などを品評する事もある。けれども、かつて<ruby>銭<rt>ぜに</rt></ruby>を出して水菓子を買った事がない。ただでは無論食わない。色ばかり<ruby>賞<rt>ほ</rt></ruby>めている。</p><p>　ある夕方一人の女が、不意に店先に立った。身分のある人と見えて立派な服装をしている。その着物の色がひどく庄太郎の気に入った。その上庄太郎は大変女の顔に感心してしまった。そこで大事なパナマの帽子を<ruby>脱<rt>と</rt></ruby>って<ruby>丁寧<rt>ていねい</rt></ruby>に<ruby>挨拶<rt>あいさつ</rt></ruby>をしたら、女は<ruby>籠詰<rt>かごづめ</rt></ruby>の一番大きいのを<ruby>指<rt>さ</rt></ruby>して、これを下さいと云うんで、庄太郎はすぐその籠を取って渡した。すると女はそれをちょっと<ruby>提<rt>さ</rt></ruby>げて見て、大変重い事と云った。</p><p>　庄太郎は元来<ruby>閑人<rt>ひまじん</rt></ruby>の上に、すこぶる<ruby>気作<rt>きさく</rt></ruby>な男だから、ではお宅まで持って参りましょうと云って、女といっしょに水菓子屋を出た。それぎり帰って来なかった。</p><p>　いかな庄太郎でも、あんまり<ruby>呑気<rt>のんき</rt></ruby>過ぎる。<ruby>只事<rt>ただごと</rt></ruby>じゃ無かろうと云って、親類や友達が騒ぎ出していると、七日目の晩になって、ふらりと帰って来た。そこで大勢寄ってたかって、庄さんどこへ行っていたんだいと聞くと、庄太郎は電車へ乗って山へ行ったんだと答えた。</p><p>　何でもよほど長い電車に違いない。庄太郎の云うところによると、電車を下りるとすぐと原へ出たそうである。非常に広い原で、どこを見廻しても青い草ばかり<ruby>生<rt>は</rt></ruby>えていた。女といっしょに草の上を歩いて行くと、急に<ruby>絶壁<rt>きりぎし</rt></ruby>の<ruby>天辺<rt>てっぺん</rt></ruby>へ出た。その時女が庄太郎に、ここから飛び込んで御覧なさいと云った。底を<ruby>覗<rt>のぞ</rt></ruby>いて見ると、<ruby>切岸<rt>きりぎし</rt></ruby>は見えるが底は見えない。庄太郎はまたパナマの帽子を脱いで再三辞退した。すると女が、もし思い切って飛び込まなければ、<ruby>豚<rt>ぶた</rt></ruby>に<ruby>舐<rt>な</rt></ruby>められますが好うござんすかと聞いた。庄太郎は豚と雲右衛門が<ruby>大嫌<rt>だいきらい</rt></ruby>だった。けれども命には<ruby>易<rt>か</rt></ruby>えられないと思って、やっぱり飛び込むのを見合せていた。ところへ豚が一匹鼻を鳴らして来た。庄太郎は仕方なしに、持っていた細い<ruby>檳榔樹<rt>びんろうじゅ</rt></ruby>の<ruby>洋杖<rt>ステッキ</rt></ruby>で、豚の<ruby>鼻頭<rt>はなづら</rt></ruby>を<ruby>打<rt>ぶ</rt></ruby>った。豚はぐうと云いながら、ころりと<ruby>引<rt>ひ</rt></ruby>っ<ruby>繰<rt>く</rt></ruby>り<ruby>返<rt>かえ</rt></ruby>って、絶壁の下へ落ちて行った。庄太郎はほっと<ruby>一<rt>ひ</rt></ruby>と<ruby>息接<rt>いきつ</rt></ruby>いでいるとまた一匹の豚が大きな鼻を庄太郎に<ruby>擦<rt>す</rt></ruby>りつけに来た。庄太郎はやむをえずまた洋杖を振り上げた。豚はぐうと鳴いてまた<ruby>真逆様<rt>まっさかさま</rt></ruby>に穴の底へ<ruby>転<rt>ころ</rt></ruby>げ込んだ。するとまた一匹あらわれた。この時庄太郎はふと気がついて、向うを見ると、<ruby>遥<rt>はるか</rt></ruby>の青草原の尽きる<ruby>辺<rt>あたり</rt></ruby>から幾万匹か数え切れぬ豚が、<ruby>群<rt>むれ</rt></ruby>をなして一直線に、この絶壁の上に立っている庄太郎を<ruby>目懸<rt>めが</rt></ruby>けて鼻を鳴らしてくる。庄太郎は<ruby>心<rt>しん</rt></ruby>から恐縮した。けれども仕方がないから、近寄ってくる豚の鼻頭を、一つ一つ<ruby>丁寧<rt>ていねい</rt></ruby>に檳榔樹の洋杖で打っていた。不思議な事に洋杖が鼻へ<ruby>触<rt>さわ</rt></ruby>りさえすれば豚はころりと谷の底へ落ちて行く。<ruby>覗<rt>のぞ</rt></ruby>いて見ると底の見えない絶壁を、<ruby>逆<rt>さか</rt></ruby>さになった豚が行列して落ちて行く。自分がこのくらい多くの豚を谷へ落したかと思うと、庄太郎は我ながら<ruby>怖<rt>こわ</rt></ruby>くなった。けれども豚は続々くる。黒雲に足が<ruby>生<rt>は</rt></ruby>えて、青草を踏み分けるような勢いで<ruby>無尽蔵<rt>むじんぞう</rt></ruby>に鼻を鳴らしてくる。</p><p>　庄太郎は必死の勇をふるって、豚の鼻頭を<ruby>七日<rt>なのか</rt></ruby><ruby>六晩<rt>むばん</rt></ruby><ruby>叩<rt>たた</rt></ruby>いた。けれども、とうとう精根が尽きて、手が<ruby>蒟蒻<rt>こんにゃく</rt></ruby>のように弱って、しまいに豚に<ruby>舐<rt>な</rt></ruby>められてしまった。そうして絶壁の上へ倒れた。</p><p>　健さんは、庄太郎の話をここまでして、だからあんまり女を見るのは<ruby>善<rt>よ</rt></ruby>くないよと云った。自分ももっともだと思った。けれども健さんは庄太郎のパナマの帽子が貰いたいと云っていた。</p><p>　庄太郎は助かるまい。パナマは健さんのものだろう。</p></div>
+<div class="nyoze-web-book-transition-mask" data-wb-transition-mask aria-hidden="true"></div>
+<div class="nyoze-web-book-transition-overlay" data-wb-transition-overlay aria-hidden="true"></div>
+</div>
+<footer class="nyoze-web-book-reader-footer" data-wb-reader-footer>
+<span data-wb-footer-pages role="status" aria-live="polite" aria-atomic="true" aria-label="現在のページ 1 / 1">1 / 1</span>
+</footer>
+</div>
+</main>
+<div id="nyoze-web-book-chapter-titles" hidden><span data-wb-chapter="1" data-wb-title="第一夜"></span><span data-wb-chapter="2" data-wb-title="第二夜"></span><span data-wb-chapter="3" data-wb-title="第三夜"></span><span data-wb-chapter="4" data-wb-title="第四夜"></span><span data-wb-chapter="5" data-wb-title="第五夜"></span><span data-wb-chapter="6" data-wb-title="第六夜"></span><span data-wb-chapter="7" data-wb-title="第七夜"></span><span data-wb-chapter="8" data-wb-title="第八夜"></span><span data-wb-chapter="9" data-wb-title="第九夜"></span><span data-wb-chapter="10" data-wb-title="第十夜"></span></div>
+<script>
+(function () {
+  'use strict';
+
+  var COLUMN_GAP = 40;
+  var HIDE_DELAY_MS = 3500;
+  var MIN_SCALE = 0.8;
+  var MAX_SCALE = 1.5;
+  var SCALE_STEP = 0.05;
+  var MIN_INLINE_INSET = 12;
+  var MIN_BLOCK_INSET = 16;
+  var INSET_TOP_DEFAULT = 32;
+  var INSET_BOTTOM_DEFAULT = 16;
+  var INSET_INLINE_DEFAULT = 16;
+  var TRANSITION_DEFAULT_MODE = 'fade';
+  var TRANSITION_SPEED_MIN_MS = 200;
+  var TRANSITION_SPEED_MAX_MS = 1000;
+  var TRANSITION_SPEED_STEP_MS = 50;
+  var TRANSITION_SPEED_DEFAULT_MS = 500;
+  var TRANSITION_FADE_OUT_RATIO = 0.45;
+  var TRANSITION_FADE_FALLBACK_BUFFER_MS = 80;
+  var TRANSITION_CLASS_FADE_OUT = 'is-wb-transition-fade-out';
+  var TRANSITION_CLASS_FADE_IN = 'is-wb-transition-fade-in';
+  var TRANSITION_CLASS_ZOOM = 'is-wb-transition-zoom';
+  var TRANSITION_CLASS_SLIDE = 'is-wb-transition-slide';
+
+  // WB-R13: tap / swipe gesture thresholds (single source of truth — do not
+  // scatter magic numbers across the handlers below).
+  var GESTURE_TAP_MAX_MOVEMENT_PX = 10;
+  var GESTURE_TAP_MAX_DURATION_MS = 500;
+  var GESTURE_SWIPE_MIN_DISTANCE_PX = 48;
+  var GESTURE_SWIPE_MIN_HORIZONTAL_RATIO = 1.5;
+  var GESTURE_SWIPE_MAX_DURATION_MS = 800;
+  var GESTURE_INTERACTIVE_ROLES = {
+    button: 1, link: 1, menuitem: 1, menuitemcheckbox: 1, menuitemradio: 1,
+    checkbox: 1, radio: 1, switch: 1, slider: 1, spinbutton: 1, tab: 1,
+    textbox: 1, combobox: 1, searchbox: 1, option: 1, treeitem: 1, gridcell: 1
+  };
+
+  // 用紙枠の既定値をモバイル環境では OFF にする閾値。coarse pointer
+  // （タッチ）と組み合わせて判定するため、デスクトップブラウザのウィンドウを
+  // 狭くしただけのケースは対象にならない（マウス操作の既存挙動は変えない）。
+  // innerWidth 単体ではなく min(innerWidth, innerHeight) を見るのは、横持ち
+  // スマートフォン（実効幅が閾値を超える）でも一貫して OFF にするため、かつ
+  // ポートレートのタブレット（短辺がこの閾値より大きい）を誤って対象にしない
+  // ため。
+  var MOBILE_NARROW_VIEWPORT_MAX_DIMENSION_PX = 600;
+
+  function isMobileNarrowViewport() {
+    var coarsePointer = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+    var smallerDimension = Math.min(window.innerWidth, window.innerHeight);
+    return coarsePointer && smallerDimension <= MOBILE_NARROW_VIEWPORT_MAX_DIMENSION_PX;
+  }
+
+  var FONT_FAMILIES = {
+    mincho: '"Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Noto Serif CJK JP", "Noto Serif JP", serif',
+    gothic: '"Yu Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", "Noto Sans JP", sans-serif'
+  };
+
+  var root = document.body;
+  if (!root || !root.classList.contains('nyoze-web-book-root')) return;
+  var hasAuthorPalette = root.getAttribute('data-wb-author-palette') === 'true';
+  var defaultTheme = hasAuthorPalette ? 'author' : 'classic';
+
+  var viewport = document.querySelector('.nyoze-web-book-viewport');
+  var flow = document.querySelector('.nyoze-web-book-flow');
+  var prevBtn = document.querySelector('[data-wb-prev]');
+  var nextBtn = document.querySelector('[data-wb-next]');
+  var statusEl = document.querySelector('[data-wb-status]');
+  var chrome = document.querySelector('.nyoze-web-book-chrome');
+  var outline = document.getElementById('nyoze-web-book-outline');
+  var outlineToggle = document.querySelector('[data-wb-outline-toggle]');
+  var settings = document.getElementById('nyoze-web-book-settings');
+  var settingsToggle = document.querySelector('[data-wb-settings-toggle]');
+  var backdrop = document.querySelector('[data-wb-backdrop]');
+  var scaleDecrease = document.querySelector('[data-wb-scale-decrease]');
+  var scaleIncrease = document.querySelector('[data-wb-scale-increase]');
+  var scaleStatus = document.querySelector('[data-wb-scale-status]');
+  var themeSelect = document.querySelector('[data-wb-theme-select]');
+  var pageInsetTopSelect = document.querySelector('select[data-wb-page-inset-top]');
+  var pageInsetBottomSelect = document.querySelector('select[data-wb-page-inset-bottom]');
+  var pageInsetInlineSelect = document.querySelector('select[data-wb-page-inset-inline]');
+  var paperFrameButton = document.querySelector('button[data-wb-paper-frame]');
+  var headerEnabledButton = document.querySelector('button[data-wb-header-enabled]');
+  var headerAlignSelect = document.querySelector('select[data-wb-header-align]');
+  var headerShowTitleButton = document.querySelector('button[data-wb-header-show-title]');
+  var headerShowAuthorButton = document.querySelector('button[data-wb-header-show-author]');
+  var footerEnabledButton = document.querySelector('button[data-wb-footer-enabled]');
+  var footerAlignSelect = document.querySelector('select[data-wb-footer-align]');
+  var footerPageStatus = document.querySelector('[data-wb-footer-pages]');
+  var resetBtn = document.querySelector('[data-wb-reset]');
+  var transitionSelect = document.querySelector('select[data-wb-transition-select]');
+  var transitionSpeedRange = document.querySelector('input[data-wb-transition-speed-range]');
+  var transitionSpeedStatus = document.querySelector('[data-wb-transition-speed-status]');
+  var transitionMask = document.querySelector('[data-wb-transition-mask]');
+  var transitionOverlay = document.querySelector('[data-wb-transition-overlay]');
+  if (!viewport || !flow) return;
+
+  var html = document.documentElement;
+  function normalizeWritingMode(value) {
+    return value === 'horizontal-tb' ? 'horizontal-tb' : 'vertical-rl';
+  }
+
+  function normalizePageInset(value, fallback) {
+    var numeric = Number(value);
+    if (!isFinite(numeric)) return fallback;
+    var stepped = Math.round(numeric / 8) * 8;
+    return Math.min(80, Math.max(0, stepped));
+  }
+
+  function effectiveBlockInset(value) {
+    return MIN_BLOCK_INSET + value;
+  }
+
+  function effectiveInlineInset(value) {
+    return Math.max(MIN_INLINE_INSET, value);
+  }
+
+  var initialWritingMode = normalizeWritingMode(
+    root.getAttribute('data-wb-writing-mode') ||
+      (html && html.getAttribute('data-writing-mode')) ||
+      (root.classList.contains('nyoze-writing-mode-horizontal-tb') ? 'horizontal-tb' : 'vertical-rl'),
+  );
+  var writingMode = initialWritingMode;
+  var isVertical = writingMode === 'vertical-rl';
+
+  var pageIndex = 0;
+  var pageCount = 1;
+  var pitch = 0;
+  var gap = COLUMN_GAP;
+  var measureQueued = false;
+  var fontScale = 1;
+  var fontKey = 'mincho';
+  var headingFontAttr =
+    root.getAttribute('data-wb-heading-font') ||
+    root.getAttribute('data-wb-heading-font-initial') ||
+    'same-as-body';
+  var headingFontKey =
+    headingFontAttr === 'mincho' || headingFontAttr === 'gothic' || headingFontAttr === 'same-as-body'
+      ? headingFontAttr
+      : 'same-as-body';
+  var initialHeadingFontAttr = root.getAttribute('data-wb-heading-font-initial') || headingFontKey;
+  var initialHeadingFont =
+    initialHeadingFontAttr === 'mincho' ||
+    initialHeadingFontAttr === 'gothic' ||
+    initialHeadingFontAttr === 'same-as-body'
+      ? initialHeadingFontAttr
+      : 'same-as-body';
+  var themeKey = defaultTheme;
+  var pageInsetTop = normalizePageInset(root.getAttribute('data-wb-page-inset-top'), INSET_TOP_DEFAULT);
+  var pageInsetBottom = normalizePageInset(root.getAttribute('data-wb-page-inset-bottom'), INSET_BOTTOM_DEFAULT);
+  var pageInsetInline = normalizePageInset(root.getAttribute('data-wb-page-inset-inline'), INSET_INLINE_DEFAULT);
+  var paperFrame = root.getAttribute('data-wb-paper-frame') !== 'off';
+  var headerEnabled = root.getAttribute('data-wb-header-enabled') !== 'off';
+  var headerAlign = root.getAttribute('data-wb-header-align') || 'left';
+  var headerShowTitle = root.getAttribute('data-wb-header-show-title') !== 'off';
+  var headerShowAuthor = root.getAttribute('data-wb-header-show-author') === 'on';
+  var footerEnabled = root.getAttribute('data-wb-footer-enabled') !== 'off';
+  var footerAlign = root.getAttribute('data-wb-footer-align') || 'right';
+  var transitionMode = normalizeTransitionMode(root.getAttribute('data-wb-transition'));
+  var transitionSpeedMs = normalizeTransitionSpeed(root.getAttribute('data-wb-transition-speed'));
+  var transitionGeneration = 0;
+  var transitionCleanup = null;
+  var reducedMotionMedia = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+  var pendingRestoreRatio = null;
+  var destroyed = false;
+  var outlineOpen = false;
+  var settingsOpen = false;
+  var hideTimer = null;
+  var chromeHovered = false;
+  var chromeFocused = false;
+  var printMedia = window.matchMedia ? window.matchMedia('print') : null;
+  var printing = !!(printMedia && printMedia.matches);
+
+  // WB-R13: single in-flight gesture (primary pointer only). A second
+  // concurrent pointer cancels it (pinch / multi-touch guard).
+  var gesturePointerId = null;
+  var gesturePointerType = null;
+  var gestureStartX = 0;
+  var gestureStartY = 0;
+  var gestureStartTime = 0;
+  var gestureCanceled = false;
+  var gestureChromeHiddenAtStart = false;
+  var gestureHadSelectionAtStart = false;
+  var activePointerCount = 0;
+
+  function isPrinting() {
+    return printing || !!(printMedia && printMedia.matches);
+  }
+
+  function clampIndex(index, count) {
+    if (!isFinite(index)) return 0;
+    var max = Math.max(0, Math.floor(count) - 1);
+    return Math.min(Math.max(Math.floor(index), 0), max);
+  }
+
+  function clampScale(value) {
+    if (!isFinite(value)) return 1;
+    var stepped = Math.round(value / SCALE_STEP) * SCALE_STEP;
+    return Math.min(MAX_SCALE, Math.max(MIN_SCALE, Math.round(stepped * 100) / 100));
+  }
+
+  function normalizeFurnitureAlign(value) {
+    return value === 'left' || value === 'right' ? value : 'center';
+  }
+
+  function progressPercent(index, count) {
+    if (count <= 1) return 0;
+    return Math.round((100 * clampIndex(index, count)) / (count - 1));
+  }
+
+  function setAria() {
+    viewport.setAttribute('data-wb-page-index', String(pageIndex));
+    viewport.setAttribute('data-wb-page-count', String(pageCount));
+    root.setAttribute('data-wb-page-index', String(pageIndex));
+    root.setAttribute('data-wb-page-count', String(pageCount));
+    if (statusEl) {
+      statusEl.textContent = progressPercent(pageIndex, pageCount) + '%';
+    }
+    if (footerPageStatus) {
+      var footerText = String(pageIndex + 1) + ' / ' + String(pageCount);
+      footerPageStatus.textContent = footerText;
+      footerPageStatus.setAttribute('aria-label', '現在のページ ' + footerText);
+    }
+    if (prevBtn) prevBtn.disabled = pageIndex <= 0;
+    if (nextBtn) nextBtn.disabled = pageIndex >= pageCount - 1;
+  }
+
+  function applyTransform() {
+    if (destroyed || isPrinting()) return;
+    var offset = pageIndex * pitch;
+    root.style.setProperty('--wb-page-offset', String(-offset) + 'px');
+  }
+
+  function applyScreenGeometry(layout) {
+    root.style.setProperty('--wb-frame-width', layout.frameWidth + 'px');
+    root.style.setProperty('--wb-frame-height', layout.frameHeight + 'px');
+    root.style.setProperty('--wb-page-pitch', layout.pitch + 'px');
+    root.style.setProperty('--wb-column-width', layout.columnWidth + 'px');
+    root.style.setProperty('--wb-column-gap', layout.gap + 'px');
+    root.style.setProperty('--wb-inline-padding', layout.inlinePadding + 'px');
+    root.style.setProperty('--wb-effective-page-inset-top', layout.effectiveTop + 'px');
+    root.style.setProperty('--wb-effective-page-inset-bottom', layout.effectiveBottom + 'px');
+    root.style.setProperty('--wb-effective-page-inset-inline', layout.effectiveInline + 'px');
+  }
+
+  function computeLayout() {
+    var frameWidth = viewport.clientWidth;
+    var frameHeight = viewport.clientHeight;
+    if (!isFinite(frameWidth) || frameWidth <= 0) return null;
+    if (!isFinite(frameHeight) || frameHeight <= 0) return null;
+    var nextPitch = isVertical ? frameHeight : frameWidth;
+    var effectiveTop = effectiveBlockInset(pageInsetTop);
+    var effectiveBottom = effectiveBlockInset(pageInsetBottom);
+    var effectiveInline = effectiveInlineInset(pageInsetInline);
+    // physical inset はそのまま padding と column gap の両方へ使う。vertical-rl は
+    // y 軸へ上下余白、horizontal-tb は x 軸へ左右余白だけを織り込み、実 fragment
+    // stride と canonical transform pitch の不一致を作らない。
+    var nextGap = isVertical
+      ? effectiveTop + effectiveBottom
+      : effectiveInline * 2;
+    var columnWidth = Math.max(1, Math.trunc(nextPitch - nextGap));
+    return {
+      pitch: nextPitch,
+      gap: nextGap,
+      columnWidth: columnWidth,
+      frameWidth: frameWidth,
+      frameHeight: frameHeight,
+      inlinePadding: 0,
+      effectiveTop: effectiveTop,
+      effectiveBottom: effectiveBottom,
+      effectiveInline: effectiveInline,
+    };
+  }
+
+  function measure() {
+    if (destroyed || isPrinting()) return;
+    // reflow / 再計測は演出を即時 cleanup してから行う（fade の保留切替は
+    // ここで commit されるため、ratio は確定後の pageIndex から計算される）。
+    cancelTransition();
+    var layout = computeLayout();
+    if (!layout) {
+      pendingRestoreRatio = null;
+      pageCount = 1;
+      pitch = 0;
+      gap = COLUMN_GAP;
+      pageIndex = 0;
+      root.style.setProperty('--wb-page-offset', '0px');
+      setAria();
+      return;
+    }
+
+    var oldMax = Math.max(1, pageCount - 1);
+    var ratio = pendingRestoreRatio === null ? pageIndex / oldMax : pendingRestoreRatio;
+    pendingRestoreRatio = null;
+
+    pitch = layout.pitch;
+    gap = layout.gap;
+    applyScreenGeometry(layout);
+    root.style.setProperty('--wb-page-offset', '0px');
+    void flow.offsetHeight;
+
+    var viewportScroll = isVertical ? viewport.scrollHeight : viewport.scrollWidth;
+    var flowScroll = isVertical ? flow.scrollHeight : flow.scrollWidth;
+    var setupScrollSize = Math.max(
+      isFinite(viewportScroll) ? viewportScroll : 0,
+      isFinite(flowScroll) ? flowScroll : 0,
+    );
+    if (!isFinite(setupScrollSize) || setupScrollSize <= 0) {
+      setupScrollSize = pitch;
+    }
+
+    pageCount = pitch > 0 ? Math.max(1, Math.ceil(setupScrollSize / pitch)) : 1;
+    pageIndex = clampIndex(Math.round(ratio * Math.max(0, pageCount - 1)), pageCount);
+    applyTransform();
+    setAria();
+  }
+
+  function queueMeasure() {
+    if (destroyed || isPrinting()) return;
+    if (measureQueued) return;
+    measureQueued = true;
+    requestAnimationFrame(function () {
+      measureQueued = false;
+      if (destroyed || isPrinting()) return;
+      measure();
+    });
+  }
+
+  function currentPageRatio() {
+    if (pageCount < 1 || pitch <= 0) return null;
+    return pageIndex / Math.max(1, pageCount - 1);
+  }
+
+  function requestLayoutReflow() {
+    if (destroyed || isPrinting()) return;
+    // 比率 capture の前に演出を中断し、保留中の fade page 切替を確定させる。
+    cancelTransition();
+    if (pendingRestoreRatio === null) {
+      var ratio = currentPageRatio();
+      if (ratio === null) return;
+      pendingRestoreRatio = Math.min(1, Math.max(0, ratio));
+    }
+    queueMeasure();
+  }
+
+  function goTo(index) {
+    if (isPrinting()) return;
+    pageIndex = clampIndex(index, pageCount);
+    applyTransform();
+    setAria();
+  }
+
+  /* ============================================================
+     WB-R5 page transition — 演出専用。pageIndex + cached metrics +
+     canonical transform の正本は変えず、viewport の opacity / 小さな
+     visual transform と、viewport を覆う mask / overlay だけを animate
+     する。state は root の data-wb-* / CSS custom property のみ。
+     ============================================================ */
+
+  function normalizeTransitionMode(value) {
+    return value === 'none' || value === 'fade' || value === 'slide' || value === 'zoom'
+      ? value
+      : TRANSITION_DEFAULT_MODE;
+  }
+
+  function normalizeTransitionSpeed(value) {
+    var numeric = Number(value);
+    if (!isFinite(numeric)) return TRANSITION_SPEED_DEFAULT_MS;
+    var stepped = Math.round(numeric / TRANSITION_SPEED_STEP_MS) * TRANSITION_SPEED_STEP_MS;
+    return Math.min(TRANSITION_SPEED_MAX_MS, Math.max(TRANSITION_SPEED_MIN_MS, stepped));
+  }
+
+  function prefersReducedMotion() {
+    return !!(reducedMotionMedia && reducedMotionMedia.matches);
+  }
+
+  /** print / reduced motion / destroy 中の実効遷移は方式にかかわらず none。 */
+  function effectiveTransitionMode() {
+    if (destroyed || isPrinting() || prefersReducedMotion()) return 'none';
+    return transitionMode;
+  }
+
+  function setTransitionStateAttr(state) {
+    root.setAttribute('data-wb-transition-state', state);
+  }
+
+  /**
+   * 全 transition class / direction attribute / inline duration を外し idle
+   * へ戻す（冪等）。演出用 visual cleanup の唯一の正本 — fade/slide/zoom の
+   * 通常完了・中断・方式変更・none 選択・reflow・resize・Reset・print 開始・
+   * pagehide・reduced-motion のすべてがこの関数を経由する。root の
+   * --wb-transition-speed（session setting の正本）はここでは触らない。
+   */
+  function clearTransitionVisuals() {
+    viewport.classList.remove(TRANSITION_CLASS_FADE_OUT, TRANSITION_CLASS_FADE_IN, TRANSITION_CLASS_ZOOM);
+    viewport.style.removeProperty('--wb-transition-duration');
+    if (transitionMask) {
+      transitionMask.classList.remove(TRANSITION_CLASS_SLIDE);
+      transitionMask.removeAttribute('data-wb-transition-direction');
+      transitionMask.style.removeProperty('--wb-transition-duration');
+    }
+    if (transitionOverlay) {
+      transitionOverlay.classList.remove(TRANSITION_CLASS_SLIDE);
+      transitionOverlay.removeAttribute('data-wb-transition-direction');
+      transitionOverlay.style.removeProperty('--wb-transition-duration');
+    }
+    setTransitionStateAttr('idle');
+  }
+
+  /**
+   * 実行中の演出を中断して idle へ戻す。generation を進めるため、中断済み
+   * 演出の animationend / timer が後から届いても class を復活させない。
+   * fade 第1相（page index 未切替）の中断では、保留中のページ切替だけを
+   * 即時 commit する — 演出は装飾であり、確定済みのページ移動要求を落とさない。
+   */
+  function cancelTransition() {
+    transitionGeneration += 1;
+    var cleanup = transitionCleanup;
+    transitionCleanup = null;
+    if (cleanup) cleanup();
+    clearTransitionVisuals();
+  }
+
+  /** 演出経路のページ切替。print 中でも要求済みの index / aria は確定させる。 */
+  function commitPageIndex(target) {
+    pageIndex = clampIndex(target, pageCount);
+    applyTransform();
+    setAria();
+  }
+
+  function beginTransitionRun(stateName) {
+    transitionGeneration += 1;
+    root.setAttribute('data-wb-transition-generation', String(transitionGeneration));
+    setTransitionStateAttr(stateName);
+    return transitionGeneration;
+  }
+
+  /**
+   * fade: 旧ページを fade-out → 完了検知（animationend 主 / 保護 fallback
+   * timer 従）で canonical transform による page index 切替 → 同一 task 内で
+   * fade-in class へ差し替える。fade-out は forwards で opacity 0 を保持した
+   * まま handoff するため、旧ページが一瞬フル不透明へ戻るちらつきは出ない。
+   */
+  function startFadeTransition(target, totalMs) {
+    var generation = beginTransitionRun('fade-out');
+    var fadeOutMs = Math.round(totalMs * TRANSITION_FADE_OUT_RATIO);
+    var fadeInMs = Math.max(0, totalMs - fadeOutMs);
+    var settled = false;
+
+    function handleAnimationEnd(event) {
+      if (event.target !== viewport) return;
+      finishFadeOut();
+    }
+
+    function detachFadeOut() {
+      viewport.removeEventListener('animationend', handleAnimationEnd);
+      clearTimeout(fallbackTimer);
+    }
+
+    function finishFadeOut() {
+      if (settled) return;
+      settled = true;
+      detachFadeOut();
+      if (generation !== transitionGeneration || destroyed) return;
+      commitPageIndex(target);
+      viewport.classList.remove(TRANSITION_CLASS_FADE_OUT);
+      viewport.style.setProperty('--wb-transition-duration', String(fadeInMs) + 'ms');
+      void viewport.offsetWidth;
+      viewport.classList.add(TRANSITION_CLASS_FADE_IN);
+      setTransitionStateAttr('fade-in');
+      var fadeInTimer = setTimeout(function () {
+        if (generation !== transitionGeneration) return;
+        transitionCleanup = null;
+        clearTransitionVisuals();
+      }, fadeInMs);
+      transitionCleanup = function () {
+        clearTimeout(fadeInTimer);
+      };
+    }
+
+    var fallbackTimer = setTimeout(
+      finishFadeOut,
+      fadeOutMs + TRANSITION_FADE_FALLBACK_BUFFER_MS,
+    );
+    viewport.addEventListener('animationend', handleAnimationEnd);
+    viewport.style.setProperty('--wb-transition-duration', String(fadeOutMs) + 'ms');
+    void viewport.offsetWidth;
+    viewport.classList.add(TRANSITION_CLASS_FADE_OUT);
+
+    transitionCleanup = function () {
+      settled = true;
+      detachFadeOut();
+      commitPageIndex(target);
+    };
+  }
+
+  /**
+   * slide: page index は演出開始と同じ task で切り替え済み（最初に paint
+   * される frame では新ページ + 全面 mask が同時に成立する）。opaque な
+   * paper-color mask と半透明 overlay が同方向・同速度で物理 x 軸を退出して
+   * 新ページを露出する。flow / stage の transform は一切動かさない。
+   */
+  function startSlideTransition(target, direction, durationMs) {
+    commitPageIndex(target);
+    if (!transitionMask || !transitionOverlay) return;
+    var generation = beginTransitionRun('slide');
+    transitionMask.style.setProperty('--wb-transition-duration', String(durationMs) + 'ms');
+    transitionOverlay.style.setProperty('--wb-transition-duration', String(durationMs) + 'ms');
+    void transitionMask.offsetWidth;
+    transitionMask.setAttribute('data-wb-transition-direction', direction);
+    transitionOverlay.setAttribute('data-wb-transition-direction', direction);
+    transitionMask.classList.add(TRANSITION_CLASS_SLIDE);
+    transitionOverlay.classList.add(TRANSITION_CLASS_SLIDE);
+    var timer = setTimeout(function () {
+      if (generation !== transitionGeneration) return;
+      transitionCleanup = null;
+      clearTransitionVisuals();
+    }, durationMs);
+    transitionCleanup = function () {
+      clearTimeout(timer);
+    };
+  }
+
+  /** zoom: 切替済みの新ページを opacity + 小さな scale で見せる。終了は identity。 */
+  function startZoomTransition(target, durationMs) {
+    commitPageIndex(target);
+    var generation = beginTransitionRun('zoom');
+    viewport.style.setProperty('--wb-transition-duration', String(durationMs) + 'ms');
+    void viewport.offsetWidth;
+    viewport.classList.add(TRANSITION_CLASS_ZOOM);
+    var timer = setTimeout(function () {
+      if (generation !== transitionGeneration) return;
+      transitionCleanup = null;
+      clearTransitionVisuals();
+    }, durationMs);
+    transitionCleanup = function () {
+      clearTimeout(timer);
+    };
+  }
+
+  /** Home / End / Outline / TOC jump など、遷移を発火しないページ移動。 */
+  function navigateWithoutTransition(index) {
+    cancelTransition();
+    goTo(index);
+  }
+
+  /**
+   * 隣接ページ移動（prev / next button、PageUp / PageDown、Arrow key）だけが
+   * 遷移を発火する。前の演出は必ず中断・cleanup してから始める（fade の保留
+   * page 切替はこの cancel で commit されるため、rapid navigation でも
+   * 1 操作 = 1 ページを失わない）。同じ page index への要求では発火しない。
+   */
+  function goBy(delta) {
+    if (isPrinting()) return;
+    cancelTransition();
+    var target = clampIndex(pageIndex + delta, pageCount);
+    if (target === pageIndex) return;
+    var mode = effectiveTransitionMode();
+    if (mode === 'fade') {
+      startFadeTransition(target, transitionSpeedMs);
+    } else if (mode === 'slide') {
+      startSlideTransition(target, delta > 0 ? 'next' : 'previous', transitionSpeedMs);
+    } else if (mode === 'zoom') {
+      startZoomTransition(target, transitionSpeedMs);
+    } else {
+      goTo(target);
+    }
+  }
+
+  function syncTransitionControls() {
+    if (transitionSelect && transitionSelect.value !== transitionMode) {
+      transitionSelect.value = transitionMode;
+    }
+    if (transitionSpeedRange) {
+      transitionSpeedRange.disabled = transitionMode === 'none';
+      if (transitionSpeedRange.value !== String(transitionSpeedMs)) {
+        transitionSpeedRange.value = String(transitionSpeedMs);
+      }
+    }
+    if (transitionSpeedStatus) {
+      transitionSpeedStatus.textContent = String(transitionSpeedMs) + 'ms';
+    }
+  }
+
+  function applyTransitionMode(next) {
+    var normalized = normalizeTransitionMode(next);
+    var changed = transitionMode !== normalized;
+    transitionMode = normalized;
+    root.setAttribute('data-wb-transition', transitionMode);
+    syncTransitionControls();
+    // 方式切替（none 選択を含む）は実行中の演出を即時中断する。
+    if (changed) cancelTransition();
+  }
+
+  function applyTransitionSpeed(next) {
+    transitionSpeedMs = normalizeTransitionSpeed(next);
+    root.setAttribute('data-wb-transition-speed', String(transitionSpeedMs));
+    root.style.setProperty('--wb-transition-speed', String(transitionSpeedMs) + 'ms');
+    syncTransitionControls();
+    // 実行中の animation は再起動しない。次のページ移動から新しい速度を使う。
+  }
+
+  function pageIndexForElement(el) {
+    if (!el || !(el instanceof Element) || pitch <= 0) return 0;
+    var flowRect = flow.getBoundingClientRect();
+    var elRect = el.getBoundingClientRect();
+    var offset = isVertical ? elRect.top - flowRect.top : elRect.left - flowRect.left;
+    if (!isFinite(offset)) return pageIndex;
+    return clampIndex(Math.floor(offset / pitch), pageCount);
+  }
+
+  function jumpToHeadingId(id) {
+    if (!id) return;
+    var target = null;
+    try {
+      if (window.CSS && CSS.escape) {
+        target = flow.querySelector('#' + CSS.escape(id));
+      }
+    } catch (e) {
+      target = null;
+    }
+    if (!target) {
+      try {
+        target = document.getElementById(id);
+      } catch (e2) {
+        target = null;
+      }
+    }
+    if (!target || !flow.contains(target)) return;
+    navigateWithoutTransition(pageIndexForElement(target));
+  }
+
+  function focusElement(el) {
+    if (!el || typeof el.focus !== 'function') return;
+    try {
+      el.focus({ preventScroll: true });
+    } catch (e) {
+      el.focus();
+    }
+  }
+
+  function setBackdropVisible(visible) {
+    if (!backdrop) return;
+    backdrop.hidden = !visible;
+  }
+
+  /**
+   * Outline drawer（physical right / backdrop / focus 復帰）。
+   * options.restoreFocus: 閉じるとき trigger へ focus を戻す（Escape / backdrop / jump）。
+   */
+  function setOutlineOpen(open, options) {
+    var next = !!open && !!(outline && outlineToggle && !outlineToggle.disabled);
+    if (next) setSettingsOpen(false);
+    var restoreFocus = !!(options && options.restoreFocus);
+    var wasOpen = outlineOpen;
+    outlineOpen = next;
+    if (!outline || !outlineToggle) return;
+    if (outlineOpen) {
+      outline.hidden = false;
+      setBackdropVisible(true);
+      outlineToggle.setAttribute('aria-expanded', 'true');
+      showChrome(true);
+      var firstItem = outline.querySelector('.nyoze-web-book-outline__item button');
+      focusElement(firstItem || outline);
+    } else {
+      outline.hidden = true;
+      setBackdropVisible(false);
+      outlineToggle.setAttribute('aria-expanded', 'false');
+      if (wasOpen && restoreFocus) focusElement(outlineToggle);
+      scheduleHide();
+    }
+  }
+
+  /** Settings popover（session-only、Outline とは排他）。 */
+  function setSettingsOpen(open, options) {
+    var next = !!open && !!(settings && settingsToggle);
+    if (next && outlineOpen) setOutlineOpen(false);
+    var restoreFocus = !!(options && options.restoreFocus);
+    var wasOpen = settingsOpen;
+    settingsOpen = next;
+    if (!settings || !settingsToggle) return;
+    if (settingsOpen) {
+      settings.hidden = false;
+      settingsToggle.setAttribute('aria-expanded', 'true');
+      showChrome(true);
+      var firstControl = settings.querySelector('button, select');
+      focusElement(firstControl || settings);
+    } else {
+      settings.hidden = true;
+      settingsToggle.setAttribute('aria-expanded', 'false');
+      if (wasOpen && restoreFocus) focusElement(settingsToggle);
+      scheduleHide();
+    }
+  }
+
+  function isEditableTarget(target) {
+    if (!target || target.nodeType !== 1) return false;
+    var el = target;
+    var tag = (el.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button') {
+      return true;
+    }
+    if (el.isContentEditable) return true;
+    return false;
+  }
+
+  function isInChrome(el) {
+    if (!el || el.nodeType !== 1) return false;
+    if (chrome && chrome.contains(el)) return true;
+    if (settings && settings.contains(el)) return true;
+    if (outline && outline.contains(el)) return true;
+    return false;
+  }
+
+  function focusIsInReaderBody() {
+    var active = document.activeElement;
+    if (!active || active === document.body || active === document.documentElement) {
+      return true;
+    }
+    if (isInChrome(active)) return false;
+    if (active === root || active === viewport || active === flow) return true;
+    if (viewport.contains(active)) return true;
+    return false;
+  }
+
+  /* ============================================================
+     WB-R13: tap / click / swipe page navigation + center chrome
+     toggle. Pointer Events only, primary pointer only, single
+     resolution point at pointerup. Adjacent navigation always goes
+     through goBy(delta) — no separate pageIndex / transform / aria
+     path. No transparent overlay DOM: delegation + coordinate math
+     against the existing .nyoze-web-book-viewport rect.
+     ============================================================ */
+
+  /** chrome / Settings / Outline / backdrop / interactive controls / links / editable never start a gesture. */
+  function isGestureExcludedTarget(el) {
+    if (!el || el.nodeType !== 1) return true;
+    if (isInChrome(el)) return true;
+    if (backdrop && backdrop.contains(el)) return true;
+    var node = el;
+    while (node && node.nodeType === 1) {
+      var tag = (node.tagName || '').toLowerCase();
+      if (
+        tag === 'button' || tag === 'input' || tag === 'select' ||
+        tag === 'textarea' || tag === 'label' || tag === 'summary' || tag === 'a'
+      ) {
+        return true;
+      }
+      if (node.isContentEditable) return true;
+      var role = node.getAttribute ? node.getAttribute('role') : null;
+      if (role && GESTURE_INTERACTIVE_ROLES[role]) return true;
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  /** mouse: primary button, no modifier keys (preserve context menu / modified click / text selection). */
+  function isEligibleMouseGesture(event) {
+    if (event.pointerType !== 'mouse') return true;
+    if (event.button !== 0) return false;
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return false;
+    return true;
+  }
+
+  function resetGestureTracking() {
+    gesturePointerId = null;
+    gesturePointerType = null;
+    gestureCanceled = false;
+  }
+
+  /**
+   * center third: toggle chrome without moving focus in, and without leaving
+   * focus trapped when hiding. 'wasHidden' is a snapshot taken at gesture
+   * start (pointerdown), not a live re-read here -- an incidental mousemove
+   * that lands between pointerdown and pointerup (e.g. a synthetic click
+   * that re-issues a move to the same coordinates) can otherwise reveal
+   * chrome mid-gesture and flip this decision out from under the tap.
+   */
+  function toggleChromeFromGesture(wasHidden) {
+    if (wasHidden) {
+      showChrome(false);
+      return;
+    }
+    clearHideTimer();
+    if (isInChrome(document.activeElement)) {
+      focusElement(viewport);
+    }
+    chromeHovered = false;
+    chromeFocused = false;
+    root.classList.add('nyoze-web-book-chrome-hidden');
+  }
+
+  /** left / center / right thirds of the reader viewport's physical width. Left/right reuse goBy(delta) only. */
+  function handleZoneTap(clientX, chromeWasHiddenAtStart) {
+    var rect = viewport.getBoundingClientRect();
+    if (!rect || !(rect.width > 0)) return;
+    var relativeX = clientX - rect.left;
+    var third = rect.width / 3;
+    if (relativeX < third) {
+      goBy(isVertical ? 1 : -1);
+      return;
+    }
+    if (relativeX > third * 2) {
+      goBy(isVertical ? -1 : 1);
+      return;
+    }
+    toggleChromeFromGesture(chromeWasHiddenAtStart);
+  }
+
+  /** swipe direction is zone-independent; horizontal is next/prev per writing mode. */
+  function handleSwipeNavigation(dx) {
+    var isLeftSwipe = dx < 0;
+    if (isVertical) {
+      goBy(isLeftSwipe ? -1 : 1);
+    } else {
+      goBy(isLeftSwipe ? 1 : -1);
+    }
+  }
+
+  function onReaderPointerDown(event) {
+    if (event.pointerId !== undefined) activePointerCount += 1;
+    if (destroyed || isPrinting() || settingsOpen || outlineOpen) return;
+    if (!event.isPrimary || activePointerCount > 1) {
+      // A second concurrent pointer joined: cancel whatever gesture was tracked (pinch / multi-touch guard).
+      if (gesturePointerId !== null) gestureCanceled = true;
+      return;
+    }
+    if (!isEligibleMouseGesture(event)) return;
+    var target = event.target;
+    if (!(target instanceof Element)) return;
+    if (isGestureExcludedTarget(target)) return;
+    if (target !== viewport && !viewport.contains(target)) return;
+
+    gesturePointerId = event.pointerId;
+    gesturePointerType = event.pointerType;
+    gestureStartX = event.clientX;
+    gestureStartY = event.clientY;
+    gestureStartTime = event.timeStamp || Date.now();
+    gestureCanceled = false;
+    // Snapshot chrome visibility now — see toggleChromeFromGesture() for why
+    // this must not be re-read live at pointerup.
+    gestureChromeHiddenAtStart = root.classList.contains('nyoze-web-book-chrome-hidden');
+    // Snapshot selection state now, not just at pointerup: a real mouse click
+    // on Chromium collapses an existing (non-collapsed) selection as part of
+    // its default pointerdown handling, so by pointerup the selection already
+    // reads collapsed and a live-only check there would miss it entirely.
+    var selectionAtStart = window.getSelection ? window.getSelection() : null;
+    gestureHadSelectionAtStart = !!(selectionAtStart && !selectionAtStart.isCollapsed);
+  }
+
+  function onReaderPointerMove(event) {
+    if (destroyed) return;
+    if (gesturePointerId === null || event.pointerId !== gesturePointerId) return;
+    if (gestureCanceled) return;
+    // Never intercept mouse movement: preserve native text-selection drag.
+    if (gesturePointerType === 'mouse') return;
+    var dx = event.clientX - gestureStartX;
+    var dy = event.clientY - gestureStartY;
+    if (
+      Math.abs(dx) >= GESTURE_SWIPE_MIN_DISTANCE_PX &&
+      Math.abs(dx) > Math.abs(dy) * GESTURE_SWIPE_MIN_HORIZONTAL_RATIO
+    ) {
+      // Committed horizontal swipe: stop native scroll / edge-navigation from
+      // fighting the gesture. Vertical-dominant movement is left alone so
+      // scrolling, pinch zoom, and system edge gestures keep working.
+      if (event.cancelable) event.preventDefault();
+    }
+  }
+
+  function onReaderPointerUp(event) {
+    if (event.pointerId !== undefined) activePointerCount = Math.max(0, activePointerCount - 1);
+    if (gesturePointerId === null || event.pointerId !== gesturePointerId) return;
+    var pointerType = gesturePointerType;
+    var canceled = gestureCanceled;
+    var startX = gestureStartX;
+    var startY = gestureStartY;
+    var chromeWasHiddenAtStart = gestureChromeHiddenAtStart;
+    var hadSelectionAtStart = gestureHadSelectionAtStart;
+    var endX = event.clientX;
+    var endY = event.clientY;
+    var elapsed = (event.timeStamp || Date.now()) - gestureStartTime;
+    resetGestureTracking();
+    if (destroyed || canceled) return;
+    if (isPrinting() || settingsOpen || outlineOpen) return;
+
+    // Never navigate away from an active text selection. Check both the
+    // snapshot taken at pointerdown (a real click's default handling can
+    // collapse the selection before pointerup fires — see onReaderPointerDown)
+    // and the live state (covers a selection made mid-gesture).
+    var selection = window.getSelection ? window.getSelection() : null;
+    if (hadSelectionAtStart || (selection && !selection.isCollapsed)) return;
+
+    var dx = endX - startX;
+    var dy = endY - startY;
+    var absDx = Math.abs(dx);
+    var absDy = Math.abs(dy);
+
+    if (absDx < GESTURE_TAP_MAX_MOVEMENT_PX && absDy < GESTURE_TAP_MAX_MOVEMENT_PX) {
+      // Small wiggle counts as a tap; a long press (held past the duration) does not.
+      if (elapsed <= GESTURE_TAP_MAX_DURATION_MS) handleZoneTap(startX, chromeWasHiddenAtStart);
+      return;
+    }
+
+    // Mouse drags never swipe-navigate (keeps desktop text selection intact).
+    if (pointerType === 'mouse') return;
+
+    if (
+      absDx >= GESTURE_SWIPE_MIN_DISTANCE_PX &&
+      absDx > absDy * GESTURE_SWIPE_MIN_HORIZONTAL_RATIO &&
+      elapsed <= GESTURE_SWIPE_MAX_DURATION_MS
+    ) {
+      handleSwipeNavigation(dx);
+    }
+  }
+
+  function onReaderPointerCancel(event) {
+    if (event.pointerId !== undefined) activePointerCount = Math.max(0, activePointerCount - 1);
+    if (gesturePointerId !== null && event.pointerId === gesturePointerId) {
+      resetGestureTracking();
+    }
+  }
+
+  document.addEventListener('pointerdown', onReaderPointerDown, { passive: true });
+  document.addEventListener('pointermove', onReaderPointerMove, { passive: false });
+  document.addEventListener('pointerup', onReaderPointerUp, { passive: true });
+  document.addEventListener('pointercancel', onReaderPointerCancel, { passive: true });
+
+  function applyScale(next) {
+    fontScale = clampScale(next);
+    root.style.setProperty('--wb-font-scale', String(fontScale));
+    if (scaleStatus) {
+      scaleStatus.textContent = Math.round(fontScale * 100) + '%';
+    }
+    if (scaleDecrease) scaleDecrease.disabled = fontScale <= MIN_SCALE;
+    if (scaleIncrease) scaleIncrease.disabled = fontScale >= MAX_SCALE;
+    queueMeasure();
+  }
+
+  function applyFont(key) {
+    fontKey = key === 'gothic' ? 'gothic' : 'mincho';
+    root.setAttribute('data-wb-font', fontKey);
+    root.style.setProperty('--wb-font-family', FONT_FAMILIES[fontKey]);
+    var buttons = document.querySelectorAll('button[data-wb-font]');
+    for (var i = 0; i < buttons.length; i++) {
+      var btn = buttons[i];
+      var active = btn.getAttribute('data-wb-font') === fontKey;
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    }
+    queueMeasure();
+  }
+
+  function normalizeHeadingFont(key) {
+    if (key === 'mincho' || key === 'gothic' || key === 'same-as-body') return key;
+    return 'same-as-body';
+  }
+
+  function applyHeadingFont(key) {
+    headingFontKey = normalizeHeadingFont(key);
+    root.setAttribute('data-wb-heading-font', headingFontKey);
+    var buttons = document.querySelectorAll('button[data-wb-heading-font]');
+    for (var i = 0; i < buttons.length; i++) {
+      var btn = buttons[i];
+      var active = btn.getAttribute('data-wb-heading-font') === headingFontKey;
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    }
+    requestLayoutReflow();
+  }
+
+  function applyTheme(key) {
+    var allowed = { light: 1, dark: 1, paper: 1, classic: 1 };
+    if (hasAuthorPalette) allowed.author = 1;
+    themeKey = allowed[key] ? key : defaultTheme;
+    root.setAttribute('data-wb-theme', themeKey);
+    if (themeSelect && themeSelect.value !== themeKey) {
+      themeSelect.value = themeKey;
+    }
+  }
+
+  function syncWritingModeControls() {
+    var buttons = document.querySelectorAll('button[data-wb-writing-mode]');
+    for (var i = 0; i < buttons.length; i++) {
+      var button = buttons[i];
+      var active = button.getAttribute('data-wb-writing-mode') === writingMode;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    }
+  }
+
+  /**
+   * compact chrome は物理的な左右を読み進行に合わせる。
+   * DOM 順も入れ替えるため、見た目と支援技術の操作順が食い違わない。
+   */
+  function syncPageNavigationControls() {
+    if (!prevBtn || !nextBtn || !statusEl || !prevBtn.parentNode) return;
+    var nav = prevBtn.parentNode;
+    prevBtn.setAttribute('aria-label', '前のページ');
+    prevBtn.setAttribute('title', '前のページ');
+    nextBtn.setAttribute('aria-label', '次のページ');
+    nextBtn.setAttribute('title', '次のページ');
+    if (isVertical) {
+      nextBtn.textContent = '◀';
+      prevBtn.textContent = '▶';
+      nav.insertBefore(nextBtn, nav.firstChild);
+      nav.appendChild(prevBtn);
+      return;
+    }
+    prevBtn.textContent = '◀';
+    nextBtn.textContent = '▶';
+    nav.insertBefore(prevBtn, nav.firstChild);
+    nav.appendChild(nextBtn);
+  }
+
+  function applyWritingMode(next, deferReflow) {
+    var normalized = normalizeWritingMode(next);
+    if (writingMode === normalized) {
+      syncWritingModeControls();
+      syncPageNavigationControls();
+      return false;
+    }
+    writingMode = normalized;
+    isVertical = writingMode === 'vertical-rl';
+    root.setAttribute('data-wb-writing-mode', writingMode);
+    root.classList.remove('nyoze-writing-mode-vertical-rl', 'nyoze-writing-mode-horizontal-tb');
+    root.classList.add('nyoze-writing-mode-' + writingMode);
+    if (html) html.setAttribute('data-writing-mode', writingMode);
+    syncWritingModeControls();
+    syncPageNavigationControls();
+    if (!deferReflow) requestLayoutReflow();
+    return true;
+  }
+
+  function applyPageInsetTop(next, deferReflow) {
+    var normalized = normalizePageInset(next, INSET_TOP_DEFAULT);
+    if (pageInsetTop === normalized) {
+      if (pageInsetTopSelect && pageInsetTopSelect.value !== String(normalized)) {
+        pageInsetTopSelect.value = String(normalized);
+      }
+      return false;
+    }
+    pageInsetTop = normalized;
+    root.setAttribute('data-wb-page-inset-top', String(pageInsetTop));
+    root.style.setProperty('--wb-page-inset-top', String(pageInsetTop) + 'px');
+    if (pageInsetTopSelect && pageInsetTopSelect.value !== String(pageInsetTop)) {
+      pageInsetTopSelect.value = String(pageInsetTop);
+    }
+    if (!deferReflow) requestLayoutReflow();
+    return true;
+  }
+
+  function applyPageInsetBottom(next, deferReflow) {
+    var normalized = normalizePageInset(next, INSET_BOTTOM_DEFAULT);
+    if (pageInsetBottom === normalized) {
+      if (pageInsetBottomSelect && pageInsetBottomSelect.value !== String(normalized)) {
+        pageInsetBottomSelect.value = String(normalized);
+      }
+      return false;
+    }
+    pageInsetBottom = normalized;
+    root.setAttribute('data-wb-page-inset-bottom', String(pageInsetBottom));
+    root.style.setProperty('--wb-page-inset-bottom', String(pageInsetBottom) + 'px');
+    if (pageInsetBottomSelect && pageInsetBottomSelect.value !== String(pageInsetBottom)) {
+      pageInsetBottomSelect.value = String(pageInsetBottom);
+    }
+    if (!deferReflow) requestLayoutReflow();
+    return true;
+  }
+
+  function applyPageInsetInline(next, deferReflow) {
+    var normalized = normalizePageInset(next, INSET_INLINE_DEFAULT);
+    if (pageInsetInline === normalized) {
+      if (pageInsetInlineSelect && pageInsetInlineSelect.value !== String(normalized)) {
+        pageInsetInlineSelect.value = String(normalized);
+      }
+      return false;
+    }
+    pageInsetInline = normalized;
+    root.setAttribute('data-wb-page-inset-inline', String(pageInsetInline));
+    root.style.setProperty('--wb-page-inset-inline', String(pageInsetInline) + 'px');
+    if (pageInsetInlineSelect && pageInsetInlineSelect.value !== String(pageInsetInline)) {
+      pageInsetInlineSelect.value = String(pageInsetInline);
+    }
+    if (!deferReflow) requestLayoutReflow();
+    return true;
+  }
+
+  function applyPaperFrame(next, deferReflow) {
+    var normalized = !!next;
+    if (paperFrame === normalized) {
+      if (paperFrameButton) paperFrameButton.setAttribute('aria-pressed', normalized ? 'true' : 'false');
+      return false;
+    }
+    paperFrame = normalized;
+    root.setAttribute('data-wb-paper-frame', paperFrame ? 'on' : 'off');
+    if (paperFrameButton) paperFrameButton.setAttribute('aria-pressed', paperFrame ? 'true' : 'false');
+    if (!deferReflow) requestLayoutReflow();
+    return true;
+  }
+
+  function syncFurnitureControlAvailability() {
+    if (headerAlignSelect) headerAlignSelect.disabled = !headerEnabled;
+    if (headerShowTitleButton) headerShowTitleButton.disabled = !headerEnabled;
+    if (headerShowAuthorButton) headerShowAuthorButton.disabled = !headerEnabled;
+    if (footerAlignSelect) footerAlignSelect.disabled = !footerEnabled;
+  }
+
+  function applyHeaderEnabled(next) {
+    var normalized = !!next;
+    if (headerEnabled === normalized) {
+      if (headerEnabledButton) headerEnabledButton.setAttribute('aria-pressed', normalized ? 'true' : 'false');
+      syncFurnitureControlAvailability();
+      return false;
+    }
+    headerEnabled = normalized;
+    root.setAttribute('data-wb-header-enabled', normalized ? 'on' : 'off');
+    if (headerEnabledButton) headerEnabledButton.setAttribute('aria-pressed', normalized ? 'true' : 'false');
+    syncFurnitureControlAvailability();
+    return true;
+  }
+
+  function applyHeaderAlign(next) {
+    headerAlign = normalizeFurnitureAlign(next);
+    root.setAttribute('data-wb-header-align', headerAlign);
+    if (headerAlignSelect && headerAlignSelect.value !== headerAlign) headerAlignSelect.value = headerAlign;
+  }
+
+  function applyHeaderShowTitle(next) {
+    headerShowTitle = !!next;
+    root.setAttribute('data-wb-header-show-title', headerShowTitle ? 'on' : 'off');
+    if (headerShowTitleButton) headerShowTitleButton.setAttribute('aria-pressed', headerShowTitle ? 'true' : 'false');
+  }
+
+  function applyHeaderShowAuthor(next) {
+    headerShowAuthor = !!next;
+    root.setAttribute('data-wb-header-show-author', headerShowAuthor ? 'on' : 'off');
+    if (headerShowAuthorButton) headerShowAuthorButton.setAttribute('aria-pressed', headerShowAuthor ? 'true' : 'false');
+  }
+
+  function applyFooterEnabled(next) {
+    var normalized = !!next;
+    if (footerEnabled === normalized) {
+      if (footerEnabledButton) footerEnabledButton.setAttribute('aria-pressed', normalized ? 'true' : 'false');
+      syncFurnitureControlAvailability();
+      return false;
+    }
+    footerEnabled = normalized;
+    root.setAttribute('data-wb-footer-enabled', normalized ? 'on' : 'off');
+    if (footerEnabledButton) footerEnabledButton.setAttribute('aria-pressed', normalized ? 'true' : 'false');
+    syncFurnitureControlAvailability();
+    return true;
+  }
+
+  function applyFooterAlign(next) {
+    footerAlign = normalizeFurnitureAlign(next);
+    root.setAttribute('data-wb-footer-align', footerAlign);
+    if (footerAlignSelect && footerAlignSelect.value !== footerAlign) footerAlignSelect.value = footerAlign;
+  }
+
+  function readChapterTitles() {
+    var map = {};
+    var island = document.getElementById('nyoze-web-book-chapter-titles');
+    if (!island) return map;
+    var spans = island.querySelectorAll('[data-wb-chapter]');
+    for (var i = 0; i < spans.length; i++) {
+      var span = spans[i];
+      var n = Number(span.getAttribute('data-wb-chapter'));
+      if (!isFinite(n) || n < 1) continue;
+      map[n] = span.getAttribute('data-wb-title') || '';
+    }
+    return map;
+  }
+
+  function chapterFromHeadingId(id) {
+    var match = /^wb-c(\d+)-/.exec(id || '');
+    if (!match) return 0;
+    return Number(match[1]) || 0;
+  }
+
+  function chapterRootId(chapter) {
+    return 'wb-c' + String(chapter) + '-chapter-root';
+  }
+
+  function appendOutlineJumpButton(list, className, targetId, label) {
+    var li = document.createElement('li');
+    li.className = className;
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('data-wb-outline-target', targetId);
+    button.textContent = label;
+    button.addEventListener('click', function (event) {
+      var id = event.currentTarget.getAttribute('data-wb-outline-target');
+      jumpToHeadingId(id);
+      setOutlineOpen(false, { restoreFocus: true });
+    });
+    li.appendChild(button);
+    list.appendChild(li);
+  }
+
+  function buildOutline() {
+    if (!outline || !outlineToggle) return;
+    var headings = flow.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+    var chapterTitles = readChapterTitles();
+    var chapterNums = Object.keys(chapterTitles)
+      .map(function (key) { return Number(key); })
+      .filter(function (n) { return isFinite(n) && n >= 1; })
+      .sort(function (a, b) { return a - b; });
+    var hasBookChapters = chapterNums.length > 0;
+    outline.innerHTML = '';
+    if (!hasBookChapters && !headings.length) {
+      outlineToggle.disabled = true;
+      outlineToggle.hidden = true;
+      outline.hidden = true;
+      outlineOpen = false;
+      setBackdropVisible(false);
+      return;
+    }
+
+    outlineToggle.disabled = false;
+    outlineToggle.hidden = false;
+
+    var title = document.createElement('h2');
+    title.className = 'nyoze-web-book-outline__title';
+    title.textContent = '目次';
+    outline.appendChild(title);
+
+    var list = document.createElement('ul');
+    list.className = 'nyoze-web-book-outline__list';
+    outline.appendChild(list);
+
+    if (hasBookChapters) {
+      var headingsByChapter = {};
+      for (var hi = 0; hi < headings.length; hi++) {
+        var heading = headings[hi];
+        var headingId = heading.getAttribute('id') || '';
+        if (!headingId) continue;
+        var chapter = chapterFromHeadingId(headingId);
+        if (chapter < 1) continue;
+        if (!headingsByChapter[chapter]) headingsByChapter[chapter] = [];
+        headingsByChapter[chapter].push(heading);
+      }
+
+      for (var ci = 0; ci < chapterNums.length; ci++) {
+        var chapterNum = chapterNums[ci];
+        var chapterLabel = chapterTitles[chapterNum] || ('Chapter ' + chapterNum);
+        appendOutlineJumpButton(
+          list,
+          'nyoze-web-book-outline__chapter',
+          chapterRootId(chapterNum),
+          chapterLabel
+        );
+        var chapterHeadings = headingsByChapter[chapterNum] || [];
+        for (var chi = 0; chi < chapterHeadings.length; chi++) {
+          var chapterHeading = chapterHeadings[chi];
+          var id = chapterHeading.getAttribute('id') || '';
+          if (!id) continue;
+          var level = Number((chapterHeading.tagName || 'H1').replace(/H/i, '')) || 1;
+          level = Math.min(6, Math.max(1, level));
+          var headingLabel = (chapterHeading.textContent || '').replace(/\s+/g, ' ').trim() || id;
+          appendOutlineJumpButton(
+            list,
+            'nyoze-web-book-outline__item nyoze-web-book-outline__level-' + level,
+            id,
+            headingLabel
+          );
+        }
+      }
+      return;
+    }
+
+    for (var i = 0; i < headings.length; i++) {
+      var standaloneHeading = headings[i];
+      var standaloneId = standaloneHeading.getAttribute('id') || '';
+      if (!standaloneId) continue;
+      var standaloneLevel = Number((standaloneHeading.tagName || 'H1').replace(/H/i, '')) || 1;
+      standaloneLevel = Math.min(6, Math.max(1, standaloneLevel));
+      var standaloneLabel =
+        (standaloneHeading.textContent || '').replace(/\s+/g, ' ').trim() || standaloneId;
+      appendOutlineJumpButton(
+        list,
+        'nyoze-web-book-outline__item nyoze-web-book-outline__level-' + standaloneLevel,
+        standaloneId,
+        standaloneLabel
+      );
+    }
+  }
+
+  function clearHideTimer() {
+    if (hideTimer !== null) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+  }
+
+  function showChrome(forceKeep) {
+    root.classList.remove('nyoze-web-book-chrome-hidden');
+    clearHideTimer();
+    if (!forceKeep) scheduleHide();
+  }
+
+  function scheduleHide() {
+    clearHideTimer();
+    if (outlineOpen || settingsOpen || chromeHovered || chromeFocused) return;
+    hideTimer = setTimeout(function () {
+      hideTimer = null;
+      if (outlineOpen || settingsOpen || chromeHovered || chromeFocused) return;
+      root.classList.add('nyoze-web-book-chrome-hidden');
+    }, HIDE_DELAY_MS);
+  }
+
+  function syncChromeFocusState() {
+    var active = document.activeElement;
+    chromeFocused = !!(active && isInChrome(active));
+    if (chromeFocused || outlineOpen || settingsOpen) {
+      showChrome(true);
+    } else {
+      scheduleHide();
+    }
+  }
+
+  function resetReader() {
+    applyScale(1);
+    applyFont('mincho');
+    applyHeadingFont(initialHeadingFont);
+    applyTheme(defaultTheme);
+    var layoutChanged = false;
+    layoutChanged = applyWritingMode(initialWritingMode, true) || layoutChanged;
+    layoutChanged = applyPageInsetTop(INSET_TOP_DEFAULT, true) || layoutChanged;
+    layoutChanged = applyPageInsetBottom(INSET_BOTTOM_DEFAULT, true) || layoutChanged;
+    layoutChanged = applyPageInsetInline(INSET_INLINE_DEFAULT, true) || layoutChanged;
+    layoutChanged = applyPaperFrame(true, true) || layoutChanged;
+    applyHeaderEnabled(true);
+    applyHeaderAlign('left');
+    applyHeaderShowTitle(true);
+    applyHeaderShowAuthor(false);
+    applyFooterEnabled(true);
+    applyFooterAlign('right');
+    applyTransitionMode(TRANSITION_DEFAULT_MODE);
+    applyTransitionSpeed(TRANSITION_SPEED_DEFAULT_MS);
+    if (layoutChanged) requestLayoutReflow();
+    showChrome(true);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      goBy(-1);
+      showChrome(false);
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      goBy(1);
+      showChrome(false);
+    });
+  }
+
+  if (scaleDecrease) {
+    scaleDecrease.addEventListener('click', function () {
+      applyScale(fontScale - SCALE_STEP);
+    });
+  }
+  if (scaleIncrease) {
+    scaleIncrease.addEventListener('click', function () {
+      applyScale(fontScale + SCALE_STEP);
+    });
+  }
+
+  var fontButtons = document.querySelectorAll('button[data-wb-font]');
+  for (var fi = 0; fi < fontButtons.length; fi++) {
+    fontButtons[fi].addEventListener('click', function (event) {
+      applyFont(event.currentTarget.getAttribute('data-wb-font'));
+    });
+  }
+
+  var headingFontButtons = document.querySelectorAll('button[data-wb-heading-font]');
+  for (var hfi = 0; hfi < headingFontButtons.length; hfi++) {
+    headingFontButtons[hfi].addEventListener('click', function (event) {
+      applyHeadingFont(event.currentTarget.getAttribute('data-wb-heading-font'));
+    });
+  }
+
+  var writingModeButtons = document.querySelectorAll('button[data-wb-writing-mode]');
+  for (var wi = 0; wi < writingModeButtons.length; wi++) {
+    writingModeButtons[wi].addEventListener('click', function (event) {
+      applyWritingMode(event.currentTarget.getAttribute('data-wb-writing-mode'));
+    });
+  }
+
+  if (pageInsetTopSelect) {
+    pageInsetTopSelect.addEventListener('change', function () {
+      applyPageInsetTop(pageInsetTopSelect.value);
+    });
+  }
+
+  if (pageInsetBottomSelect) {
+    pageInsetBottomSelect.addEventListener('change', function () {
+      applyPageInsetBottom(pageInsetBottomSelect.value);
+    });
+  }
+
+  if (pageInsetInlineSelect) {
+    pageInsetInlineSelect.addEventListener('change', function () {
+      applyPageInsetInline(pageInsetInlineSelect.value);
+    });
+  }
+
+  if (paperFrameButton) {
+    paperFrameButton.addEventListener('click', function () {
+      applyPaperFrame(!paperFrame);
+    });
+  }
+
+  if (headerEnabledButton) {
+    headerEnabledButton.addEventListener('click', function () {
+      applyHeaderEnabled(!headerEnabled);
+    });
+  }
+  if (headerAlignSelect) {
+    headerAlignSelect.addEventListener('change', function () {
+      applyHeaderAlign(headerAlignSelect.value);
+    });
+  }
+  if (headerShowTitleButton) {
+    headerShowTitleButton.addEventListener('click', function () {
+      applyHeaderShowTitle(!headerShowTitle);
+    });
+  }
+  if (headerShowAuthorButton) {
+    headerShowAuthorButton.addEventListener('click', function () {
+      applyHeaderShowAuthor(!headerShowAuthor);
+    });
+  }
+  if (footerEnabledButton) {
+    footerEnabledButton.addEventListener('click', function () {
+      applyFooterEnabled(!footerEnabled);
+    });
+  }
+  if (footerAlignSelect) {
+    footerAlignSelect.addEventListener('change', function () {
+      applyFooterAlign(footerAlignSelect.value);
+    });
+  }
+
+  if (themeSelect) {
+    themeSelect.addEventListener('change', function () {
+      applyTheme(themeSelect.value);
+    });
+  }
+
+  if (transitionSelect) {
+    transitionSelect.addEventListener('change', function () {
+      applyTransitionMode(transitionSelect.value);
+    });
+  }
+
+  if (transitionSpeedRange) {
+    transitionSpeedRange.addEventListener('input', function () {
+      applyTransitionSpeed(transitionSpeedRange.value);
+    });
+    transitionSpeedRange.addEventListener('change', function () {
+      applyTransitionSpeed(transitionSpeedRange.value);
+    });
+  }
+
+  if (reducedMotionMedia) {
+    var onReducedMotionChange = function (event) {
+      if (event.matches) cancelTransition();
+    };
+    if (reducedMotionMedia.addEventListener) {
+      reducedMotionMedia.addEventListener('change', onReducedMotionChange);
+    } else if (reducedMotionMedia.addListener) {
+      reducedMotionMedia.addListener(onReducedMotionChange);
+    }
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      resetReader();
+    });
+  }
+
+  if (outlineToggle) {
+    outlineToggle.addEventListener('click', function () {
+      setOutlineOpen(!outlineOpen, { restoreFocus: true });
+    });
+  }
+
+  if (settingsToggle) {
+    settingsToggle.addEventListener('click', function () {
+      setSettingsOpen(!settingsOpen, { restoreFocus: true });
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      if (outlineOpen) setOutlineOpen(false, { restoreFocus: true });
+    });
+  }
+
+  // Settings popover: 外側 pointer 操作で閉じる（focus は pointer 先へ自然に移る）。
+  document.addEventListener(
+    'pointerdown',
+    function (event) {
+      if (!settingsOpen || !settings) return;
+      var target = event.target;
+      if (!(target instanceof Element)) return;
+      if (settings.contains(target)) return;
+      if (settingsToggle && (settingsToggle === target || settingsToggle.contains(target))) return;
+      setSettingsOpen(false);
+    },
+    true,
+  );
+
+  // Outline drawer: Tab を drawer 内で循環させる（modal drawer の focus trap）。
+  if (outline) {
+    outline.addEventListener('keydown', function (event) {
+      if (event.key !== 'Tab' || !outlineOpen) return;
+      var focusables = outline.querySelectorAll('button');
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  flow.addEventListener('click', function (event) {
+    var anchor = event.target && event.target.closest ? event.target.closest('a[href^="#"]') : null;
+    if (!anchor || !flow.contains(anchor)) return;
+    if (!anchor.classList.contains('nyoze-toc') && !anchor.closest('.nyoze-toc')) return;
+    var href = anchor.getAttribute('href') || '';
+    if (href.charAt(0) !== '#') return;
+    var id = href.slice(1);
+    if (!id) return;
+    event.preventDefault();
+    jumpToHeadingId(decodeURIComponent(id));
+    showChrome(false);
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      if (settingsOpen) {
+        event.preventDefault();
+        setSettingsOpen(false, { restoreFocus: true });
+        return;
+      }
+      if (outlineOpen) {
+        event.preventDefault();
+        setOutlineOpen(false, { restoreFocus: true });
+        return;
+      }
+    }
+
+    if (event.defaultPrevented) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (isEditableTarget(event.target)) return;
+    if (!focusIsInReaderBody()) return;
+
+    var key = event.key;
+    if (key === 'PageDown') {
+      event.preventDefault();
+      goBy(1);
+      return;
+    }
+    if (key === 'PageUp') {
+      event.preventDefault();
+      goBy(-1);
+      return;
+    }
+    if (key === 'Home') {
+      event.preventDefault();
+      navigateWithoutTransition(0);
+      return;
+    }
+    if (key === 'End') {
+      event.preventDefault();
+      navigateWithoutTransition(pageCount - 1);
+      return;
+    }
+    if (key === 'ArrowLeft') {
+      event.preventDefault();
+      goBy(isVertical ? 1 : -1);
+      return;
+    }
+    if (key === 'ArrowRight') {
+      event.preventDefault();
+      goBy(isVertical ? -1 : 1);
+      return;
+    }
+  });
+
+  // WB-R13: pointerdown / touchstart no longer force-reveal chrome here —
+  // that used to fight the explicit center tap/click toggle and the "side
+  // tap/swipe must not change chrome visibility" contract. mousemove / scroll
+  // keep the existing desktop reveal-on-activity behavior.
+  ;['mousemove', 'scroll'].forEach(function (name) {
+    document.addEventListener(
+      name,
+      function () {
+        showChrome(false);
+      },
+      { passive: true },
+    );
+  });
+
+  // ページ送り key は chrome を起こさない。他の keyboard activity は従来どおり
+  // auto-hide を解除する（dialog / control の focus 契約は focusin 側が保持する）。
+  document.addEventListener('keydown', function (event) {
+    var key = event.key;
+    if (
+      key === 'PageDown' ||
+      key === 'PageUp' ||
+      key === 'ArrowLeft' ||
+      key === 'ArrowRight' ||
+      key === 'Home' ||
+      key === 'End'
+    ) return;
+    showChrome(false);
+  }, { passive: true });
+
+  var chromeNodes = document.querySelectorAll('[data-wb-chrome], .nyoze-web-book-outline');
+  for (var ci = 0; ci < chromeNodes.length; ci++) {
+    chromeNodes[ci].addEventListener('mouseenter', function () {
+      chromeHovered = true;
+      showChrome(true);
+    });
+    chromeNodes[ci].addEventListener('mouseleave', function () {
+      chromeHovered = false;
+      scheduleHide();
+    });
+  }
+  document.addEventListener('focusin', syncChromeFocusState);
+  document.addEventListener('focusout', function () {
+    setTimeout(syncChromeFocusState, 0);
+  });
+
+  function beginPrint() {
+    // printing フラグを立てる前に演出を中断し、print へ animation / timer /
+    // class を残さない（fade の保留切替はここで確定する）。
+    cancelTransition();
+    printing = true;
+    clearHideTimer();
+    root.classList.remove('nyoze-web-book-chrome-hidden');
+  }
+
+  function finishPrint() {
+    printing = false;
+    queueMeasure();
+    scheduleHide();
+  }
+
+  window.addEventListener('beforeprint', beginPrint);
+  window.addEventListener('afterprint', finishPrint);
+  if (printMedia) {
+    var onPrintMediaChange = function (event) {
+      if (event.matches) {
+        beginPrint();
+      } else {
+        finishPrint();
+      }
+    };
+    if (printMedia.addEventListener) {
+      printMedia.addEventListener('change', onPrintMediaChange);
+    } else if (printMedia.addListener) {
+      printMedia.addListener(onPrintMediaChange);
+    }
+  }
+
+  if (typeof ResizeObserver !== 'undefined') {
+    var ro = new ResizeObserver(function () {
+      queueMeasure();
+    });
+    ro.observe(viewport);
+  }
+  window.addEventListener('pagehide', function () {
+    destroyed = true;
+    cancelTransition();
+    clearHideTimer();
+    resetGestureTracking();
+    activePointerCount = 0;
+    if (typeof ro !== 'undefined' && ro) ro.disconnect();
+  });
+  window.addEventListener('resize', queueMeasure);
+
+  flow.querySelectorAll('img').forEach(function (img) {
+    if (img.complete) return;
+    img.addEventListener('load', queueMeasure);
+    img.addEventListener('error', queueMeasure);
+  });
+
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(function () {
+      queueMeasure();
+    }).catch(function () {});
+  }
+
+  applyTheme(root.getAttribute('data-wb-theme') || defaultTheme);
+  applyFont(root.getAttribute('data-wb-font') || 'mincho');
+  applyHeadingFont(headingFontKey);
+  syncWritingModeControls();
+  syncPageNavigationControls();
+  applyPageInsetTop(pageInsetTop, true);
+  applyPageInsetBottom(pageInsetBottom, true);
+  applyPageInsetInline(pageInsetInline, true);
+  // モバイル環境（coarse pointer かつ短辺600px以下）では、書き出し時に埋め込まれた
+  // 既定値（常に "on"）より優先して用紙枠を初期 OFF にする。applyPaperFrame
+  // 経由で DOM attribute / aria-pressed も一緒に更新させるため、ここでは
+  // 呼び出し引数だけを差し替える（paperFrame 変数を直接書き換えない）。
+  applyPaperFrame(isMobileNarrowViewport() ? false : paperFrame, true);
+  applyHeaderEnabled(headerEnabled);
+  applyHeaderAlign(headerAlign);
+  applyHeaderShowTitle(headerShowTitle);
+  applyHeaderShowAuthor(headerShowAuthor);
+  applyFooterEnabled(footerEnabled);
+  applyFooterAlign(footerAlign);
+  setTransitionStateAttr('idle');
+  root.setAttribute('data-wb-transition-generation', '0');
+  applyTransitionMode(transitionMode);
+  applyTransitionSpeed(transitionSpeedMs);
+  applyScale(1);
+  buildOutline();
+  setOutlineOpen(false);
+  setSettingsOpen(false);
+
+  viewport.setAttribute('tabindex', '0');
+  measure();
+  showChrome(false);
+  try {
+    viewport.focus({ preventScroll: true });
+  } catch (e) {
+    viewport.focus();
+  }
+})();
+</script>
+</body>
+</html>
