@@ -111,6 +111,10 @@
   text-align: left;
 }
 
+.nyoze-hero__details {
+  margin-top: clamp(-7rem, -8vw, -4rem);
+}
+
 .nyoze-hero__brand {
   width: fit-content;
   margin: 0 0 clamp(2.5rem, 4vw, 3.5rem);
@@ -160,9 +164,20 @@
 }
 
 .nyoze-hero h1 {
-  font-size: clamp(2.55rem, 6vw, 4.75rem);
-  line-height: 1.25;
+  font-size: clamp(2rem, 4.5vw, 4.2rem);
+  line-height: 1.3;
   text-align: left;
+  white-space: nowrap;
+}
+
+.nyoze-hero__tagline {
+  margin: 1.15rem 0 0;
+  color: var(--nyoze-ui-ink);
+  font-family: var(--nyoze-serif);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.8;
 }
 
 .nyoze-hero__lead {
@@ -244,6 +259,32 @@
 .nyoze-platform-note strong {
   color: var(--nyoze-ui-ink);
   font-weight: 700;
+}
+
+.nyoze-open-source-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.7rem 0 0;
+  color: var(--nyoze-muted);
+  font-size: 0.78rem;
+}
+
+.nyoze-open-source-note strong {
+  color: var(--nyoze-ui-ink);
+  font-weight: 700;
+}
+
+.nyoze-open-source-note a {
+  margin-left: 0.2rem;
+  color: var(--nyoze-accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nyoze-open-source-note a:hover {
+  color: var(--nyoze-accent-dark);
 }
 
 .nyoze-shot {
@@ -955,11 +996,14 @@
     margin-bottom: 3.5rem;
   }
   .nyoze-hero h1 {
-    font-size: clamp(2.25rem, 12vw, 3.25rem);
+    font-size: clamp(1.65rem, 9.5vw, 3rem);
   }
   .nyoze-hero__copy {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+  .nyoze-hero__details {
+    margin-top: 0;
   }
   .nyoze-hero__brand {
     margin-bottom: 3.25rem;
@@ -1032,6 +1076,9 @@
     font-size: 0.68rem;
   }
   .nyoze-platform-note {
+    font-size: 0.7rem;
+  }
+  .nyoze-open-source-note {
     font-size: 0.7rem;
   }
   .nyoze-shot__sidebar {
