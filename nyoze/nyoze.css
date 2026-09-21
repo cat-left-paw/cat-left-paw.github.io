@@ -1,6 +1,7 @@
 /* Nyoze landing page only — shared styles remain untouched. */
 
 .nyoze-page {
+  --nyoze-header-height: 2.5rem;
   --nyoze-paper: #f3f1ec;
   --nyoze-surface: #faf9f5;
   --nyoze-ink: #403a37;
@@ -30,7 +31,14 @@
   color: inherit;
 }
 
+.nyoze-page [id] {
+  scroll-margin-top: calc(var(--nyoze-header-height) + 1rem);
+}
+
 .nyoze-header {
+  position: sticky;
+  z-index: 100;
+  top: 0;
   background: var(--nyoze-paper);
   border-bottom: 1px solid var(--nyoze-rule);
 }
@@ -48,7 +56,8 @@
 }
 
 .nyoze-header__inner {
-  min-height: 4.5rem;
+  min-width: 0;
+  min-height: var(--nyoze-header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -57,6 +66,7 @@
 
 .nyoze-wordmark {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 0.55rem;
   color: var(--nyoze-ui-ink);
@@ -96,7 +106,7 @@
 }
 
 .nyoze-hero {
-  padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 9vw, 7rem);
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(4rem, 9vw, 7rem);
 }
 
 .nyoze-hero__top {
@@ -976,21 +986,29 @@
   }
 
   .nyoze-header__inner {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
     gap: 0.75rem;
-    padding-block: 0.9rem;
+    padding-block: 0;
   }
   .nyoze-nav {
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.5rem;
+    min-width: 0;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .nyoze-nav::-webkit-scrollbar {
+    display: none;
   }
   .nyoze-nav a {
     font-size: 0.75rem;
   }
   .nyoze-hero {
-    padding-top: 4rem;
+    padding-top: 1.5rem;
   }
   .nyoze-hero__top {
     margin-bottom: 3.5rem;
