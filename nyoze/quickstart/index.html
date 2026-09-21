@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../nyoze.css">
   <link rel="stylesheet" href="quickstart.css">
+  <script src="quickstart.js" defer></script>
 </head>
 <body class="nyoze-page quickstart-page" id="top">
   <header class="nyoze-header">
@@ -26,6 +27,7 @@
 
   <main class="quickstart-main">
     <a class="quickstart-back" href="../"><span aria-hidden="true">←</span> Nyozeトップへ戻る</a>
+    <div class="quickstart-layout">
     <article class="quickstart-article" aria-labelledby="quickstart-title">
 <p class="quickstart-eyebrow" aria-hidden="true">Documentation</p>
 <h1 id="quickstart-title">Nyoze Quick Start — 書き始めから、作品の仕上げまで</h1>
@@ -228,6 +230,15 @@
 <p>まずは一つの原稿を書き始め、章が増えたらBookで順番を整え、必要になったら資料やアウトラインを使う。ひと区切り書けたらPage Viewerで読み返し、気になる箇所を直して保存する。</p>
 <p>その流れから始めてみてください。</p>
     </article>
+
+      <aside class="quickstart-outline" aria-labelledby="quickstart-outline-title">
+        <p class="quickstart-outline__title" id="quickstart-outline-title">このページの見出し</p>
+        <nav aria-label="Quick Start 見出しアウトライン">
+          <ol class="quickstart-outline__list" id="quickstart-outline-list"></ol>
+        </nav>
+        <a class="quickstart-outline__top" href="#top"><span aria-hidden="true">↑</span> ページ上部へ</a>
+      </aside>
+    </div>
 
     <nav class="quickstart-end-links" aria-label="Quick Start 関連リンク">
       <a href="../">Nyozeトップへ</a>

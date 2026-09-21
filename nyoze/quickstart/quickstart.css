@@ -1,5 +1,9 @@
 /* Nyoze Quick Start — extends the existing Nyoze landing-page design. */
 
+html {
+  scroll-behavior: smooth;
+}
+
 .quickstart-page .nyoze-header__inner,
 .quickstart-main,
 .quickstart-page .nyoze-footer__inner {
@@ -30,8 +34,83 @@
   color: var(--nyoze-accent);
 }
 
+.quickstart-layout {
+  min-width: 0;
+}
+
 .quickstart-article {
+  min-width: 0;
   color: var(--nyoze-ink);
+}
+
+.quickstart-outline {
+  display: none;
+}
+
+.quickstart-outline__title {
+  margin: 0 0 0.8rem;
+  color: var(--nyoze-ui-ink);
+  font-family: var(--nyoze-serif);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.quickstart-outline__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quickstart-outline__item {
+  margin: 0;
+}
+
+.quickstart-outline__item + .quickstart-outline__item {
+  margin-top: 0.08rem;
+}
+
+.quickstart-outline__link {
+  display: block;
+  padding: 0.38rem 0.55rem 0.38rem 0.8rem;
+  border-left: 2px solid transparent;
+  color: var(--nyoze-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.55;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.quickstart-outline__item--h3 .quickstart-outline__link {
+  padding-left: 1.45rem;
+  font-size: 0.71rem;
+  font-weight: 500;
+}
+
+.quickstart-outline__link:hover {
+  border-left-color: var(--nyoze-accent-soft);
+  color: var(--nyoze-accent-dark);
+}
+
+.quickstart-outline__link[aria-current="location"] {
+  border-left-color: var(--nyoze-accent);
+  background: rgb(98 116 125 / 8%);
+  color: var(--nyoze-accent-dark);
+}
+
+.quickstart-outline__top {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin: 1rem 0 0 0.8rem;
+  color: var(--nyoze-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quickstart-outline__top:hover {
+  color: var(--nyoze-accent);
 }
 
 .quickstart-article > h1,
@@ -310,6 +389,26 @@
   color: #fff;
 }
 
+@media (min-width: 68rem) {
+  .quickstart-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 48rem) minmax(0, 1fr);
+    gap: clamp(2.75rem, 5vw, 4.75rem);
+    align-items: start;
+  }
+
+  .quickstart-outline {
+    position: sticky;
+    top: 2rem;
+    display: block;
+    max-height: calc(100vh - 4rem);
+    padding-left: 0.2rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
+
 @media (max-width: 48rem) {
   .quickstart-page .nyoze-header__inner,
   .quickstart-main,
@@ -353,8 +452,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .quickstart-page {
+  html {
     scroll-behavior: auto;
+  }
+
+  .quickstart-outline__link {
+    transition: none;
   }
 }
 
@@ -362,6 +465,7 @@
   .quickstart-page .nyoze-header,
   .quickstart-back,
   .quickstart-toc,
+  .quickstart-outline,
   .quickstart-end-links,
   .quickstart-page .nyoze-footer {
     display: none;
