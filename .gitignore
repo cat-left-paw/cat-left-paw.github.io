@@ -1,0 +1,10 @@
+# macOS Finder metadata
+.DS_Store
+
+# Local backup copies
+*.bak
+
+# Local source material and screenshot working copies
+/assets/screen-shots/
+/nyoze/images/
+/nyoze/nyoze-quick-start/
